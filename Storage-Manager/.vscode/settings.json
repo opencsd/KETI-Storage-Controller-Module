@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "unordered_map": "cpp",
+        "__hash_table": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "functional": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "iostream": "cpp",
+        "ios": "cpp",
+        "memory": "cpp",
+        "istream": "cpp",
+        "__functional_base": "cpp",
+        "locale": "cpp",
+        "tuple": "cpp",
+        "utility": "cpp"
+    }
+}

@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+36c20c1fae7cea98d3044c4531c72a76 storage-manager.pb.cc

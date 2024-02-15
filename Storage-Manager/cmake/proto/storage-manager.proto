@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.snippet_sample";
+option java_outer_classname = "snippet_sample_Proto";
+option objc_class_prefix = "SSP";
+
+package StorageEngineInstance;
+
+service StorageManager {
+  rpc GetDataFileInfo (SSTList) returns (DataFileInfo) {}
+  rpc RequestPBA (LBA2PBARequest) returns (LBA2PBAResponse) {}
+}
+
+message LBA2PBARequest {
+  int32 table_index_number = 1;
+  map<string,string> sst_csd_map = 2;
+}
+
+message LBA2PBAResponse {
+  message Chunk {
+    int64 offset = 1;
+    int32 length = 2;
+  }
+  message PBA {
+    string csd_id = 1;
+    repeated Chunk chunks = 2;
+  }
+  map<string,PBA> sst_pba_map = 1;
+}
+
+message SSTList {
+  repeated string sst_list = 1;
+}
+
+message DataFileInfo {
+  message CSD {
+    repeated string csd_id = 1;
+    repeated bool is_primary = 2;
+  }
+  map<string,CSD> sst_csd_map = 1;
+}
+
