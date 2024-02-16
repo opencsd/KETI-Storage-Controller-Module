@@ -18,7 +18,7 @@
 #include "lba2pba_manager.h"
 
 #define STORAGE_CLUSTER_MASTER_IP "10.0.4.83"
-#define STORAGE_MANAGER_PORT 40301
+#define STORAGE_MANAGER_PORT 40302
 
 using namespace rapidjson;
 using namespace std;

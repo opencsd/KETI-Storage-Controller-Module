@@ -56,6 +56,8 @@ target_link_libraries(ss_grpc_proto
   ${_GRPC_GRPCPP}
   ${_PROTOBUF_LIBPROTOBUF})
 
+set(LINKING_LIBRARIES "-lgpr")
+
 if (UNIX)
 	# Linking POSIX threads
 	find_package(Threads REQUIRED)

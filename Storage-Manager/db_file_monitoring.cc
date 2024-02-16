@@ -47,15 +47,14 @@ DataFileInfo DBFileMonitoring::getDataFileInfo(SSTList sstList){
     DataFileInfo dataFileInfo;
 
     for(int i=0; i<sstList.sst_list_size(); i++){
-        string sstName = sstList.sst_list(i);
+        string sst_name = sstList.sst_list(i);
         
         DataFileInfo_CSD csd;
-        for(const auto &csd_ : sst_info_map_[sstName].csd_list){
+        for(const auto &csd_ : sst_info_map_[sst_name].csd_list){
             csd.add_csd_id(csd_);
-            csd.is_primary(true);
         }
 
-        dataFileInfo.mutable_sst_csd_map()->insert({sstName,csd}); 
+        dataFileInfo.mutable_sst_csd_map()->insert({sst_name,csd}); 
     }
 
     return dataFileInfo;

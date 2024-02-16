@@ -18,7 +18,7 @@ void LBA2PBAManager::initLBA2PBAManager(){
 			string fd_name = "newport_" + csd_name;
 
 			sprintf(cmd,"filefrag -e /mnt/%s/sst/%s 2> /dev/null",fd_name.c_str(),sst_name.c_str());
-			cout << cmd << endl;//file frag 실행
+			// cout << cmd << endl;//file frag 실행
 
 			char buf[MAXLINE];
 			int flag = 0;
@@ -62,7 +62,7 @@ void LBA2PBAManager::initLBA2PBAManager(){
 			off64_t req_length;
 			PBAList pba_list;
 
-			for(int j=0; sstInfo.lba_block_list.size(); j++){
+			for(int j=0; j<sstInfo.lba_block_list.size(); j++){
 				flag = 0;
 				req_offset = sstInfo.lba_block_list[j].offset;
 				req_length = sstInfo.lba_block_list[j].length;
@@ -87,13 +87,12 @@ void LBA2PBAManager::initLBA2PBAManager(){
 							pba_chunk.length = req_length;
 
 							pba_list.pba_block_list.push_back(pba_chunk);
-
+						
 							break;
 						}
 					}
 				}
 			}
-
 			csd_pba_map.csd_pba_map_[csd_name] = pba_list;
 		}
 		sst_pba_map_[sst_name] = csd_pba_map;
