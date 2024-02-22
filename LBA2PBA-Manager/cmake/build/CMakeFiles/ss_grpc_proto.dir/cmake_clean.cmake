@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o"
+  "CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o.d"
   "CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o"
+  "CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o.d"
   "lba2pba.grpc.pb.cc"
   "lba2pba.grpc.pb.h"
   "lba2pba.pb.cc"

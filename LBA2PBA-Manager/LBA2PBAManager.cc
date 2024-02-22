@@ -9,28 +9,23 @@ using grpc::Status;
 using StorageEngineInstance::LBA2PBAManager;
 using StorageEngineInstance::LBARequest;
 using StorageEngineInstance::PBAResponse;
-using StorageEngineInstance::PBAList;
-using StorageEngineInstance::PBA;
-using StorageEngineInstance::LBA;
+using StorageEngineInstance::PBAResponse_PBA;
+using StorageEngineInstance::LBARequest_LBA;
 using StorageEngineInstance::Chunk;
 
 PBAResponse RunLBA2PBA(LBARequest request){
 	PBAResponse response;
 
 	off64_t offset_buffer[128][3];
-	// string ordering = request.ordering();
 
-	for(int i=0; i<request.file_lba_list_size(); i++){
-		PBAList pba_list;
-	
-		string file_name = request.file_lba_list(i).file_name();
+	for(int i=0; i<request.lba_chunks_size(); i++){	
+		string file_name = request.lba_chunks(i).sst_name();
 		KETILOG("LBA2PBA Manager","File Name: "+file_name);
-
-		pba_list.set_file_name(file_name);
 		
 		//do hdparm
 		char cmd[256];
-		string fdName = csdmap[file_name]; //원래는 리스트 -> 지금은 테스트로 csd 하나만
+		string csd_id = request.lba_chunks(i).csd_id();
+		string fdName = "newport_" + csd_id; 
 
 		sprintf(cmd,"filefrag -e /mnt/%s/sst/%s 2> /dev/null",fdName.c_str(),file_name.c_str());
 		cout << cmd << endl;//file frag 실행
@@ -83,11 +78,10 @@ PBAResponse RunLBA2PBA(LBARequest request){
 		off64_t req_offset;
 		off64_t req_length;
 
-		PBA pba;
-		pba.set_csd_id(csdID);
+		PBAResponse_PBA pba;
 
-		for(int j=0;j<request.file_lba_list(i).chunks_size();j++){
-			Chunk lba_chunk = request.file_lba_list(i).chunks(j);
+		for(int j=0;j<request.lba_chunks(i).chunks_size();j++){
+			Chunk lba_chunk = request.lba_chunks(i).chunks(j);
 			 
 			// std::cout << "Offset : " << lba_chunk.offset() << std::endl;
 			// std::cout << "Length : " << lba_chunk.length() << std::endl;
@@ -119,10 +113,7 @@ PBAResponse RunLBA2PBA(LBARequest request){
 			}
 		}
 
-
-
-		pba_list.add_csd_pba_list()->CopyFrom(pba);
-		response.add_file_csd_list()->CopyFrom(pba_list);
+		response.mutable_pba_chunks()->insert({file_name,pba});
 	}
 	
 	return response;
@@ -130,16 +121,14 @@ PBAResponse RunLBA2PBA(LBARequest request){
 
 class LBA2PBAManagerServiceImpl final : public LBA2PBAManager::Service {
   Status RequestPBA(ServerContext* context, const LBARequest* request, PBAResponse* response) override {
-    KETILOG("LBA2PBA Manager", "==:Receive Snippet from Interface Container:==");
+    KETILOG("LBA2PBA Manager", "# called pba request");
 	
 	{
-	// Check LBA Request - Debug Code   
-	std::string test_json;
-	google::protobuf::util::JsonPrintOptions options;
-	options.always_print_primitive_fields = true;
-	options.always_print_enums_as_ints = true;
-	google::protobuf::util::MessageToJsonString(*request,&test_json,options);
-	std::cout << "LBA Request" << std::endl;
+	// std::string test_json;
+	// google::protobuf::util::JsonPrintOptions options;
+	// options.always_print_primitive_fields = true;
+	// options.always_print_enums_as_ints = true;
+	// google::protobuf::util::MessageToJsonString(*request,&test_json,options);
 	// std::cout << test_json << std::endl << std::endl;
 	}
 
@@ -148,13 +137,11 @@ class LBA2PBAManagerServiceImpl final : public LBA2PBAManager::Service {
 	response->CopyFrom(res);
 
 	{
-	// Check PBA Response - Debug Code   
-	std::string test_json;
-	google::protobuf::util::JsonPrintOptions options;
-	options.always_print_primitive_fields = true;
-	options.always_print_enums_as_ints = true;
-	google::protobuf::util::MessageToJsonString(*response,&test_json,options);
-	std::cout << "PBA Response" << std::endl;
+	// std::string test_json;
+	// google::protobuf::util::JsonPrintOptions options;
+	// options.always_print_primitive_fields = true;
+	// options.always_print_enums_as_ints = true;
+	// google::protobuf::util::MessageToJsonString(*response,&test_json,options);
 	// std::cout << test_json << std::endl << std::endl;
 	}
 
@@ -163,7 +150,7 @@ class LBA2PBAManagerServiceImpl final : public LBA2PBAManager::Service {
 };
 
 void RunServer() {
-  std::string server_address((std::string)STORAGE_NODE_IP+":"+std::to_string(LBA2PBA_MANAGER_PORT));
+  std::string server_address((std::string)STORAGE_CLUSTER_MASTER_IP+":"+std::to_string(LBA2PBA_Manager_Port));
   LBA2PBAManagerServiceImpl service;
 
   ServerBuilder builder;
@@ -177,7 +164,6 @@ void RunServer() {
 }
 
 int main(int argc, char* argv[]){	
-	InitLBA2PBAManager();
 	RunServer();
 	return 0;
 }

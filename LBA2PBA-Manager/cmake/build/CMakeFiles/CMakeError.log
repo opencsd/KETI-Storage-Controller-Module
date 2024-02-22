@@ -1,25 +1,25 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
-Change Dir: /root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp
+Change Dir: /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_aed4e/fast && /usr/bin/make  -f CMakeFiles/cmTC_aed4e.dir/build.make CMakeFiles/cmTC_aed4e.dir/build
-make[1]: Entering directory '/root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_aed4e.dir/src.c.o
-/usr/bin/gcc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_aed4e.dir/src.c.o -c /root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_aed4e
-/root/.local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aed4e.dir/link.txt --verbose=1
-/usr/bin/gcc CMakeFiles/cmTC_aed4e.dir/src.c.o -o cmTC_aed4e 
-CMakeFiles/cmTC_aed4e.dir/src.c.o: In function `main':
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_837ab/fast && /usr/bin/make  -f CMakeFiles/cmTC_837ab.dir/build.make CMakeFiles/cmTC_837ab.dir/build
+make[1]: Entering directory '/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_837ab.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_837ab.dir/src.c.o -c /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_837ab
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_837ab.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_837ab.dir/src.c.o -o cmTC_837ab 
+CMakeFiles/cmTC_837ab.dir/src.c.o: In function `main':
 src.c:(.text+0x3e): undefined reference to `pthread_create'
 src.c:(.text+0x4a): undefined reference to `pthread_detach'
 src.c:(.text+0x56): undefined reference to `pthread_cancel'
 src.c:(.text+0x67): undefined reference to `pthread_join'
 src.c:(.text+0x7b): undefined reference to `pthread_atfork'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_aed4e.dir/build.make:105: recipe for target 'cmTC_aed4e' failed
-make[1]: *** [cmTC_aed4e] Error 1
-make[1]: Leaving directory '/root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
-Makefile:140: recipe for target 'cmTC_aed4e/fast' failed
-make: *** [cmTC_aed4e/fast] Error 2
+CMakeFiles/cmTC_837ab.dir/build.make:98: recipe for target 'cmTC_837ab' failed
+make[1]: *** [cmTC_837ab] Error 1
+make[1]: Leaving directory '/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_837ab/fast' failed
+make: *** [cmTC_837ab/fast] Error 2
 
 
 Source file was:
@@ -44,22 +44,22 @@ int main(void)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp
+Change Dir: /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_e4ba4/fast && /usr/bin/make  -f CMakeFiles/cmTC_e4ba4.dir/build.make CMakeFiles/cmTC_e4ba4.dir/build
-make[1]: Entering directory '/root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e4ba4.dir/CheckFunctionExists.c.o
-/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_e4ba4.dir/CheckFunctionExists.c.o -c /root/.local/share/cmake-3.19/Modules/CheckFunctionExists.c
-Linking C executable cmTC_e4ba4
-/root/.local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e4ba4.dir/link.txt --verbose=1
-/usr/bin/gcc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_e4ba4.dir/CheckFunctionExists.c.o -o cmTC_e4ba4  -lpthreads 
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_51e14/fast && /usr/bin/make  -f CMakeFiles/cmTC_51e14.dir/build.make CMakeFiles/cmTC_51e14.dir/build
+make[1]: Entering directory '/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_51e14.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_51e14.dir/CheckFunctionExists.c.o -c /usr/local/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_51e14
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51e14.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_51e14.dir/CheckFunctionExists.c.o -o cmTC_51e14  -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_e4ba4.dir/build.make:105: recipe for target 'cmTC_e4ba4' failed
-make[1]: *** [cmTC_e4ba4] Error 1
-make[1]: Leaving directory '/root/workspace/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
-Makefile:140: recipe for target 'cmTC_e4ba4/fast' failed
-make: *** [cmTC_e4ba4/fast] Error 2
+CMakeFiles/cmTC_51e14.dir/build.make:98: recipe for target 'cmTC_51e14' failed
+make[1]: *** [cmTC_51e14] Error 1
+make[1]: Leaving directory '/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/CMakeTmp'
+Makefile:127: recipe for target 'cmTC_51e14/fast' failed
+make: *** [cmTC_51e14/fast] Error 2
 
 
 
