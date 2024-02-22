@@ -34,6 +34,7 @@ using namespace std;
 unordered_map<string,string> csdmap;//key:filename, value:csdid
 
 void InitLBA2PBAManager(){
+	//This is storage-platform-v4.0
 	/* ==============================================*/
 	/* ================= tpch small =================*/
 	/* ==============================================*/
