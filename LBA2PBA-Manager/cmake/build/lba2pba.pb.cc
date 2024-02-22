@@ -21,6 +21,34 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace StorageEngineInstance {
+PROTOBUF_CONSTEXPR LBARequest_LBA::LBARequest_LBA(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.chunks_)*/{}
+  , /*decltype(_impl_.sst_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.csd_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct LBARequest_LBADefaultTypeInternal {
+  PROTOBUF_CONSTEXPR LBARequest_LBADefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~LBARequest_LBADefaultTypeInternal() {}
+  union {
+    LBARequest_LBA _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LBARequest_LBADefaultTypeInternal _LBARequest_LBA_default_instance_;
+PROTOBUF_CONSTEXPR LBARequest::LBARequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.lba_chunks_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct LBARequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR LBARequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~LBARequestDefaultTypeInternal() {}
+  union {
+    LBARequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LBARequestDefaultTypeInternal _LBARequest_default_instance_;
 PROTOBUF_CONSTEXPR Chunk::Chunk(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.offset_)*/int64_t{0}
@@ -35,64 +63,33 @@ struct ChunkDefaultTypeInternal {
   };
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ChunkDefaultTypeInternal _Chunk_default_instance_;
-PROTOBUF_CONSTEXPR LBA::LBA(
+PROTOBUF_CONSTEXPR PBAResponse_PBA::PBAResponse_PBA(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.chunks_)*/{}
-  , /*decltype(_impl_.file_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct LBADefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LBADefaultTypeInternal()
+struct PBAResponse_PBADefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PBAResponse_PBADefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~LBADefaultTypeInternal() {}
+  ~PBAResponse_PBADefaultTypeInternal() {}
   union {
-    LBA _instance;
+    PBAResponse_PBA _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LBADefaultTypeInternal _LBA_default_instance_;
-PROTOBUF_CONSTEXPR LBARequest::LBARequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.file_lba_list_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct LBARequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LBARequestDefaultTypeInternal()
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PBAResponse_PBADefaultTypeInternal _PBAResponse_PBA_default_instance_;
+PROTOBUF_CONSTEXPR PBAResponse_PbaChunksEntry_DoNotUse::PBAResponse_PbaChunksEntry_DoNotUse(
+    ::_pbi::ConstantInitialized) {}
+struct PBAResponse_PbaChunksEntry_DoNotUseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PBAResponse_PbaChunksEntry_DoNotUseDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~LBARequestDefaultTypeInternal() {}
+  ~PBAResponse_PbaChunksEntry_DoNotUseDefaultTypeInternal() {}
   union {
-    LBARequest _instance;
+    PBAResponse_PbaChunksEntry_DoNotUse _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LBARequestDefaultTypeInternal _LBARequest_default_instance_;
-PROTOBUF_CONSTEXPR PBA::PBA(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.chunks_)*/{}
-  , /*decltype(_impl_.csd_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PBADefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PBADefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PBADefaultTypeInternal() {}
-  union {
-    PBA _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PBADefaultTypeInternal _PBA_default_instance_;
-PROTOBUF_CONSTEXPR PBAList::PBAList(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.csd_pba_list_)*/{}
-  , /*decltype(_impl_.file_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PBAListDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PBAListDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PBAListDefaultTypeInternal() {}
-  union {
-    PBAList _instance;
-  };
-};
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PBAListDefaultTypeInternal _PBAList_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PBAResponse_PbaChunksEntry_DoNotUseDefaultTypeInternal _PBAResponse_PbaChunksEntry_DoNotUse_default_instance_;
 PROTOBUF_CONSTEXPR PBAResponse::PBAResponse(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.file_csd_list_)*/{}
+    /*decltype(_impl_.pba_chunks_)*/{::_pbi::ConstantInitialized()}
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct PBAResponseDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PBAResponseDefaultTypeInternal()
@@ -110,6 +107,22 @@ static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors
 
 const uint32_t TableStruct_lba2pba_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _impl_.sst_name_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _impl_.csd_id_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _impl_.chunks_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest, _impl_.lba_chunks_),
+  ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -118,83 +131,69 @@ const uint32_t TableStruct_lba2pba_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _impl_.offset_),
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _impl_.length_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBA, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse_PBA, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBA, _impl_.file_name_),
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBA, _impl_.chunks_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse_PBA, _impl_.chunks_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest, _impl_.file_lba_list_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBA, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBA, _impl_.csd_id_),
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBA, _impl_.chunks_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAList, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAList, _impl_.file_name_),
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAList, _impl_.csd_pba_list_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse, key_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse, value_),
+  0,
+  1,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse, _impl_.file_csd_list_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse, _impl_.pba_chunks_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::StorageEngineInstance::Chunk)},
-  { 8, -1, -1, sizeof(::StorageEngineInstance::LBA)},
-  { 16, -1, -1, sizeof(::StorageEngineInstance::LBARequest)},
-  { 23, -1, -1, sizeof(::StorageEngineInstance::PBA)},
-  { 31, -1, -1, sizeof(::StorageEngineInstance::PBAList)},
-  { 39, -1, -1, sizeof(::StorageEngineInstance::PBAResponse)},
+  { 0, -1, -1, sizeof(::StorageEngineInstance::LBARequest_LBA)},
+  { 9, -1, -1, sizeof(::StorageEngineInstance::LBARequest)},
+  { 16, -1, -1, sizeof(::StorageEngineInstance::Chunk)},
+  { 24, -1, -1, sizeof(::StorageEngineInstance::PBAResponse_PBA)},
+  { 31, 39, -1, sizeof(::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse)},
+  { 41, -1, -1, sizeof(::StorageEngineInstance::PBAResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::StorageEngineInstance::_Chunk_default_instance_._instance,
-  &::StorageEngineInstance::_LBA_default_instance_._instance,
+  &::StorageEngineInstance::_LBARequest_LBA_default_instance_._instance,
   &::StorageEngineInstance::_LBARequest_default_instance_._instance,
-  &::StorageEngineInstance::_PBA_default_instance_._instance,
-  &::StorageEngineInstance::_PBAList_default_instance_._instance,
+  &::StorageEngineInstance::_Chunk_default_instance_._instance,
+  &::StorageEngineInstance::_PBAResponse_PBA_default_instance_._instance,
+  &::StorageEngineInstance::_PBAResponse_PbaChunksEntry_DoNotUse_default_instance_._instance,
   &::StorageEngineInstance::_PBAResponse_default_instance_._instance,
 };
 
 const char descriptor_table_protodef_lba2pba_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rlba2pba.proto\022\025StorageEngineInstance\"\'"
-  "\n\005Chunk\022\016\n\006offset\030\001 \001(\003\022\016\n\006length\030\002 \001(\005\""
-  "F\n\003LBA\022\021\n\tfile_name\030\001 \001(\t\022,\n\006chunks\030\002 \003("
-  "\0132\034.StorageEngineInstance.Chunk\"\?\n\nLBARe"
-  "quest\0221\n\rfile_lba_list\030\001 \003(\0132\032.StorageEn"
-  "gineInstance.LBA\"C\n\003PBA\022\016\n\006csd_id\030\001 \001(\t\022"
-  ",\n\006chunks\030\002 \003(\0132\034.StorageEngineInstance."
-  "Chunk\"N\n\007PBAList\022\021\n\tfile_name\030\001 \001(\t\0220\n\014c"
-  "sd_pba_list\030\002 \003(\0132\032.StorageEngineInstanc"
-  "e.PBA\"D\n\013PBAResponse\0225\n\rfile_csd_list\030\001 "
-  "\003(\0132\036.StorageEngineInstance.PBAList2g\n\016L"
-  "BA2PBAManager\022U\n\nRequestPBA\022!.StorageEng"
-  "ineInstance.LBARequest\032\".StorageEngineIn"
-  "stance.PBAResponse\"\000B6\n\026io.grpc.snippet_"
-  "sampleB\024snippet_sample_ProtoP\001\242\002\003SSPb\006pr"
-  "oto3"
+  "\n\rlba2pba.proto\022\025StorageEngineInstance\"\236"
+  "\001\n\nLBARequest\0229\n\nlba_chunks\030\001 \003(\0132%.Stor"
+  "ageEngineInstance.LBARequest.LBA\032U\n\003LBA\022"
+  "\020\n\010sst_name\030\001 \001(\t\022\016\n\006csd_id\030\002 \001(\t\022,\n\006chu"
+  "nks\030\003 \003(\0132\034.StorageEngineInstance.Chunk\""
+  "\'\n\005Chunk\022\016\n\006offset\030\001 \001(\003\022\016\n\006length\030\002 \001(\005"
+  "\"\343\001\n\013PBAResponse\022E\n\npba_chunks\030\001 \003(\01321.S"
+  "torageEngineInstance.PBAResponse.PbaChun"
+  "ksEntry\0323\n\003PBA\022,\n\006chunks\030\001 \003(\0132\034.Storage"
+  "EngineInstance.Chunk\032X\n\016PbaChunksEntry\022\013"
+  "\n\003key\030\001 \001(\t\0225\n\005value\030\002 \001(\0132&.StorageEngi"
+  "neInstance.PBAResponse.PBA:\0028\0012g\n\016LBA2PB"
+  "AManager\022U\n\nRequestPBA\022!.StorageEngineIn"
+  "stance.LBARequest\032\".StorageEngineInstanc"
+  "e.PBAResponse\"\000B6\n\026io.grpc.snippet_sampl"
+  "eB\024snippet_sample_ProtoP\001\242\002\003SSPb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_lba2pba_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_lba2pba_2eproto = {
-    false, false, 604, descriptor_table_protodef_lba2pba_2eproto,
+    false, false, 639, descriptor_table_protodef_lba2pba_2eproto,
     "lba2pba.proto",
     &descriptor_table_lba2pba_2eproto_once, nullptr, 0, 6,
     schemas, file_default_instances, TableStruct_lba2pba_2eproto::offsets,
@@ -208,6 +207,478 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_lba2pba_
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_lba2pba_2eproto(&descriptor_table_lba2pba_2eproto);
 namespace StorageEngineInstance {
+
+// ===================================================================
+
+class LBARequest_LBA::_Internal {
+ public:
+};
+
+LBARequest_LBA::LBARequest_LBA(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.LBARequest.LBA)
+}
+LBARequest_LBA::LBARequest_LBA(const LBARequest_LBA& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  LBARequest_LBA* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.chunks_){from._impl_.chunks_}
+    , decltype(_impl_.sst_name_){}
+    , decltype(_impl_.csd_id_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.sst_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.sst_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_sst_name().empty()) {
+    _this->_impl_.sst_name_.Set(from._internal_sst_name(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.csd_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.csd_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_csd_id().empty()) {
+    _this->_impl_.csd_id_.Set(from._internal_csd_id(), 
+      _this->GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.LBARequest.LBA)
+}
+
+inline void LBARequest_LBA::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.chunks_){arena}
+    , decltype(_impl_.sst_name_){}
+    , decltype(_impl_.csd_id_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.sst_name_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.sst_name_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.csd_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.csd_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+LBARequest_LBA::~LBARequest_LBA() {
+  // @@protoc_insertion_point(destructor:StorageEngineInstance.LBARequest.LBA)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void LBARequest_LBA::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.chunks_.~RepeatedPtrField();
+  _impl_.sst_name_.Destroy();
+  _impl_.csd_id_.Destroy();
+}
+
+void LBARequest_LBA::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void LBARequest_LBA::Clear() {
+// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.LBARequest.LBA)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.chunks_.Clear();
+  _impl_.sst_name_.ClearToEmpty();
+  _impl_.csd_id_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* LBARequest_LBA::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string sst_name = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_sst_name();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.LBARequest.LBA.sst_name"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string csd_id = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_csd_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.LBARequest.LBA.csd_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // repeated .StorageEngineInstance.Chunk chunks = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_chunks(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* LBARequest_LBA::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.LBARequest.LBA)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string sst_name = 1;
+  if (!this->_internal_sst_name().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_sst_name().data(), static_cast<int>(this->_internal_sst_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "StorageEngineInstance.LBARequest.LBA.sst_name");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_sst_name(), target);
+  }
+
+  // string csd_id = 2;
+  if (!this->_internal_csd_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_csd_id().data(), static_cast<int>(this->_internal_csd_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "StorageEngineInstance.LBARequest.LBA.csd_id");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_csd_id(), target);
+  }
+
+  // repeated .StorageEngineInstance.Chunk chunks = 3;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_chunks_size()); i < n; i++) {
+    const auto& repfield = this->_internal_chunks(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.LBARequest.LBA)
+  return target;
+}
+
+size_t LBARequest_LBA::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.LBARequest.LBA)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .StorageEngineInstance.Chunk chunks = 3;
+  total_size += 1UL * this->_internal_chunks_size();
+  for (const auto& msg : this->_impl_.chunks_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // string sst_name = 1;
+  if (!this->_internal_sst_name().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_sst_name());
+  }
+
+  // string csd_id = 2;
+  if (!this->_internal_csd_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_csd_id());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LBARequest_LBA::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    LBARequest_LBA::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LBARequest_LBA::GetClassData() const { return &_class_data_; }
+
+
+void LBARequest_LBA::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LBARequest_LBA*>(&to_msg);
+  auto& from = static_cast<const LBARequest_LBA&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.LBARequest.LBA)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.chunks_.MergeFrom(from._impl_.chunks_);
+  if (!from._internal_sst_name().empty()) {
+    _this->_internal_set_sst_name(from._internal_sst_name());
+  }
+  if (!from._internal_csd_id().empty()) {
+    _this->_internal_set_csd_id(from._internal_csd_id());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void LBARequest_LBA::CopyFrom(const LBARequest_LBA& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.LBARequest.LBA)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool LBARequest_LBA::IsInitialized() const {
+  return true;
+}
+
+void LBARequest_LBA::InternalSwap(LBARequest_LBA* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.chunks_.InternalSwap(&other->_impl_.chunks_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.sst_name_, lhs_arena,
+      &other->_impl_.sst_name_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.csd_id_, lhs_arena,
+      &other->_impl_.csd_id_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata LBARequest_LBA::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
+      file_level_metadata_lba2pba_2eproto[0]);
+}
+
+// ===================================================================
+
+class LBARequest::_Internal {
+ public:
+};
+
+LBARequest::LBARequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.LBARequest)
+}
+LBARequest::LBARequest(const LBARequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  LBARequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.lba_chunks_){from._impl_.lba_chunks_}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.LBARequest)
+}
+
+inline void LBARequest::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.lba_chunks_){arena}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+LBARequest::~LBARequest() {
+  // @@protoc_insertion_point(destructor:StorageEngineInstance.LBARequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void LBARequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.lba_chunks_.~RepeatedPtrField();
+}
+
+void LBARequest::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void LBARequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.LBARequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.lba_chunks_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* LBARequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // repeated .StorageEngineInstance.LBARequest.LBA lba_chunks = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_lba_chunks(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* LBARequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.LBARequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .StorageEngineInstance.LBARequest.LBA lba_chunks = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_lba_chunks_size()); i < n; i++) {
+    const auto& repfield = this->_internal_lba_chunks(i);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.LBARequest)
+  return target;
+}
+
+size_t LBARequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.LBARequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .StorageEngineInstance.LBARequest.LBA lba_chunks = 1;
+  total_size += 1UL * this->_internal_lba_chunks_size();
+  for (const auto& msg : this->_impl_.lba_chunks_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LBARequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    LBARequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LBARequest::GetClassData() const { return &_class_data_; }
+
+
+void LBARequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<LBARequest*>(&to_msg);
+  auto& from = static_cast<const LBARequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.LBARequest)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_impl_.lba_chunks_.MergeFrom(from._impl_.lba_chunks_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void LBARequest::CopyFrom(const LBARequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.LBARequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool LBARequest::IsInitialized() const {
+  return true;
+}
+
+void LBARequest::InternalSwap(LBARequest* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.lba_chunks_.InternalSwap(&other->_impl_.lba_chunks_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata LBARequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
+      file_level_metadata_lba2pba_2eproto[1]);
+}
 
 // ===================================================================
 
@@ -417,58 +888,44 @@ void Chunk::InternalSwap(Chunk* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Chunk::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
-      file_level_metadata_lba2pba_2eproto[0]);
+      file_level_metadata_lba2pba_2eproto[2]);
 }
 
 // ===================================================================
 
-class LBA::_Internal {
+class PBAResponse_PBA::_Internal {
  public:
 };
 
-LBA::LBA(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+PBAResponse_PBA::PBAResponse_PBA(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.LBA)
+  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.PBAResponse.PBA)
 }
-LBA::LBA(const LBA& from)
+PBAResponse_PBA::PBAResponse_PBA(const PBAResponse_PBA& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  LBA* const _this = this; (void)_this;
+  PBAResponse_PBA* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       decltype(_impl_.chunks_){from._impl_.chunks_}
-    , decltype(_impl_.file_name_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.file_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.file_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_file_name().empty()) {
-    _this->_impl_.file_name_.Set(from._internal_file_name(), 
-      _this->GetArenaForAllocation());
-  }
-  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.LBA)
+  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.PBAResponse.PBA)
 }
 
-inline void LBA::SharedCtor(
+inline void PBAResponse_PBA::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
       decltype(_impl_.chunks_){arena}
-    , decltype(_impl_.file_name_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
-  _impl_.file_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.file_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-LBA::~LBA() {
-  // @@protoc_insertion_point(destructor:StorageEngineInstance.LBA)
+PBAResponse_PBA::~PBAResponse_PBA() {
+  // @@protoc_insertion_point(destructor:StorageEngineInstance.PBAResponse.PBA)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -476,261 +933,38 @@ LBA::~LBA() {
   SharedDtor();
 }
 
-inline void LBA::SharedDtor() {
+inline void PBAResponse_PBA::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.chunks_.~RepeatedPtrField();
-  _impl_.file_name_.Destroy();
 }
 
-void LBA::SetCachedSize(int size) const {
+void PBAResponse_PBA::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void LBA::Clear() {
-// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.LBA)
+void PBAResponse_PBA::Clear() {
+// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.PBAResponse.PBA)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.chunks_.Clear();
-  _impl_.file_name_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* LBA::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* PBAResponse_PBA::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string file_name = 1;
+      // repeated .StorageEngineInstance.Chunk chunks = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_file_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.LBA.file_name"));
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .StorageEngineInstance.Chunk chunks = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_chunks(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* LBA::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.LBA)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string file_name = 1;
-  if (!this->_internal_file_name().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_file_name().data(), static_cast<int>(this->_internal_file_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "StorageEngineInstance.LBA.file_name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_file_name(), target);
-  }
-
-  // repeated .StorageEngineInstance.Chunk chunks = 2;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_chunks_size()); i < n; i++) {
-    const auto& repfield = this->_internal_chunks(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.LBA)
-  return target;
-}
-
-size_t LBA::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.LBA)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .StorageEngineInstance.Chunk chunks = 2;
-  total_size += 1UL * this->_internal_chunks_size();
-  for (const auto& msg : this->_impl_.chunks_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // string file_name = 1;
-  if (!this->_internal_file_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_file_name());
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LBA::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    LBA::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LBA::GetClassData() const { return &_class_data_; }
-
-
-void LBA::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<LBA*>(&to_msg);
-  auto& from = static_cast<const LBA&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.LBA)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  _this->_impl_.chunks_.MergeFrom(from._impl_.chunks_);
-  if (!from._internal_file_name().empty()) {
-    _this->_internal_set_file_name(from._internal_file_name());
-  }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void LBA::CopyFrom(const LBA& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.LBA)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool LBA::IsInitialized() const {
-  return true;
-}
-
-void LBA::InternalSwap(LBA* other) {
-  using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.chunks_.InternalSwap(&other->_impl_.chunks_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.file_name_, lhs_arena,
-      &other->_impl_.file_name_, rhs_arena
-  );
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata LBA::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
-      file_level_metadata_lba2pba_2eproto[1]);
-}
-
-// ===================================================================
-
-class LBARequest::_Internal {
- public:
-};
-
-LBARequest::LBARequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.LBARequest)
-}
-LBARequest::LBARequest(const LBARequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  LBARequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.file_lba_list_){from._impl_.file_lba_list_}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.LBARequest)
-}
-
-inline void LBARequest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.file_lba_list_){arena}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-}
-
-LBARequest::~LBARequest() {
-  // @@protoc_insertion_point(destructor:StorageEngineInstance.LBARequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void LBARequest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.file_lba_list_.~RepeatedPtrField();
-}
-
-void LBARequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void LBARequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.LBARequest)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.file_lba_list_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* LBARequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // repeated .StorageEngineInstance.LBA file_lba_list = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_file_lba_list(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -760,16 +994,16 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LBARequest::_InternalSerialize(
+uint8_t* PBAResponse_PBA::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.LBARequest)
+  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.PBAResponse.PBA)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.LBA file_lba_list = 1;
+  // repeated .StorageEngineInstance.Chunk chunks = 1;
   for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_file_lba_list_size()); i < n; i++) {
-    const auto& repfield = this->_internal_file_lba_list(i);
+      n = static_cast<unsigned>(this->_internal_chunks_size()); i < n; i++) {
+    const auto& repfield = this->_internal_chunks(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
         InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
   }
@@ -778,302 +1012,65 @@ uint8_t* LBARequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.LBARequest)
+  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.PBAResponse.PBA)
   return target;
 }
 
-size_t LBARequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.LBARequest)
+size_t PBAResponse_PBA::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.PBAResponse.PBA)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.LBA file_lba_list = 1;
-  total_size += 1UL * this->_internal_file_lba_list_size();
-  for (const auto& msg : this->_impl_.file_lba_list_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LBARequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    LBARequest::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LBARequest::GetClassData() const { return &_class_data_; }
-
-
-void LBARequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<LBARequest*>(&to_msg);
-  auto& from = static_cast<const LBARequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.LBARequest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  _this->_impl_.file_lba_list_.MergeFrom(from._impl_.file_lba_list_);
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void LBARequest::CopyFrom(const LBARequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.LBARequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool LBARequest::IsInitialized() const {
-  return true;
-}
-
-void LBARequest::InternalSwap(LBARequest* other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.file_lba_list_.InternalSwap(&other->_impl_.file_lba_list_);
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata LBARequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
-      file_level_metadata_lba2pba_2eproto[2]);
-}
-
-// ===================================================================
-
-class PBA::_Internal {
- public:
-};
-
-PBA::PBA(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.PBA)
-}
-PBA::PBA(const PBA& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PBA* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.chunks_){from._impl_.chunks_}
-    , decltype(_impl_.csd_id_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.csd_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.csd_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_csd_id().empty()) {
-    _this->_impl_.csd_id_.Set(from._internal_csd_id(), 
-      _this->GetArenaForAllocation());
-  }
-  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.PBA)
-}
-
-inline void PBA::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.chunks_){arena}
-    , decltype(_impl_.csd_id_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.csd_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.csd_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-}
-
-PBA::~PBA() {
-  // @@protoc_insertion_point(destructor:StorageEngineInstance.PBA)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void PBA::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.chunks_.~RepeatedPtrField();
-  _impl_.csd_id_.Destroy();
-}
-
-void PBA::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PBA::Clear() {
-// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.PBA)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.chunks_.Clear();
-  _impl_.csd_id_.ClearToEmpty();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* PBA::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string csd_id = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_csd_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.PBA.csd_id"));
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .StorageEngineInstance.Chunk chunks = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_chunks(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* PBA::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.PBA)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string csd_id = 1;
-  if (!this->_internal_csd_id().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_csd_id().data(), static_cast<int>(this->_internal_csd_id().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "StorageEngineInstance.PBA.csd_id");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_csd_id(), target);
-  }
-
-  // repeated .StorageEngineInstance.Chunk chunks = 2;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_chunks_size()); i < n; i++) {
-    const auto& repfield = this->_internal_chunks(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.PBA)
-  return target;
-}
-
-size_t PBA::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.PBA)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .StorageEngineInstance.Chunk chunks = 2;
+  // repeated .StorageEngineInstance.Chunk chunks = 1;
   total_size += 1UL * this->_internal_chunks_size();
   for (const auto& msg : this->_impl_.chunks_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
-  // string csd_id = 1;
-  if (!this->_internal_csd_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_csd_id());
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PBA::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PBAResponse_PBA::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PBA::MergeImpl
+    PBAResponse_PBA::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PBA::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PBAResponse_PBA::GetClassData() const { return &_class_data_; }
 
 
-void PBA::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<PBA*>(&to_msg);
-  auto& from = static_cast<const PBA&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.PBA)
+void PBAResponse_PBA::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<PBAResponse_PBA*>(&to_msg);
+  auto& from = static_cast<const PBAResponse_PBA&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.PBAResponse.PBA)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   _this->_impl_.chunks_.MergeFrom(from._impl_.chunks_);
-  if (!from._internal_csd_id().empty()) {
-    _this->_internal_set_csd_id(from._internal_csd_id());
-  }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void PBA::CopyFrom(const PBA& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.PBA)
+void PBAResponse_PBA::CopyFrom(const PBAResponse_PBA& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.PBAResponse.PBA)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PBA::IsInitialized() const {
+bool PBAResponse_PBA::IsInitialized() const {
   return true;
 }
 
-void PBA::InternalSwap(PBA* other) {
+void PBAResponse_PBA::InternalSwap(PBAResponse_PBA* other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.chunks_.InternalSwap(&other->_impl_.chunks_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.csd_id_, lhs_arena,
-      &other->_impl_.csd_id_, rhs_arena
-  );
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PBA::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata PBAResponse_PBA::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
       file_level_metadata_lba2pba_2eproto[3]);
@@ -1081,236 +1078,13 @@ void PBA::InternalSwap(PBA* other) {
 
 // ===================================================================
 
-class PBAList::_Internal {
- public:
-};
-
-PBAList::PBAList(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.PBAList)
+PBAResponse_PbaChunksEntry_DoNotUse::PBAResponse_PbaChunksEntry_DoNotUse() {}
+PBAResponse_PbaChunksEntry_DoNotUse::PBAResponse_PbaChunksEntry_DoNotUse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+    : SuperType(arena) {}
+void PBAResponse_PbaChunksEntry_DoNotUse::MergeFrom(const PBAResponse_PbaChunksEntry_DoNotUse& other) {
+  MergeFromInternal(other);
 }
-PBAList::PBAList(const PBAList& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PBAList* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.csd_pba_list_){from._impl_.csd_pba_list_}
-    , decltype(_impl_.file_name_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.file_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.file_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_file_name().empty()) {
-    _this->_impl_.file_name_.Set(from._internal_file_name(), 
-      _this->GetArenaForAllocation());
-  }
-  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.PBAList)
-}
-
-inline void PBAList::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
-  (void)arena;
-  (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.csd_pba_list_){arena}
-    , decltype(_impl_.file_name_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.file_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.file_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-}
-
-PBAList::~PBAList() {
-  // @@protoc_insertion_point(destructor:StorageEngineInstance.PBAList)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
-  SharedDtor();
-}
-
-inline void PBAList::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.csd_pba_list_.~RepeatedPtrField();
-  _impl_.file_name_.Destroy();
-}
-
-void PBAList::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PBAList::Clear() {
-// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.PBAList)
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.csd_pba_list_.Clear();
-  _impl_.file_name_.ClearToEmpty();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-}
-
-const char* PBAList::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string file_name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_file_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.PBAList.file_name"));
-        } else
-          goto handle_unusual;
-        continue;
-      // repeated .StorageEngineInstance.PBA csd_pba_list = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_csd_pba_list(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
-}
-
-uint8_t* PBAList::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.PBAList)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // string file_name = 1;
-  if (!this->_internal_file_name().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_file_name().data(), static_cast<int>(this->_internal_file_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "StorageEngineInstance.PBAList.file_name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_file_name(), target);
-  }
-
-  // repeated .StorageEngineInstance.PBA csd_pba_list = 2;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_csd_pba_list_size()); i < n; i++) {
-    const auto& repfield = this->_internal_csd_pba_list(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.PBAList)
-  return target;
-}
-
-size_t PBAList::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.PBAList)
-  size_t total_size = 0;
-
-  uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .StorageEngineInstance.PBA csd_pba_list = 2;
-  total_size += 1UL * this->_internal_csd_pba_list_size();
-  for (const auto& msg : this->_impl_.csd_pba_list_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
-  }
-
-  // string file_name = 1;
-  if (!this->_internal_file_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_file_name());
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PBAList::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PBAList::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PBAList::GetClassData() const { return &_class_data_; }
-
-
-void PBAList::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<PBAList*>(&to_msg);
-  auto& from = static_cast<const PBAList&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.PBAList)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  _this->_impl_.csd_pba_list_.MergeFrom(from._impl_.csd_pba_list_);
-  if (!from._internal_file_name().empty()) {
-    _this->_internal_set_file_name(from._internal_file_name());
-  }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void PBAList::CopyFrom(const PBAList& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.PBAList)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool PBAList::IsInitialized() const {
-  return true;
-}
-
-void PBAList::InternalSwap(PBAList* other) {
-  using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.csd_pba_list_.InternalSwap(&other->_impl_.csd_pba_list_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.file_name_, lhs_arena,
-      &other->_impl_.file_name_, rhs_arena
-  );
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata PBAList::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata PBAResponse_PbaChunksEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
       file_level_metadata_lba2pba_2eproto[4]);
@@ -1326,16 +1100,20 @@ PBAResponse::PBAResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
+  if (arena != nullptr && !is_message_owned) {
+    arena->OwnCustomDestructor(this, &PBAResponse::ArenaDtor);
+  }
   // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.PBAResponse)
 }
 PBAResponse::PBAResponse(const PBAResponse& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   PBAResponse* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.file_csd_list_){from._impl_.file_csd_list_}
+      /*decltype(_impl_.pba_chunks_)*/{}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_impl_.pba_chunks_.MergeFrom(from._impl_.pba_chunks_);
   // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.PBAResponse)
 }
 
@@ -1344,7 +1122,7 @@ inline void PBAResponse::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.file_csd_list_){arena}
+      /*decltype(_impl_.pba_chunks_)*/{::_pbi::ArenaInitialized(), arena}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
@@ -1353,6 +1131,7 @@ PBAResponse::~PBAResponse() {
   // @@protoc_insertion_point(destructor:StorageEngineInstance.PBAResponse)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
+    ArenaDtor(this);
     return;
   }
   SharedDtor();
@@ -1360,9 +1139,14 @@ PBAResponse::~PBAResponse() {
 
 inline void PBAResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.file_csd_list_.~RepeatedPtrField();
+  _impl_.pba_chunks_.Destruct();
+  _impl_.pba_chunks_.~MapField();
 }
 
+void PBAResponse::ArenaDtor(void* object) {
+  PBAResponse* _this = reinterpret_cast< PBAResponse* >(object);
+  _this->_impl_.pba_chunks_.Destruct();
+}
 void PBAResponse::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
@@ -1373,7 +1157,7 @@ void PBAResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.file_csd_list_.Clear();
+  _impl_.pba_chunks_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1383,13 +1167,13 @@ const char* PBAResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // repeated .StorageEngineInstance.PBAList file_csd_list = 1;
+      // map<string, .StorageEngineInstance.PBAResponse.PBA> pba_chunks = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_file_csd_list(), ptr);
+            ptr = ctx->ParseMessage(&_impl_.pba_chunks_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -1425,12 +1209,30 @@ uint8_t* PBAResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.PBAList file_csd_list = 1;
-  for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_file_csd_list_size()); i < n; i++) {
-    const auto& repfield = this->_internal_file_csd_list(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  // map<string, .StorageEngineInstance.PBAResponse.PBA> pba_chunks = 1;
+  if (!this->_internal_pba_chunks().empty()) {
+    using MapType = ::_pb::Map<std::string, ::StorageEngineInstance::PBAResponse_PBA>;
+    using WireHelper = PBAResponse_PbaChunksEntry_DoNotUse::Funcs;
+    const auto& map_field = this->_internal_pba_chunks();
+    auto check_utf8 = [](const MapType::value_type& entry) {
+      (void)entry;
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+        entry.first.data(), static_cast<int>(entry.first.length()),
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+        "StorageEngineInstance.PBAResponse.PbaChunksEntry.key");
+    };
+
+    if (stream->IsSerializationDeterministic() && map_field.size() > 1) {
+      for (const auto& entry : ::_pbi::MapSorterPtr<MapType>(map_field)) {
+        target = WireHelper::InternalSerialize(1, entry.first, entry.second, target, stream);
+        check_utf8(entry);
+      }
+    } else {
+      for (const auto& entry : map_field) {
+        target = WireHelper::InternalSerialize(1, entry.first, entry.second, target, stream);
+        check_utf8(entry);
+      }
+    }
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1449,11 +1251,13 @@ size_t PBAResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.PBAList file_csd_list = 1;
-  total_size += 1UL * this->_internal_file_csd_list_size();
-  for (const auto& msg : this->_impl_.file_csd_list_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  // map<string, .StorageEngineInstance.PBAResponse.PBA> pba_chunks = 1;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_pba_chunks_size());
+  for (::PROTOBUF_NAMESPACE_ID::Map< std::string, ::StorageEngineInstance::PBAResponse_PBA >::const_iterator
+      it = this->_internal_pba_chunks().begin();
+      it != this->_internal_pba_chunks().end(); ++it) {
+    total_size += PBAResponse_PbaChunksEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1474,7 +1278,7 @@ void PBAResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.file_csd_list_.MergeFrom(from._impl_.file_csd_list_);
+  _this->_impl_.pba_chunks_.MergeFrom(from._impl_.pba_chunks_);
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1492,7 +1296,7 @@ bool PBAResponse::IsInitialized() const {
 void PBAResponse::InternalSwap(PBAResponse* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.file_csd_list_.InternalSwap(&other->_impl_.file_csd_list_);
+  _impl_.pba_chunks_.InternalSwap(&other->_impl_.pba_chunks_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata PBAResponse::GetMetadata() const {
@@ -1504,25 +1308,25 @@ void PBAResponse::InternalSwap(PBAResponse* other) {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace StorageEngineInstance
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::StorageEngineInstance::Chunk*
-Arena::CreateMaybeMessage< ::StorageEngineInstance::Chunk >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::StorageEngineInstance::Chunk >(arena);
-}
-template<> PROTOBUF_NOINLINE ::StorageEngineInstance::LBA*
-Arena::CreateMaybeMessage< ::StorageEngineInstance::LBA >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::StorageEngineInstance::LBA >(arena);
+template<> PROTOBUF_NOINLINE ::StorageEngineInstance::LBARequest_LBA*
+Arena::CreateMaybeMessage< ::StorageEngineInstance::LBARequest_LBA >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::StorageEngineInstance::LBARequest_LBA >(arena);
 }
 template<> PROTOBUF_NOINLINE ::StorageEngineInstance::LBARequest*
 Arena::CreateMaybeMessage< ::StorageEngineInstance::LBARequest >(Arena* arena) {
   return Arena::CreateMessageInternal< ::StorageEngineInstance::LBARequest >(arena);
 }
-template<> PROTOBUF_NOINLINE ::StorageEngineInstance::PBA*
-Arena::CreateMaybeMessage< ::StorageEngineInstance::PBA >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::StorageEngineInstance::PBA >(arena);
+template<> PROTOBUF_NOINLINE ::StorageEngineInstance::Chunk*
+Arena::CreateMaybeMessage< ::StorageEngineInstance::Chunk >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::StorageEngineInstance::Chunk >(arena);
 }
-template<> PROTOBUF_NOINLINE ::StorageEngineInstance::PBAList*
-Arena::CreateMaybeMessage< ::StorageEngineInstance::PBAList >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::StorageEngineInstance::PBAList >(arena);
+template<> PROTOBUF_NOINLINE ::StorageEngineInstance::PBAResponse_PBA*
+Arena::CreateMaybeMessage< ::StorageEngineInstance::PBAResponse_PBA >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::StorageEngineInstance::PBAResponse_PBA >(arena);
+}
+template<> PROTOBUF_NOINLINE ::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse*
+Arena::CreateMaybeMessage< ::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse >(arena);
 }
 template<> PROTOBUF_NOINLINE ::StorageEngineInstance::PBAResponse*
 Arena::CreateMaybeMessage< ::StorageEngineInstance::PBAResponse >(Arena* arena) {

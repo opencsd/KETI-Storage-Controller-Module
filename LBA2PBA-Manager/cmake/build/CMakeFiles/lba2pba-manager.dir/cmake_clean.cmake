@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o"
+  "CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o.d"
   "lba2pba-manager"
   "lba2pba-manager.pdb"
 )
