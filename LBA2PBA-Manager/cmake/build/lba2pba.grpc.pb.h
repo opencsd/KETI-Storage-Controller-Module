@@ -35,41 +35,41 @@ class LBA2PBAManager final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::StorageEngineInstance::PBAResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>> AsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) {
+    virtual ::grpc::Status RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::StorageEngineInstance::PBAResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>> AsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>>(AsyncRequestPBARaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>> PrepareAsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>> PrepareAsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>>(PrepareAsyncRequestPBARaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest* request, ::StorageEngineInstance::PBAResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest* request, ::StorageEngineInstance::PBAResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo* request, ::StorageEngineInstance::PBAResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo* request, ::StorageEngineInstance::PBAResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>* AsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>* PrepareAsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>* AsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::StorageEngineInstance::PBAResponse>* PrepareAsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::StorageEngineInstance::PBAResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>> AsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) {
+    ::grpc::Status RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::StorageEngineInstance::PBAResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>> AsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>>(AsyncRequestPBARaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>> PrepareAsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) {
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>> PrepareAsyncRequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>>(PrepareAsyncRequestPBARaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest* request, ::StorageEngineInstance::PBAResponse* response, std::function<void(::grpc::Status)>) override;
-      void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest* request, ::StorageEngineInstance::PBAResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo* request, ::StorageEngineInstance::PBAResponse* response, std::function<void(::grpc::Status)>) override;
+      void RequestPBA(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo* request, ::StorageEngineInstance::PBAResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,8 +81,8 @@ class LBA2PBAManager final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>* AsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>* PrepareAsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::LBARequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>* AsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::StorageEngineInstance::PBAResponse>* PrepareAsyncRequestPBARaw(::grpc::ClientContext* context, const ::StorageEngineInstance::ScanInfo& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_RequestPBA_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -91,7 +91,7 @@ class LBA2PBAManager final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status RequestPBA(::grpc::ServerContext* context, const ::StorageEngineInstance::LBARequest* request, ::StorageEngineInstance::PBAResponse* response);
+    virtual ::grpc::Status RequestPBA(::grpc::ServerContext* context, const ::StorageEngineInstance::ScanInfo* request, ::StorageEngineInstance::PBAResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_RequestPBA : public BaseClass {
@@ -105,11 +105,11 @@ class LBA2PBAManager final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
+    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestRequestPBA(::grpc::ServerContext* context, ::StorageEngineInstance::LBARequest* request, ::grpc::ServerAsyncResponseWriter< ::StorageEngineInstance::PBAResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRequestPBA(::grpc::ServerContext* context, ::StorageEngineInstance::ScanInfo* request, ::grpc::ServerAsyncResponseWriter< ::StorageEngineInstance::PBAResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -121,25 +121,25 @@ class LBA2PBAManager final {
    public:
     WithCallbackMethod_RequestPBA() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::StorageEngineInstance::LBARequest, ::StorageEngineInstance::PBAResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::StorageEngineInstance::ScanInfo, ::StorageEngineInstance::PBAResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::StorageEngineInstance::LBARequest* request, ::StorageEngineInstance::PBAResponse* response) { return this->RequestPBA(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::StorageEngineInstance::ScanInfo* request, ::StorageEngineInstance::PBAResponse* response) { return this->RequestPBA(context, request, response); }));}
     void SetMessageAllocatorFor_RequestPBA(
-        ::grpc::MessageAllocator< ::StorageEngineInstance::LBARequest, ::StorageEngineInstance::PBAResponse>* allocator) {
+        ::grpc::MessageAllocator< ::StorageEngineInstance::ScanInfo, ::StorageEngineInstance::PBAResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::StorageEngineInstance::LBARequest, ::StorageEngineInstance::PBAResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::StorageEngineInstance::ScanInfo, ::StorageEngineInstance::PBAResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_RequestPBA() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
+    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* RequestPBA(
-      ::grpc::CallbackServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_RequestPBA<Service > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -155,7 +155,7 @@ class LBA2PBAManager final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
+    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -172,7 +172,7 @@ class LBA2PBAManager final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
+    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -195,7 +195,7 @@ class LBA2PBAManager final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
+    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -210,10 +210,10 @@ class LBA2PBAManager final {
     WithStreamedUnaryMethod_RequestPBA() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::StorageEngineInstance::LBARequest, ::StorageEngineInstance::PBAResponse>(
+          ::StorageEngineInstance::ScanInfo, ::StorageEngineInstance::PBAResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::StorageEngineInstance::LBARequest, ::StorageEngineInstance::PBAResponse>* streamer) {
+                     ::StorageEngineInstance::ScanInfo, ::StorageEngineInstance::PBAResponse>* streamer) {
                        return this->StreamedRequestPBA(context,
                          streamer);
                   }));
@@ -222,12 +222,12 @@ class LBA2PBAManager final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::LBARequest* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
+    ::grpc::Status RequestPBA(::grpc::ServerContext* /*context*/, const ::StorageEngineInstance::ScanInfo* /*request*/, ::StorageEngineInstance::PBAResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedRequestPBA(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::StorageEngineInstance::LBARequest,::StorageEngineInstance::PBAResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRequestPBA(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::StorageEngineInstance::ScanInfo,::StorageEngineInstance::PBAResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_RequestPBA<Service > StreamedUnaryService;
   typedef Service SplitStreamedService;
