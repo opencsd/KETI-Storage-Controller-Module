@@ -27,10 +27,10 @@
 
 namespace StorageEngineInstance {
 
-class LBA2PBAManager final {
+class StorageManager final {
  public:
   static constexpr char const* service_full_name() {
-    return "StorageEngineInstance.LBA2PBAManager";
+    return "StorageEngineInstance.StorageManager";
   }
   class StubInterface {
    public:

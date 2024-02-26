@@ -7,7 +7,7 @@ option objc_class_prefix = "SSP";
 
 package StorageEngineInstance;
 
-service LBA2PBAManager {
+service StorageManager {
   rpc RequestPBA (ScanInfo) returns (PBAResponse) {}
 }
 
