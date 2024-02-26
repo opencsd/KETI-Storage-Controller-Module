@@ -8,16 +8,16 @@ option objc_class_prefix = "SSP";
 package StorageEngineInstance;
 
 service LBA2PBAManager {
-  rpc RequestPBA (LBARequest) returns (PBAResponse) {}
+  rpc RequestPBA (ScanInfo) returns (PBAResponse) {}
 }
 
-message LBARequest{
-  message LBA {
+message ScanInfo {
+  message BlockInfo {
     string sst_name = 1;
-    string csd_id = 2;
-    repeated Chunk chunks = 3;
+    repeated string csd_list = 2;
+    repeated Chunk lba_list = 3;
   }
-  repeated LBA lba_chunks = 1;
+  repeated BlockInfo block_info = 1;
 }
 
 message Chunk {

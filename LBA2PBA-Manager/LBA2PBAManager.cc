@@ -7,24 +7,24 @@ using grpc::ServerReaderWriter;
 using grpc::Status;
 
 using StorageEngineInstance::LBA2PBAManager;
-using StorageEngineInstance::LBARequest;
+using StorageEngineInstance::ScanInfo;
 using StorageEngineInstance::PBAResponse;
 using StorageEngineInstance::PBAResponse_PBA;
-using StorageEngineInstance::LBARequest_LBA;
+using StorageEngineInstance::ScanInfo_BlockInfo;
 using StorageEngineInstance::Chunk;
 
-PBAResponse RunLBA2PBA(LBARequest request){
+PBAResponse RunLBA2PBA(ScanInfo request){
 	PBAResponse response;
 
 	off64_t offset_buffer[128][3];
 
-	for(int i=0; i<request.lba_chunks_size(); i++){	
-		string file_name = request.lba_chunks(i).sst_name();
+	for(int i=0; i<request.block_info_size(); i++){	
+		string file_name = request.block_info(i).sst_name();
 		KETILOG("LBA2PBA Manager","File Name: "+file_name);
 		
 		//do hdparm
 		char cmd[256];
-		string csd_id = request.lba_chunks(i).csd_id();
+		string csd_id = request.block_info(i).csd_list(0);
 		string fdName = "newport_" + csd_id; 
 
 		sprintf(cmd,"filefrag -e /mnt/%s/sst/%s 2> /dev/null",fdName.c_str(),file_name.c_str());
@@ -80,8 +80,8 @@ PBAResponse RunLBA2PBA(LBARequest request){
 
 		PBAResponse_PBA pba;
 
-		for(int j=0;j<request.lba_chunks(i).chunks_size();j++){
-			Chunk lba_chunk = request.lba_chunks(i).chunks(j);
+		for(int j=0;j<request.block_info(i).lba_list_size();j++){
+			Chunk lba_chunk = request.block_info(i).lba_list(j);
 			 
 			// std::cout << "Offset : " << lba_chunk.offset() << std::endl;
 			// std::cout << "Length : " << lba_chunk.length() << std::endl;
@@ -120,7 +120,7 @@ PBAResponse RunLBA2PBA(LBARequest request){
 }
 
 class LBA2PBAManagerServiceImpl final : public LBA2PBAManager::Service {
-  Status RequestPBA(ServerContext* context, const LBARequest* request, PBAResponse* response) override {
+  Status RequestPBA(ServerContext* context, const ScanInfo* request, PBAResponse* response) override {
     KETILOG("LBA2PBA Manager", "# called pba request");
 	
 	{

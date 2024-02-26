@@ -21,34 +21,34 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace StorageEngineInstance {
-PROTOBUF_CONSTEXPR LBARequest_LBA::LBARequest_LBA(
+PROTOBUF_CONSTEXPR ScanInfo_BlockInfo::ScanInfo_BlockInfo(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.chunks_)*/{}
+    /*decltype(_impl_.csd_list_)*/{}
+  , /*decltype(_impl_.lba_list_)*/{}
   , /*decltype(_impl_.sst_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.csd_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct LBARequest_LBADefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LBARequest_LBADefaultTypeInternal()
+struct ScanInfo_BlockInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ScanInfo_BlockInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~LBARequest_LBADefaultTypeInternal() {}
+  ~ScanInfo_BlockInfoDefaultTypeInternal() {}
   union {
-    LBARequest_LBA _instance;
+    ScanInfo_BlockInfo _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LBARequest_LBADefaultTypeInternal _LBARequest_LBA_default_instance_;
-PROTOBUF_CONSTEXPR LBARequest::LBARequest(
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ScanInfo_BlockInfoDefaultTypeInternal _ScanInfo_BlockInfo_default_instance_;
+PROTOBUF_CONSTEXPR ScanInfo::ScanInfo(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.lba_chunks_)*/{}
+    /*decltype(_impl_.block_info_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}} {}
-struct LBARequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LBARequestDefaultTypeInternal()
+struct ScanInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ScanInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
-  ~LBARequestDefaultTypeInternal() {}
+  ~ScanInfoDefaultTypeInternal() {}
   union {
-    LBARequest _instance;
+    ScanInfo _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LBARequestDefaultTypeInternal _LBARequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ScanInfoDefaultTypeInternal _ScanInfo_default_instance_;
 PROTOBUF_CONSTEXPR Chunk::Chunk(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.offset_)*/int64_t{0}
@@ -107,21 +107,21 @@ static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors
 
 const uint32_t TableStruct_lba2pba_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::ScanInfo_BlockInfo, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _impl_.sst_name_),
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _impl_.csd_id_),
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest_LBA, _impl_.chunks_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::ScanInfo_BlockInfo, _impl_.sst_name_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::ScanInfo_BlockInfo, _impl_.csd_list_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::ScanInfo_BlockInfo, _impl_.lba_list_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::ScanInfo, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::LBARequest, _impl_.lba_chunks_),
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::ScanInfo, _impl_.block_info_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -156,8 +156,8 @@ const uint32_t TableStruct_lba2pba_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::PBAResponse, _impl_.pba_chunks_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::StorageEngineInstance::LBARequest_LBA)},
-  { 9, -1, -1, sizeof(::StorageEngineInstance::LBARequest)},
+  { 0, -1, -1, sizeof(::StorageEngineInstance::ScanInfo_BlockInfo)},
+  { 9, -1, -1, sizeof(::StorageEngineInstance::ScanInfo)},
   { 16, -1, -1, sizeof(::StorageEngineInstance::Chunk)},
   { 24, -1, -1, sizeof(::StorageEngineInstance::PBAResponse_PBA)},
   { 31, 39, -1, sizeof(::StorageEngineInstance::PBAResponse_PbaChunksEntry_DoNotUse)},
@@ -165,8 +165,8 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::StorageEngineInstance::_LBARequest_LBA_default_instance_._instance,
-  &::StorageEngineInstance::_LBARequest_default_instance_._instance,
+  &::StorageEngineInstance::_ScanInfo_BlockInfo_default_instance_._instance,
+  &::StorageEngineInstance::_ScanInfo_default_instance_._instance,
   &::StorageEngineInstance::_Chunk_default_instance_._instance,
   &::StorageEngineInstance::_PBAResponse_PBA_default_instance_._instance,
   &::StorageEngineInstance::_PBAResponse_PbaChunksEntry_DoNotUse_default_instance_._instance,
@@ -174,26 +174,27 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_lba2pba_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rlba2pba.proto\022\025StorageEngineInstance\"\236"
-  "\001\n\nLBARequest\0229\n\nlba_chunks\030\001 \003(\0132%.Stor"
-  "ageEngineInstance.LBARequest.LBA\032U\n\003LBA\022"
-  "\020\n\010sst_name\030\001 \001(\t\022\016\n\006csd_id\030\002 \001(\t\022,\n\006chu"
-  "nks\030\003 \003(\0132\034.StorageEngineInstance.Chunk\""
-  "\'\n\005Chunk\022\016\n\006offset\030\001 \001(\003\022\016\n\006length\030\002 \001(\005"
-  "\"\343\001\n\013PBAResponse\022E\n\npba_chunks\030\001 \003(\01321.S"
-  "torageEngineInstance.PBAResponse.PbaChun"
-  "ksEntry\0323\n\003PBA\022,\n\006chunks\030\001 \003(\0132\034.Storage"
-  "EngineInstance.Chunk\032X\n\016PbaChunksEntry\022\013"
-  "\n\003key\030\001 \001(\t\0225\n\005value\030\002 \001(\0132&.StorageEngi"
-  "neInstance.PBAResponse.PBA:\0028\0012g\n\016LBA2PB"
-  "AManager\022U\n\nRequestPBA\022!.StorageEngineIn"
-  "stance.LBARequest\032\".StorageEngineInstanc"
-  "e.PBAResponse\"\000B6\n\026io.grpc.snippet_sampl"
-  "eB\024snippet_sample_ProtoP\001\242\002\003SSPb\006proto3"
+  "\n\rlba2pba.proto\022\025StorageEngineInstance\"\252"
+  "\001\n\010ScanInfo\022=\n\nblock_info\030\001 \003(\0132).Storag"
+  "eEngineInstance.ScanInfo.BlockInfo\032_\n\tBl"
+  "ockInfo\022\020\n\010sst_name\030\001 \001(\t\022\020\n\010csd_list\030\002 "
+  "\003(\t\022.\n\010lba_list\030\003 \003(\0132\034.StorageEngineIns"
+  "tance.Chunk\"\'\n\005Chunk\022\016\n\006offset\030\001 \001(\003\022\016\n\006"
+  "length\030\002 \001(\005\"\343\001\n\013PBAResponse\022E\n\npba_chun"
+  "ks\030\001 \003(\01321.StorageEngineInstance.PBAResp"
+  "onse.PbaChunksEntry\0323\n\003PBA\022,\n\006chunks\030\001 \003"
+  "(\0132\034.StorageEngineInstance.Chunk\032X\n\016PbaC"
+  "hunksEntry\022\013\n\003key\030\001 \001(\t\0225\n\005value\030\002 \001(\0132&"
+  ".StorageEngineInstance.PBAResponse.PBA:\002"
+  "8\0012e\n\016LBA2PBAManager\022S\n\nRequestPBA\022\037.Sto"
+  "rageEngineInstance.ScanInfo\032\".StorageEng"
+  "ineInstance.PBAResponse\"\000B6\n\026io.grpc.sni"
+  "ppet_sampleB\024snippet_sample_ProtoP\001\242\002\003SS"
+  "Pb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_lba2pba_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_lba2pba_2eproto = {
-    false, false, 639, descriptor_table_protodef_lba2pba_2eproto,
+    false, false, 649, descriptor_table_protodef_lba2pba_2eproto,
     "lba2pba.proto",
     &descriptor_table_lba2pba_2eproto_once, nullptr, 0, 6,
     schemas, file_default_instances, TableStruct_lba2pba_2eproto::offsets,
@@ -210,23 +211,23 @@ namespace StorageEngineInstance {
 
 // ===================================================================
 
-class LBARequest_LBA::_Internal {
+class ScanInfo_BlockInfo::_Internal {
  public:
 };
 
-LBARequest_LBA::LBARequest_LBA(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+ScanInfo_BlockInfo::ScanInfo_BlockInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.LBARequest.LBA)
+  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.ScanInfo.BlockInfo)
 }
-LBARequest_LBA::LBARequest_LBA(const LBARequest_LBA& from)
+ScanInfo_BlockInfo::ScanInfo_BlockInfo(const ScanInfo_BlockInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  LBARequest_LBA* const _this = this; (void)_this;
+  ScanInfo_BlockInfo* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.chunks_){from._impl_.chunks_}
+      decltype(_impl_.csd_list_){from._impl_.csd_list_}
+    , decltype(_impl_.lba_list_){from._impl_.lba_list_}
     , decltype(_impl_.sst_name_){}
-    , decltype(_impl_.csd_id_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -238,39 +239,27 @@ LBARequest_LBA::LBARequest_LBA(const LBARequest_LBA& from)
     _this->_impl_.sst_name_.Set(from._internal_sst_name(), 
       _this->GetArenaForAllocation());
   }
-  _impl_.csd_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.csd_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_csd_id().empty()) {
-    _this->_impl_.csd_id_.Set(from._internal_csd_id(), 
-      _this->GetArenaForAllocation());
-  }
-  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.LBARequest.LBA)
+  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.ScanInfo.BlockInfo)
 }
 
-inline void LBARequest_LBA::SharedCtor(
+inline void ScanInfo_BlockInfo::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.chunks_){arena}
+      decltype(_impl_.csd_list_){arena}
+    , decltype(_impl_.lba_list_){arena}
     , decltype(_impl_.sst_name_){}
-    , decltype(_impl_.csd_id_){}
     , /*decltype(_impl_._cached_size_)*/{}
   };
   _impl_.sst_name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.sst_name_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  _impl_.csd_id_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.csd_id_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
-LBARequest_LBA::~LBARequest_LBA() {
-  // @@protoc_insertion_point(destructor:StorageEngineInstance.LBARequest.LBA)
+ScanInfo_BlockInfo::~ScanInfo_BlockInfo() {
+  // @@protoc_insertion_point(destructor:StorageEngineInstance.ScanInfo.BlockInfo)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -278,30 +267,30 @@ LBARequest_LBA::~LBARequest_LBA() {
   SharedDtor();
 }
 
-inline void LBARequest_LBA::SharedDtor() {
+inline void ScanInfo_BlockInfo::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.chunks_.~RepeatedPtrField();
+  _impl_.csd_list_.~RepeatedPtrField();
+  _impl_.lba_list_.~RepeatedPtrField();
   _impl_.sst_name_.Destroy();
-  _impl_.csd_id_.Destroy();
 }
 
-void LBARequest_LBA::SetCachedSize(int size) const {
+void ScanInfo_BlockInfo::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void LBARequest_LBA::Clear() {
-// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.LBARequest.LBA)
+void ScanInfo_BlockInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.ScanInfo.BlockInfo)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.chunks_.Clear();
+  _impl_.csd_list_.Clear();
+  _impl_.lba_list_.Clear();
   _impl_.sst_name_.ClearToEmpty();
-  _impl_.csd_id_.ClearToEmpty();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* LBARequest_LBA::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* ScanInfo_BlockInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
@@ -313,27 +302,32 @@ const char* LBARequest_LBA::_InternalParse(const char* ptr, ::_pbi::ParseContext
           auto str = _internal_mutable_sst_name();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.LBARequest.LBA.sst_name"));
+          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.ScanInfo.BlockInfo.sst_name"));
         } else
           goto handle_unusual;
         continue;
-      // string csd_id = 2;
+      // repeated string csd_list = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_csd_id();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.LBARequest.LBA.csd_id"));
+          ptr -= 1;
+          do {
+            ptr += 1;
+            auto str = _internal_add_csd_list();
+            ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+            CHK_(ptr);
+            CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.ScanInfo.BlockInfo.csd_list"));
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
         } else
           goto handle_unusual;
         continue;
-      // repeated .StorageEngineInstance.Chunk chunks = 3;
+      // repeated .StorageEngineInstance.Chunk lba_list = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_chunks(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_lba_list(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
@@ -363,9 +357,9 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LBARequest_LBA::_InternalSerialize(
+uint8_t* ScanInfo_BlockInfo::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.LBARequest.LBA)
+  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.ScanInfo.BlockInfo)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -374,25 +368,25 @@ uint8_t* LBARequest_LBA::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_sst_name().data(), static_cast<int>(this->_internal_sst_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "StorageEngineInstance.LBARequest.LBA.sst_name");
+      "StorageEngineInstance.ScanInfo.BlockInfo.sst_name");
     target = stream->WriteStringMaybeAliased(
         1, this->_internal_sst_name(), target);
   }
 
-  // string csd_id = 2;
-  if (!this->_internal_csd_id().empty()) {
+  // repeated string csd_list = 2;
+  for (int i = 0, n = this->_internal_csd_list_size(); i < n; i++) {
+    const auto& s = this->_internal_csd_list(i);
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_csd_id().data(), static_cast<int>(this->_internal_csd_id().length()),
+      s.data(), static_cast<int>(s.length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "StorageEngineInstance.LBARequest.LBA.csd_id");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_csd_id(), target);
+      "StorageEngineInstance.ScanInfo.BlockInfo.csd_list");
+    target = stream->WriteString(2, s, target);
   }
 
-  // repeated .StorageEngineInstance.Chunk chunks = 3;
+  // repeated .StorageEngineInstance.Chunk lba_list = 3;
   for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_chunks_size()); i < n; i++) {
-    const auto& repfield = this->_internal_chunks(i);
+      n = static_cast<unsigned>(this->_internal_lba_list_size()); i < n; i++) {
+    const auto& repfield = this->_internal_lba_list(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
         InternalWriteMessage(3, repfield, repfield.GetCachedSize(), target, stream);
   }
@@ -401,21 +395,29 @@ uint8_t* LBARequest_LBA::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.LBARequest.LBA)
+  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.ScanInfo.BlockInfo)
   return target;
 }
 
-size_t LBARequest_LBA::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.LBARequest.LBA)
+size_t ScanInfo_BlockInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.ScanInfo.BlockInfo)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.Chunk chunks = 3;
-  total_size += 1UL * this->_internal_chunks_size();
-  for (const auto& msg : this->_impl_.chunks_) {
+  // repeated string csd_list = 2;
+  total_size += 1 *
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.csd_list_.size());
+  for (int i = 0, n = _impl_.csd_list_.size(); i < n; i++) {
+    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      _impl_.csd_list_.Get(i));
+  }
+
+  // repeated .StorageEngineInstance.Chunk lba_list = 3;
+  total_size += 1UL * this->_internal_lba_list_size();
+  for (const auto& msg : this->_impl_.lba_list_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -427,69 +429,57 @@ size_t LBARequest_LBA::ByteSizeLong() const {
         this->_internal_sst_name());
   }
 
-  // string csd_id = 2;
-  if (!this->_internal_csd_id().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_csd_id());
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LBARequest_LBA::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ScanInfo_BlockInfo::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    LBARequest_LBA::MergeImpl
+    ScanInfo_BlockInfo::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LBARequest_LBA::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ScanInfo_BlockInfo::GetClassData() const { return &_class_data_; }
 
 
-void LBARequest_LBA::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<LBARequest_LBA*>(&to_msg);
-  auto& from = static_cast<const LBARequest_LBA&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.LBARequest.LBA)
+void ScanInfo_BlockInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ScanInfo_BlockInfo*>(&to_msg);
+  auto& from = static_cast<const ScanInfo_BlockInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.ScanInfo.BlockInfo)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.chunks_.MergeFrom(from._impl_.chunks_);
+  _this->_impl_.csd_list_.MergeFrom(from._impl_.csd_list_);
+  _this->_impl_.lba_list_.MergeFrom(from._impl_.lba_list_);
   if (!from._internal_sst_name().empty()) {
     _this->_internal_set_sst_name(from._internal_sst_name());
-  }
-  if (!from._internal_csd_id().empty()) {
-    _this->_internal_set_csd_id(from._internal_csd_id());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void LBARequest_LBA::CopyFrom(const LBARequest_LBA& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.LBARequest.LBA)
+void ScanInfo_BlockInfo::CopyFrom(const ScanInfo_BlockInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.ScanInfo.BlockInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool LBARequest_LBA::IsInitialized() const {
+bool ScanInfo_BlockInfo::IsInitialized() const {
   return true;
 }
 
-void LBARequest_LBA::InternalSwap(LBARequest_LBA* other) {
+void ScanInfo_BlockInfo::InternalSwap(ScanInfo_BlockInfo* other) {
   using std::swap;
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.chunks_.InternalSwap(&other->_impl_.chunks_);
+  _impl_.csd_list_.InternalSwap(&other->_impl_.csd_list_);
+  _impl_.lba_list_.InternalSwap(&other->_impl_.lba_list_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.sst_name_, lhs_arena,
       &other->_impl_.sst_name_, rhs_arena
   );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.csd_id_, lhs_arena,
-      &other->_impl_.csd_id_, rhs_arena
-  );
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata LBARequest_LBA::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata ScanInfo_BlockInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
       file_level_metadata_lba2pba_2eproto[0]);
@@ -497,39 +487,39 @@ void LBARequest_LBA::InternalSwap(LBARequest_LBA* other) {
 
 // ===================================================================
 
-class LBARequest::_Internal {
+class ScanInfo::_Internal {
  public:
 };
 
-LBARequest::LBARequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+ScanInfo::ScanInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
-  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.LBARequest)
+  // @@protoc_insertion_point(arena_constructor:StorageEngineInstance.ScanInfo)
 }
-LBARequest::LBARequest(const LBARequest& from)
+ScanInfo::ScanInfo(const ScanInfo& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
-  LBARequest* const _this = this; (void)_this;
+  ScanInfo* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.lba_chunks_){from._impl_.lba_chunks_}
+      decltype(_impl_.block_info_){from._impl_.block_info_}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.LBARequest)
+  // @@protoc_insertion_point(copy_constructor:StorageEngineInstance.ScanInfo)
 }
 
-inline void LBARequest::SharedCtor(
+inline void ScanInfo::SharedCtor(
     ::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.lba_chunks_){arena}
+      decltype(_impl_.block_info_){arena}
     , /*decltype(_impl_._cached_size_)*/{}
   };
 }
 
-LBARequest::~LBARequest() {
-  // @@protoc_insertion_point(destructor:StorageEngineInstance.LBARequest)
+ScanInfo::~ScanInfo() {
+  // @@protoc_insertion_point(destructor:StorageEngineInstance.ScanInfo)
   if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
   (void)arena;
     return;
@@ -537,38 +527,38 @@ LBARequest::~LBARequest() {
   SharedDtor();
 }
 
-inline void LBARequest::SharedDtor() {
+inline void ScanInfo::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.lba_chunks_.~RepeatedPtrField();
+  _impl_.block_info_.~RepeatedPtrField();
 }
 
-void LBARequest::SetCachedSize(int size) const {
+void ScanInfo::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void LBARequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.LBARequest)
+void ScanInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:StorageEngineInstance.ScanInfo)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.lba_chunks_.Clear();
+  _impl_.block_info_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* LBARequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+const char* ScanInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // repeated .StorageEngineInstance.LBARequest.LBA lba_chunks = 1;
+      // repeated .StorageEngineInstance.ScanInfo.BlockInfo block_info = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_lba_chunks(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_block_info(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -598,16 +588,16 @@ failure:
 #undef CHK_
 }
 
-uint8_t* LBARequest::_InternalSerialize(
+uint8_t* ScanInfo::_InternalSerialize(
     uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.LBARequest)
+  // @@protoc_insertion_point(serialize_to_array_start:StorageEngineInstance.ScanInfo)
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.LBARequest.LBA lba_chunks = 1;
+  // repeated .StorageEngineInstance.ScanInfo.BlockInfo block_info = 1;
   for (unsigned i = 0,
-      n = static_cast<unsigned>(this->_internal_lba_chunks_size()); i < n; i++) {
-    const auto& repfield = this->_internal_lba_chunks(i);
+      n = static_cast<unsigned>(this->_internal_block_info_size()); i < n; i++) {
+    const auto& repfield = this->_internal_block_info(i);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
         InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
   }
@@ -616,21 +606,21 @@ uint8_t* LBARequest::_InternalSerialize(
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.LBARequest)
+  // @@protoc_insertion_point(serialize_to_array_end:StorageEngineInstance.ScanInfo)
   return target;
 }
 
-size_t LBARequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.LBARequest)
+size_t ScanInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:StorageEngineInstance.ScanInfo)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .StorageEngineInstance.LBARequest.LBA lba_chunks = 1;
-  total_size += 1UL * this->_internal_lba_chunks_size();
-  for (const auto& msg : this->_impl_.lba_chunks_) {
+  // repeated .StorageEngineInstance.ScanInfo.BlockInfo block_info = 1;
+  total_size += 1UL * this->_internal_block_info_size();
+  for (const auto& msg : this->_impl_.block_info_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -638,43 +628,43 @@ size_t LBARequest::ByteSizeLong() const {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData LBARequest::_class_data_ = {
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ScanInfo::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    LBARequest::MergeImpl
+    ScanInfo::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*LBARequest::GetClassData() const { return &_class_data_; }
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ScanInfo::GetClassData() const { return &_class_data_; }
 
 
-void LBARequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
-  auto* const _this = static_cast<LBARequest*>(&to_msg);
-  auto& from = static_cast<const LBARequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.LBARequest)
+void ScanInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<ScanInfo*>(&to_msg);
+  auto& from = static_cast<const ScanInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StorageEngineInstance.ScanInfo)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.lba_chunks_.MergeFrom(from._impl_.lba_chunks_);
+  _this->_impl_.block_info_.MergeFrom(from._impl_.block_info_);
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void LBARequest::CopyFrom(const LBARequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.LBARequest)
+void ScanInfo::CopyFrom(const ScanInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:StorageEngineInstance.ScanInfo)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool LBARequest::IsInitialized() const {
+bool ScanInfo::IsInitialized() const {
   return true;
 }
 
-void LBARequest::InternalSwap(LBARequest* other) {
+void ScanInfo::InternalSwap(ScanInfo* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _impl_.lba_chunks_.InternalSwap(&other->_impl_.lba_chunks_);
+  _impl_.block_info_.InternalSwap(&other->_impl_.block_info_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata LBARequest::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata ScanInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_lba2pba_2eproto_getter, &descriptor_table_lba2pba_2eproto_once,
       file_level_metadata_lba2pba_2eproto[1]);
@@ -1308,13 +1298,13 @@ void PBAResponse::InternalSwap(PBAResponse* other) {
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace StorageEngineInstance
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::StorageEngineInstance::LBARequest_LBA*
-Arena::CreateMaybeMessage< ::StorageEngineInstance::LBARequest_LBA >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::StorageEngineInstance::LBARequest_LBA >(arena);
+template<> PROTOBUF_NOINLINE ::StorageEngineInstance::ScanInfo_BlockInfo*
+Arena::CreateMaybeMessage< ::StorageEngineInstance::ScanInfo_BlockInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::StorageEngineInstance::ScanInfo_BlockInfo >(arena);
 }
-template<> PROTOBUF_NOINLINE ::StorageEngineInstance::LBARequest*
-Arena::CreateMaybeMessage< ::StorageEngineInstance::LBARequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::StorageEngineInstance::LBARequest >(arena);
+template<> PROTOBUF_NOINLINE ::StorageEngineInstance::ScanInfo*
+Arena::CreateMaybeMessage< ::StorageEngineInstance::ScanInfo >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::StorageEngineInstance::ScanInfo >(arena);
 }
 template<> PROTOBUF_NOINLINE ::StorageEngineInstance::Chunk*
 Arena::CreateMaybeMessage< ::StorageEngineInstance::Chunk >(Arena* arena) {
