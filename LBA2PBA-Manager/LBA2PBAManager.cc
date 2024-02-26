@@ -6,7 +6,7 @@ using grpc::ServerContext;
 using grpc::ServerReaderWriter;
 using grpc::Status;
 
-using StorageEngineInstance::LBA2PBAManager;
+using StorageEngineInstance::StorageManager;
 using StorageEngineInstance::ScanInfo;
 using StorageEngineInstance::PBAResponse;
 using StorageEngineInstance::PBAResponse_PBA;
@@ -119,7 +119,7 @@ PBAResponse RunLBA2PBA(ScanInfo request){
 	return response;
 }
 
-class LBA2PBAManagerServiceImpl final : public LBA2PBAManager::Service {
+class StorageManagerServiceImpl final : public StorageManager::Service {
   Status RequestPBA(ServerContext* context, const ScanInfo* request, PBAResponse* response) override {
     KETILOG("LBA2PBA Manager", "# called pba request");
 	
@@ -151,7 +151,7 @@ class LBA2PBAManagerServiceImpl final : public LBA2PBAManager::Service {
 
 void RunServer() {
   std::string server_address((std::string)STORAGE_CLUSTER_MASTER_IP+":"+std::to_string(LBA2PBA_Manager_Port));
-  LBA2PBAManagerServiceImpl service;
+  StorageManagerServiceImpl service;
 
   ServerBuilder builder;
   builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());

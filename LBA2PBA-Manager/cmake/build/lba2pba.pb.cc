@@ -186,7 +186,7 @@ const char descriptor_table_protodef_lba2pba_2eproto[] PROTOBUF_SECTION_VARIABLE
   "(\0132\034.StorageEngineInstance.Chunk\032X\n\016PbaC"
   "hunksEntry\022\013\n\003key\030\001 \001(\t\0225\n\005value\030\002 \001(\0132&"
   ".StorageEngineInstance.PBAResponse.PBA:\002"
-  "8\0012e\n\016LBA2PBAManager\022S\n\nRequestPBA\022\037.Sto"
+  "8\0012e\n\016StorageManager\022S\n\nRequestPBA\022\037.Sto"
   "rageEngineInstance.ScanInfo\032\".StorageEng"
   "ineInstance.PBAResponse\"\000B6\n\026io.grpc.sni"
   "ppet_sampleB\024snippet_sample_ProtoP\001\242\002\003SS"
