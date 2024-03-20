@@ -8,16 +8,8 @@ option objc_class_prefix = "SSP";
 package StorageEngineInstance;
 
 service StorageManager {
-  rpc RequestPBA (ScanInfo) returns (PBAResponse) {}
-}
-
-message ScanInfo {
-  message BlockInfo {
-    string sst_name = 1;
-    repeated string csd_list = 2;
-    repeated Chunk lba_list = 3;
-  }
-  repeated BlockInfo block_info = 1;
+  rpc RequestPBA (LBARequest) returns (PBAResponse) {}
+  rpc RequestVolumeAllocation (VolumeRequest) returns (AllocatedVolumeInfo) {}
 }
 
 message Chunk {
@@ -25,9 +17,39 @@ message Chunk {
   int32 length = 2;
 }
 
-message PBAResponse{
-  message PBA{
-    repeated Chunk chunks = 1;
+message ChunkList {
+  repeated Chunk chunks = 1;
+}
+
+message LBARequest {
+  message SST {
+    repeated string csd_list = 1;
+    map<int32, ChunkList> table_lba_list = 2;
   }
-  map<string,PBA> pba_chunks = 1;
+  map<string,SST> sst_block_info = 1;
+}
+
+message PBAResponse {
+  message CSD {
+    map<int32, ChunkList> table_pba_list = 2;
+  }
+  message SST {
+    map<string, CSD> csd_pba_list = 1;
+  }
+  map<string,SST> sst_block_info = 1;
+}
+
+
+message VolumeRequest{  
+  float capacity  = 1;
+  int32 using_csd = 2;
+}
+
+message AllocatedVolumeInfo {
+  message Allocation {
+    string csd_id = 1;
+    string capacity = 2;
+    string partition_name = 3;
+  }
+  map<string,Allocation> csd_allocation_map = 1;
 }
