@@ -23,7 +23,8 @@ namespace _pbi = _pb::internal;
 namespace StorageEngineInstance {
 PROTOBUF_CONSTEXPR Chunk::Chunk(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.offset_)*/int64_t{0}
+    /*decltype(_impl_.block_handle_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.offset_)*/int64_t{0}
   , /*decltype(_impl_.length_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ChunkDefaultTypeInternal {
@@ -234,6 +235,7 @@ const uint32_t TableStruct_lba2pba_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _impl_.block_handle_),
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _impl_.offset_),
   PROTOBUF_FIELD_OFFSET(::StorageEngineInstance::Chunk, _impl_.length_),
   ~0u,  // no _has_bits_
@@ -366,21 +368,21 @@ const uint32_t TableStruct_lba2pba_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::StorageEngineInstance::Chunk)},
-  { 8, -1, -1, sizeof(::StorageEngineInstance::ChunkList)},
-  { 15, 23, -1, sizeof(::StorageEngineInstance::LBARequest_SST_TableLbaListEntry_DoNotUse)},
-  { 25, -1, -1, sizeof(::StorageEngineInstance::LBARequest_SST)},
-  { 33, 41, -1, sizeof(::StorageEngineInstance::LBARequest_SstBlockInfoEntry_DoNotUse)},
-  { 43, -1, -1, sizeof(::StorageEngineInstance::LBARequest)},
-  { 50, 58, -1, sizeof(::StorageEngineInstance::PBAResponse_CSD_TablePbaListEntry_DoNotUse)},
-  { 60, -1, -1, sizeof(::StorageEngineInstance::PBAResponse_CSD)},
-  { 67, 75, -1, sizeof(::StorageEngineInstance::PBAResponse_SST_CsdPbaListEntry_DoNotUse)},
-  { 77, -1, -1, sizeof(::StorageEngineInstance::PBAResponse_SST)},
-  { 84, 92, -1, sizeof(::StorageEngineInstance::PBAResponse_SstBlockInfoEntry_DoNotUse)},
-  { 94, -1, -1, sizeof(::StorageEngineInstance::PBAResponse)},
-  { 101, -1, -1, sizeof(::StorageEngineInstance::VolumeRequest)},
-  { 109, -1, -1, sizeof(::StorageEngineInstance::AllocatedVolumeInfo_Allocation)},
-  { 118, 126, -1, sizeof(::StorageEngineInstance::AllocatedVolumeInfo_CsdAllocationMapEntry_DoNotUse)},
-  { 128, -1, -1, sizeof(::StorageEngineInstance::AllocatedVolumeInfo)},
+  { 9, -1, -1, sizeof(::StorageEngineInstance::ChunkList)},
+  { 16, 24, -1, sizeof(::StorageEngineInstance::LBARequest_SST_TableLbaListEntry_DoNotUse)},
+  { 26, -1, -1, sizeof(::StorageEngineInstance::LBARequest_SST)},
+  { 34, 42, -1, sizeof(::StorageEngineInstance::LBARequest_SstBlockInfoEntry_DoNotUse)},
+  { 44, -1, -1, sizeof(::StorageEngineInstance::LBARequest)},
+  { 51, 59, -1, sizeof(::StorageEngineInstance::PBAResponse_CSD_TablePbaListEntry_DoNotUse)},
+  { 61, -1, -1, sizeof(::StorageEngineInstance::PBAResponse_CSD)},
+  { 68, 76, -1, sizeof(::StorageEngineInstance::PBAResponse_SST_CsdPbaListEntry_DoNotUse)},
+  { 78, -1, -1, sizeof(::StorageEngineInstance::PBAResponse_SST)},
+  { 85, 93, -1, sizeof(::StorageEngineInstance::PBAResponse_SstBlockInfoEntry_DoNotUse)},
+  { 95, -1, -1, sizeof(::StorageEngineInstance::PBAResponse)},
+  { 102, -1, -1, sizeof(::StorageEngineInstance::VolumeRequest)},
+  { 110, -1, -1, sizeof(::StorageEngineInstance::AllocatedVolumeInfo_Allocation)},
+  { 119, 127, -1, sizeof(::StorageEngineInstance::AllocatedVolumeInfo_CsdAllocationMapEntry_DoNotUse)},
+  { 129, -1, -1, sizeof(::StorageEngineInstance::AllocatedVolumeInfo)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -403,53 +405,53 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_lba2pba_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\rlba2pba.proto\022\025StorageEngineInstance\"\'"
-  "\n\005Chunk\022\016\n\006offset\030\001 \001(\003\022\016\n\006length\030\002 \001(\005\""
-  "9\n\tChunkList\022,\n\006chunks\030\001 \003(\0132\034.StorageEn"
-  "gineInstance.Chunk\"\367\002\n\nLBARequest\022K\n\016sst"
-  "_block_info\030\001 \003(\01323.StorageEngineInstanc"
-  "e.LBARequest.SstBlockInfoEntry\032\277\001\n\003SST\022\020"
-  "\n\010csd_list\030\001 \003(\t\022O\n\016table_lba_list\030\002 \003(\013"
-  "27.StorageEngineInstance.LBARequest.SST."
-  "TableLbaListEntry\032U\n\021TableLbaListEntry\022\013"
-  "\n\003key\030\001 \001(\005\022/\n\005value\030\002 \001(\0132 .StorageEngi"
-  "neInstance.ChunkList:\0028\001\032Z\n\021SstBlockInfo"
-  "Entry\022\013\n\003key\030\001 \001(\t\0224\n\005value\030\002 \001(\0132%.Stor"
-  "ageEngineInstance.LBARequest.SST:\0028\001\"\232\004\n"
-  "\013PBAResponse\022L\n\016sst_block_info\030\001 \003(\01324.S"
-  "torageEngineInstance.PBAResponse.SstBloc"
-  "kInfoEntry\032\256\001\n\003CSD\022P\n\016table_pba_list\030\002 \003"
-  "(\01328.StorageEngineInstance.PBAResponse.C"
-  "SD.TablePbaListEntry\032U\n\021TablePbaListEntr"
-  "y\022\013\n\003key\030\001 \001(\005\022/\n\005value\030\002 \001(\0132 .StorageE"
-  "ngineInstance.ChunkList:\0028\001\032\256\001\n\003SST\022L\n\014c"
-  "sd_pba_list\030\001 \003(\01326.StorageEngineInstanc"
-  "e.PBAResponse.SST.CsdPbaListEntry\032Y\n\017Csd"
-  "PbaListEntry\022\013\n\003key\030\001 \001(\t\0225\n\005value\030\002 \001(\013"
-  "2&.StorageEngineInstance.PBAResponse.CSD"
-  ":\0028\001\032[\n\021SstBlockInfoEntry\022\013\n\003key\030\001 \001(\t\0225"
-  "\n\005value\030\002 \001(\0132&.StorageEngineInstance.PB"
-  "AResponse.SST:\0028\001\"4\n\rVolumeRequest\022\020\n\010ca"
-  "pacity\030\001 \001(\002\022\021\n\tusing_csd\030\002 \001(\005\"\253\002\n\023Allo"
-  "catedVolumeInfo\022\\\n\022csd_allocation_map\030\001 "
-  "\003(\0132@.StorageEngineInstance.AllocatedVol"
-  "umeInfo.CsdAllocationMapEntry\032F\n\nAllocat"
-  "ion\022\016\n\006csd_id\030\001 \001(\t\022\020\n\010capacity\030\002 \001(\t\022\026\n"
-  "\016partition_name\030\003 \001(\t\032n\n\025CsdAllocationMa"
-  "pEntry\022\013\n\003key\030\001 \001(\t\022D\n\005value\030\002 \001(\01325.Sto"
-  "rageEngineInstance.AllocatedVolumeInfo.A"
-  "llocation:\0028\0012\326\001\n\016StorageManager\022U\n\nRequ"
-  "estPBA\022!.StorageEngineInstance.LBAReques"
-  "t\032\".StorageEngineInstance.PBAResponse\"\000\022"
-  "m\n\027RequestVolumeAllocation\022$.StorageEngi"
-  "neInstance.VolumeRequest\032*.StorageEngine"
-  "Instance.AllocatedVolumeInfo\"\000B6\n\026io.grp"
-  "c.snippet_sampleB\024snippet_sample_ProtoP\001"
-  "\242\002\003SSPb\006proto3"
+  "\n\rlba2pba.proto\022\025StorageEngineInstance\"="
+  "\n\005Chunk\022\024\n\014block_handle\030\001 \001(\t\022\016\n\006offset\030"
+  "\002 \001(\003\022\016\n\006length\030\003 \001(\005\"9\n\tChunkList\022,\n\006ch"
+  "unks\030\001 \003(\0132\034.StorageEngineInstance.Chunk"
+  "\"\367\002\n\nLBARequest\022K\n\016sst_block_info\030\001 \003(\0132"
+  "3.StorageEngineInstance.LBARequest.SstBl"
+  "ockInfoEntry\032\277\001\n\003SST\022\020\n\010csd_list\030\001 \003(\t\022O"
+  "\n\016table_lba_list\030\002 \003(\01327.StorageEngineIn"
+  "stance.LBARequest.SST.TableLbaListEntry\032"
+  "U\n\021TableLbaListEntry\022\013\n\003key\030\001 \001(\005\022/\n\005val"
+  "ue\030\002 \001(\0132 .StorageEngineInstance.ChunkLi"
+  "st:\0028\001\032Z\n\021SstBlockInfoEntry\022\013\n\003key\030\001 \001(\t"
+  "\0224\n\005value\030\002 \001(\0132%.StorageEngineInstance."
+  "LBARequest.SST:\0028\001\"\232\004\n\013PBAResponse\022L\n\016ss"
+  "t_block_info\030\001 \003(\01324.StorageEngineInstan"
+  "ce.PBAResponse.SstBlockInfoEntry\032\256\001\n\003CSD"
+  "\022P\n\016table_pba_list\030\002 \003(\01328.StorageEngine"
+  "Instance.PBAResponse.CSD.TablePbaListEnt"
+  "ry\032U\n\021TablePbaListEntry\022\013\n\003key\030\001 \001(\005\022/\n\005"
+  "value\030\002 \001(\0132 .StorageEngineInstance.Chun"
+  "kList:\0028\001\032\256\001\n\003SST\022L\n\014csd_pba_list\030\001 \003(\0132"
+  "6.StorageEngineInstance.PBAResponse.SST."
+  "CsdPbaListEntry\032Y\n\017CsdPbaListEntry\022\013\n\003ke"
+  "y\030\001 \001(\t\0225\n\005value\030\002 \001(\0132&.StorageEngineIn"
+  "stance.PBAResponse.CSD:\0028\001\032[\n\021SstBlockIn"
+  "foEntry\022\013\n\003key\030\001 \001(\t\0225\n\005value\030\002 \001(\0132&.St"
+  "orageEngineInstance.PBAResponse.SST:\0028\001\""
+  "4\n\rVolumeRequest\022\020\n\010capacity\030\001 \001(\002\022\021\n\tus"
+  "ing_csd\030\002 \001(\005\"\253\002\n\023AllocatedVolumeInfo\022\\\n"
+  "\022csd_allocation_map\030\001 \003(\0132@.StorageEngin"
+  "eInstance.AllocatedVolumeInfo.CsdAllocat"
+  "ionMapEntry\032F\n\nAllocation\022\016\n\006csd_id\030\001 \001("
+  "\t\022\020\n\010capacity\030\002 \001(\t\022\026\n\016partition_name\030\003 "
+  "\001(\t\032n\n\025CsdAllocationMapEntry\022\013\n\003key\030\001 \001("
+  "\t\022D\n\005value\030\002 \001(\01325.StorageEngineInstance"
+  ".AllocatedVolumeInfo.Allocation:\0028\0012\326\001\n\016"
+  "StorageManager\022U\n\nRequestPBA\022!.StorageEn"
+  "gineInstance.LBARequest\032\".StorageEngineI"
+  "nstance.PBAResponse\"\000\022m\n\027RequestVolumeAl"
+  "location\022$.StorageEngineInstance.VolumeR"
+  "equest\032*.StorageEngineInstance.Allocated"
+  "VolumeInfo\"\000B6\n\026io.grpc.snippet_sampleB\024"
+  "snippet_sample_ProtoP\001\242\002\003SSPb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_lba2pba_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_lba2pba_2eproto = {
-    false, false, 1694, descriptor_table_protodef_lba2pba_2eproto,
+    false, false, 1716, descriptor_table_protodef_lba2pba_2eproto,
     "lba2pba.proto",
     &descriptor_table_lba2pba_2eproto_once, nullptr, 0, 16,
     schemas, file_default_instances, TableStruct_lba2pba_2eproto::offsets,
@@ -480,11 +482,20 @@ Chunk::Chunk(const Chunk& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   Chunk* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.offset_){}
+      decltype(_impl_.block_handle_){}
+    , decltype(_impl_.offset_){}
     , decltype(_impl_.length_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.block_handle_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.block_handle_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_block_handle().empty()) {
+    _this->_impl_.block_handle_.Set(from._internal_block_handle(), 
+      _this->GetArenaForAllocation());
+  }
   ::memcpy(&_impl_.offset_, &from._impl_.offset_,
     static_cast<size_t>(reinterpret_cast<char*>(&_impl_.length_) -
     reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.length_));
@@ -496,10 +507,15 @@ inline void Chunk::SharedCtor(
   (void)arena;
   (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.offset_){int64_t{0}}
+      decltype(_impl_.block_handle_){}
+    , decltype(_impl_.offset_){int64_t{0}}
     , decltype(_impl_.length_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+  _impl_.block_handle_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.block_handle_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Chunk::~Chunk() {
@@ -513,6 +529,7 @@ Chunk::~Chunk() {
 
 inline void Chunk::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.block_handle_.Destroy();
 }
 
 void Chunk::SetCachedSize(int size) const {
@@ -525,6 +542,7 @@ void Chunk::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.block_handle_.ClearToEmpty();
   ::memset(&_impl_.offset_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&_impl_.length_) -
       reinterpret_cast<char*>(&_impl_.offset_)) + sizeof(_impl_.length_));
@@ -537,17 +555,27 @@ const char* Chunk::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int64 offset = 1;
+      // string block_handle = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_block_handle();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "StorageEngineInstance.Chunk.block_handle"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 offset = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _impl_.offset_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // int32 length = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+      // int32 length = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           _impl_.length_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
@@ -582,16 +610,26 @@ uint8_t* Chunk::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 offset = 1;
-  if (this->_internal_offset() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(1, this->_internal_offset(), target);
+  // string block_handle = 1;
+  if (!this->_internal_block_handle().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_block_handle().data(), static_cast<int>(this->_internal_block_handle().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "StorageEngineInstance.Chunk.block_handle");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_block_handle(), target);
   }
 
-  // int32 length = 2;
+  // int64 offset = 2;
+  if (this->_internal_offset() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(2, this->_internal_offset(), target);
+  }
+
+  // int32 length = 3;
   if (this->_internal_length() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_length(), target);
+    target = ::_pbi::WireFormatLite::WriteInt32ToArray(3, this->_internal_length(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -610,12 +648,19 @@ size_t Chunk::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int64 offset = 1;
+  // string block_handle = 1;
+  if (!this->_internal_block_handle().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_block_handle());
+  }
+
+  // int64 offset = 2;
   if (this->_internal_offset() != 0) {
     total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_offset());
   }
 
-  // int32 length = 2;
+  // int32 length = 3;
   if (this->_internal_length() != 0) {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_length());
   }
@@ -638,6 +683,9 @@ void Chunk::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_block_handle().empty()) {
+    _this->_internal_set_block_handle(from._internal_block_handle());
+  }
   if (from._internal_offset() != 0) {
     _this->_internal_set_offset(from._internal_offset());
   }
@@ -660,7 +708,13 @@ bool Chunk::IsInitialized() const {
 
 void Chunk::InternalSwap(Chunk* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.block_handle_, lhs_arena,
+      &other->_impl_.block_handle_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Chunk, _impl_.length_)
       + sizeof(Chunk::_impl_.length_)

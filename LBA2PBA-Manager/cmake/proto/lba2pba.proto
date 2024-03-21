@@ -13,8 +13,9 @@ service StorageManager {
 }
 
 message Chunk {
-  int64 offset = 1;
-  int32 length = 2;
+  string block_handle = 1;
+  int64 offset = 2;
+  int32 length = 3;
 }
 
 message ChunkList {

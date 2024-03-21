@@ -105,6 +105,7 @@ PBAResponse RunLBA2PBA(LBARequest request){
 								// printf("{\n\t\"Offset\" : %ld,\n\t\"Length\" : %ld\n},\n",offset_buffer[k][1] + req_offset - offset_buffer[k][0],offset_buffer[k][2]);
 								pba_chunk.set_offset(offset_buffer[k][1] + req_offset - offset_buffer[k][0]);
 								pba_chunk.set_length(offset_buffer[k][2]);
+								pba_chunk.set_block_handle(table_lba.second.chunks(j).block_handle());
 								chunk_list.add_chunks()->CopyFrom(pba_chunk); //push back res offset to offset list
 
 								req_length -= offset_buffer[k][2];
@@ -113,6 +114,7 @@ PBAResponse RunLBA2PBA(LBARequest request){
 								// printf("{\n\t\"Offset\" : %ld,\n\t\"Length\" : %ld\n},\n",offset_buffer[k][1] + req_offset - offset_buffer[k][0],req_length);
 								pba_chunk.set_offset(offset_buffer[k][1] + req_offset - offset_buffer[k][0]);
 								pba_chunk.set_length(req_length);
+								pba_chunk.set_block_handle(table_lba.second.chunks(j).block_handle());
 								chunk_list.add_chunks()->CopyFrom(pba_chunk); //push back res offset to offset list
 								break;
 							}

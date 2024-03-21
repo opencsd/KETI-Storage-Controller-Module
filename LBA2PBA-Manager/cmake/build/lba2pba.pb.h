@@ -240,10 +240,25 @@ class Chunk final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kOffsetFieldNumber = 1,
-    kLengthFieldNumber = 2,
+    kBlockHandleFieldNumber = 1,
+    kOffsetFieldNumber = 2,
+    kLengthFieldNumber = 3,
   };
-  // int64 offset = 1;
+  // string block_handle = 1;
+  void clear_block_handle();
+  const std::string& block_handle() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_block_handle(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_block_handle();
+  PROTOBUF_NODISCARD std::string* release_block_handle();
+  void set_allocated_block_handle(std::string* block_handle);
+  private:
+  const std::string& _internal_block_handle() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_block_handle(const std::string& value);
+  std::string* _internal_mutable_block_handle();
+  public:
+
+  // int64 offset = 2;
   void clear_offset();
   int64_t offset() const;
   void set_offset(int64_t value);
@@ -252,7 +267,7 @@ class Chunk final :
   void _internal_set_offset(int64_t value);
   public:
 
-  // int32 length = 2;
+  // int32 length = 3;
   void clear_length();
   int32_t length() const;
   void set_length(int32_t value);
@@ -269,6 +284,7 @@ class Chunk final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr block_handle_;
     int64_t offset_;
     int32_t length_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -1948,7 +1964,57 @@ class AllocatedVolumeInfo final :
 #endif  // __GNUC__
 // Chunk
 
-// int64 offset = 1;
+// string block_handle = 1;
+inline void Chunk::clear_block_handle() {
+  _impl_.block_handle_.ClearToEmpty();
+}
+inline const std::string& Chunk::block_handle() const {
+  // @@protoc_insertion_point(field_get:StorageEngineInstance.Chunk.block_handle)
+  return _internal_block_handle();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void Chunk::set_block_handle(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.block_handle_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:StorageEngineInstance.Chunk.block_handle)
+}
+inline std::string* Chunk::mutable_block_handle() {
+  std::string* _s = _internal_mutable_block_handle();
+  // @@protoc_insertion_point(field_mutable:StorageEngineInstance.Chunk.block_handle)
+  return _s;
+}
+inline const std::string& Chunk::_internal_block_handle() const {
+  return _impl_.block_handle_.Get();
+}
+inline void Chunk::_internal_set_block_handle(const std::string& value) {
+  
+  _impl_.block_handle_.Set(value, GetArenaForAllocation());
+}
+inline std::string* Chunk::_internal_mutable_block_handle() {
+  
+  return _impl_.block_handle_.Mutable(GetArenaForAllocation());
+}
+inline std::string* Chunk::release_block_handle() {
+  // @@protoc_insertion_point(field_release:StorageEngineInstance.Chunk.block_handle)
+  return _impl_.block_handle_.Release();
+}
+inline void Chunk::set_allocated_block_handle(std::string* block_handle) {
+  if (block_handle != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.block_handle_.SetAllocated(block_handle, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.block_handle_.IsDefault()) {
+    _impl_.block_handle_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:StorageEngineInstance.Chunk.block_handle)
+}
+
+// int64 offset = 2;
 inline void Chunk::clear_offset() {
   _impl_.offset_ = int64_t{0};
 }
@@ -1968,7 +2034,7 @@ inline void Chunk::set_offset(int64_t value) {
   // @@protoc_insertion_point(field_set:StorageEngineInstance.Chunk.offset)
 }
 
-// int32 length = 2;
+// int32 length = 3;
 inline void Chunk::clear_length() {
   _impl_.length_ = 0;
 }
