@@ -1,4 +1,4 @@
-# Install script for directory: /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager
+# Install script for directory: /root/workspace/kjh/LBA2PBA-Manager
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/root/workspace/kjh/LBA2PBA-Manager/cmake/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

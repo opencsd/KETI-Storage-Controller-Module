@@ -13,33 +13,28 @@ service StorageManager {
 }
 
 message Chunk {
-  string block_handle = 1;
-  int64 offset = 2;
-  int32 length = 3;
+  int64 offset = 1;
+  int32 length = 2;
 }
 
-message ChunkList {
+message Chunks {
   repeated Chunk chunks = 1;
 }
 
 message LBARequest {
   message SST {
     repeated string csd_list = 1;
-    map<int32, ChunkList> table_lba_list = 2;
+    Chunks lba_chunks = 2;
   }
-  map<string,SST> sst_block_info = 1;
+  map<string,SST> sst_list = 1;
 }
 
 message PBAResponse {
-  message CSD {
-    map<int32, ChunkList> table_pba_list = 2;
-  }
   message SST {
-    map<string, CSD> csd_pba_list = 1;
+    map<string, Chunks> pba_chunks = 1;
   }
-  map<string,SST> sst_block_info = 1;
+  map<string,SST> sst_list = 1;
 }
-
 
 message VolumeRequest{  
   float capacity  = 1;
