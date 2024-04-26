@@ -11,6 +11,7 @@ using StorageEngineInstance::LBARequest;
 using StorageEngineInstance::LBARequest_SST;
 using StorageEngineInstance::PBAResponse;
 using StorageEngineInstance::PBAResponse_SST;
+using StorageEngineInstance::TableBlock;
 using StorageEngineInstance::Chunks;
 using StorageEngineInstance::Chunk;
 
@@ -81,40 +82,48 @@ PBAResponse RunLBA2PBA(LBARequest request){
 			off64_t lba_offset;
 			off64_t lba_length;
 
-			Chunks chunks;	
+			TableBlock table_block;
 
-			for(const auto lba: sst.second.lba_chunks().chunks()){				
-				// std::cout << "Offset : " << sst.second.chunks(j).offset() << std::endl;
-				// std::cout << "Length : " << sst.second.chunks(j).length() << std::endl;
+			for(const auto table_block_chunk: sst.second.table_lba_block().table_block_chunks()){
+				int table_index_number = table_block_chunk.first;
 
-				flag = 0;
-				lba_offset = lba.offset();
-				lba_length = lba.length();
+				Chunks chunks;	
 
-				for(int k = 0; k < tbl_size; k++){
-					Chunk pba_chunk;
-					if(flag || lba_length >= offset_buffer[k][0] && lba_length < offset_buffer[k][0] + offset_buffer[k][2]){
-						flag = 1;
-						if(lba_length > offset_buffer[k][2]){ // X
-							// printf("{\n\t\"Offset\" : %ld,\n\t\"Length\" : %ld\n},\n",offset_buffer[k][1] + lba_length - offset_buffer[k][0],offset_buffer[k][2]);
-							pba_chunk.set_offset(offset_buffer[k][1] + lba_length - offset_buffer[k][0]);
-							pba_chunk.set_length(offset_buffer[k][2]);
-							chunks.add_chunks()->CopyFrom(pba_chunk); //push back res offset to offset list
+				for(const auto lba: table_block_chunk.second.chunks()){		
+					// std::cout << "Offset : " << sst.second.chunks(j).offset() << std::endl;
+					// std::cout << "Length : " << sst.second.chunks(j).length() << std::endl;
 
-							lba_length -= offset_buffer[k][2];
-							lba_length += offset_buffer[k][2];
-						} else { // here
-							// printf("{\n\t\"Offset\" : %ld,\n\t\"Length\" : %ld\n},\n",offset_buffer[k][1] + lba_length - offset_buffer[k][0],lba_length);
-							pba_chunk.set_offset(offset_buffer[k][1] + lba_length - offset_buffer[k][0]);
-							pba_chunk.set_length(lba_length);
-							chunks.add_chunks()->CopyFrom(pba_chunk); //push back res offset to offset list
-							break;
+					flag = 0;
+					lba_offset = lba.offset();
+					lba_length = lba.length();
+
+					for(int k = 0; k < tbl_size; k++){
+						Chunk pba_chunk;
+						if(flag || lba_offset >= offset_buffer[k][0] && lba_offset < offset_buffer[k][0] + offset_buffer[k][2]){
+							flag = 1;
+							if(lba_length > offset_buffer[k][2]){ // X
+								// printf("{\n\t\"Offset\" : %ld,\n\t\"Length\" : %ld\n},\n",offset_buffer[k][1] + lba_length - offset_buffer[k][0],offset_buffer[k][2]);
+								pba_chunk.set_offset(offset_buffer[k][1] + lba_offset - offset_buffer[k][0]);
+								pba_chunk.set_length(offset_buffer[k][2]);
+								chunks.add_chunks()->CopyFrom(pba_chunk); //push back res offset to offset list
+
+								lba_length -= offset_buffer[k][2];
+								lba_offset += offset_buffer[k][2];
+							} else { // here
+								// printf("{\n\t\"Offset\" : %ld,\n\t\"Length\" : %ld\n},\n",offset_buffer[k][1] + lba_length - offset_buffer[k][0],lba_length);
+								pba_chunk.set_offset(offset_buffer[k][1] + lba_offset - offset_buffer[k][0]);
+								pba_chunk.set_length(lba_length);
+								chunks.add_chunks()->CopyFrom(pba_chunk); //push back res offset to offset list
+								break;
+							}
 						}
 					}
 				}
-			}
 
-			response_sst.mutable_pba_chunks()->insert({csd_id,chunks});
+				table_block.mutable_table_block_chunks()->insert({table_index_number,chunks});
+			}	
+
+			response_sst.mutable_table_pba_block()->insert({csd_id,table_block});
 		}
 
 		response.mutable_sst_list()->insert({sst_name,response_sst});

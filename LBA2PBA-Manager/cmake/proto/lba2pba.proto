@@ -21,17 +21,21 @@ message Chunks {
   repeated Chunk chunks = 1;
 }
 
+message TableBlock {
+  map<int32, Chunks> table_block_chunks = 2;
+}
+
 message LBARequest {
   message SST {
     repeated string csd_list = 1;
-    Chunks lba_chunks = 2;
+    TableBlock table_lba_block = 2;
   }
   map<string,SST> sst_list = 1;
 }
 
 message PBAResponse {
   message SST {
-    map<string, Chunks> pba_chunks = 1;
+    map<string, TableBlock> table_pba_block = 1;
   }
   map<string,SST> sst_list = 1;
 }
