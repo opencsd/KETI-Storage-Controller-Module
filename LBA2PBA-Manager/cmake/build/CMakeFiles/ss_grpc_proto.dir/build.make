@@ -53,10 +53,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/workspace/kjh/LBA2PBA-Manager
+CMAKE_SOURCE_DIR = /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/workspace/kjh/LBA2PBA-Manager/cmake/build
+CMAKE_BINARY_DIR = /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/ss_grpc_proto.dir/depend.make
@@ -69,9 +69,9 @@ include CMakeFiles/ss_grpc_proto.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/ss_grpc_proto.dir/flags.make
 
-lba2pba.pb.cc: /root/workspace/kjh/LBA2PBA-Manager/cmake/proto/lba2pba.proto
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating lba2pba.pb.cc, lba2pba.pb.h, lba2pba.grpc.pb.cc, lba2pba.grpc.pb.h"
-	/bin/protoc-3.19.4.0 --grpc_out /root/workspace/kjh/LBA2PBA-Manager/cmake/build --cpp_out /root/workspace/kjh/LBA2PBA-Manager/cmake/build -I /root/workspace/kjh/LBA2PBA-Manager/cmake/proto --plugin=protoc-gen-grpc="/bin/grpc_cpp_plugin" /root/workspace/kjh/LBA2PBA-Manager/cmake/proto/lba2pba.proto
+lba2pba.pb.cc: /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/proto/lba2pba.proto
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating lba2pba.pb.cc, lba2pba.pb.h, lba2pba.grpc.pb.cc, lba2pba.grpc.pb.h"
+	/root/.local/bin/protoc-3.19.4.0 --grpc_out /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build --cpp_out /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build -I /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/proto --plugin=protoc-gen-grpc="/root/.local/bin/grpc_cpp_plugin" /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/proto/lba2pba.proto
 
 lba2pba.pb.h: lba2pba.pb.cc
 	@$(CMAKE_COMMAND) -E touch_nocreate lba2pba.pb.h
@@ -85,30 +85,30 @@ lba2pba.grpc.pb.h: lba2pba.pb.cc
 CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o: CMakeFiles/ss_grpc_proto.dir/flags.make
 CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o: lba2pba.grpc.pb.cc
 CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o: CMakeFiles/ss_grpc_proto.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o -MF CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o.d -o CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o -c /root/workspace/kjh/LBA2PBA-Manager/cmake/build/lba2pba.grpc.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o -MF CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o.d -o CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o -c /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/lba2pba.grpc.pb.cc
 
 CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/workspace/kjh/LBA2PBA-Manager/cmake/build/lba2pba.grpc.pb.cc > CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/lba2pba.grpc.pb.cc > CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.i
 
 CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/workspace/kjh/LBA2PBA-Manager/cmake/build/lba2pba.grpc.pb.cc -o CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/lba2pba.grpc.pb.cc -o CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.s
 
 CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o: CMakeFiles/ss_grpc_proto.dir/flags.make
 CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o: lba2pba.pb.cc
 CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o: CMakeFiles/ss_grpc_proto.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o -MF CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o.d -o CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o -c /root/workspace/kjh/LBA2PBA-Manager/cmake/build/lba2pba.pb.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o -MF CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o.d -o CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o -c /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/lba2pba.pb.cc
 
 CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/workspace/kjh/LBA2PBA-Manager/cmake/build/lba2pba.pb.cc > CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/lba2pba.pb.cc > CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.i
 
 CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/workspace/kjh/LBA2PBA-Manager/cmake/build/lba2pba.pb.cc -o CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/lba2pba.pb.cc -o CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.s
 
 # Object files for target ss_grpc_proto
 ss_grpc_proto_OBJECTS = \
@@ -122,7 +122,7 @@ libss_grpc_proto.a: CMakeFiles/ss_grpc_proto.dir/lba2pba.grpc.pb.cc.o
 libss_grpc_proto.a: CMakeFiles/ss_grpc_proto.dir/lba2pba.pb.cc.o
 libss_grpc_proto.a: CMakeFiles/ss_grpc_proto.dir/build.make
 libss_grpc_proto.a: CMakeFiles/ss_grpc_proto.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libss_grpc_proto.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libss_grpc_proto.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/ss_grpc_proto.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ss_grpc_proto.dir/link.txt --verbose=$(VERBOSE)
 
@@ -138,6 +138,6 @@ CMakeFiles/ss_grpc_proto.dir/depend: lba2pba.grpc.pb.cc
 CMakeFiles/ss_grpc_proto.dir/depend: lba2pba.grpc.pb.h
 CMakeFiles/ss_grpc_proto.dir/depend: lba2pba.pb.cc
 CMakeFiles/ss_grpc_proto.dir/depend: lba2pba.pb.h
-	cd /root/workspace/kjh/LBA2PBA-Manager/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/workspace/kjh/LBA2PBA-Manager /root/workspace/kjh/LBA2PBA-Manager /root/workspace/kjh/LBA2PBA-Manager/cmake/build /root/workspace/kjh/LBA2PBA-Manager/cmake/build /root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles/ss_grpc_proto.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/ss_grpc_proto.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ss_grpc_proto.dir/depend
 

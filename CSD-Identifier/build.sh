@@ -1,1 +1,1 @@
-g++ CSDProxy.cc -o csd-identifier -lpthread
+g++ main.cc -o csd-identifier -lpthread

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DCARES_STATICLIB
 
-CXX_INCLUDES = -I/root/workspace/kjh/LBA2PBA-Manager/cmake/build -isystem /include
+CXX_INCLUDES = -I/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build -isystem /root/.local/include
 
 CXX_FLAGS = -std=gnu++17
 

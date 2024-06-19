@@ -21,6 +21,8 @@ cmake_minimum_required(VERSION 3.5.1)
 
 project(LBA2PBAManager C CXX)
 
+set(ENV{PATH} "$ENV{PATH}:$ENV{HOME}/.local/bin") #kjh add
+
 include(./cmake/common.cmake)
 
 # Proto file

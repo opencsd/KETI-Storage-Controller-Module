@@ -57,10 +57,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/workspace/kjh/LBA2PBA-Manager
+CMAKE_SOURCE_DIR = /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/workspace/kjh/LBA2PBA-Manager/cmake/build
+CMAKE_BINARY_DIR = /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles /root/workspace/kjh/LBA2PBA-Manager/cmake/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

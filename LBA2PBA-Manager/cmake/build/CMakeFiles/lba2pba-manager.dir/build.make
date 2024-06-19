@@ -53,10 +53,10 @@ RM = /usr/local/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /root/workspace/kjh/LBA2PBA-Manager
+CMAKE_SOURCE_DIR = /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /root/workspace/kjh/LBA2PBA-Manager/cmake/build
+CMAKE_BINARY_DIR = /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/lba2pba-manager.dir/depend.make
@@ -70,18 +70,18 @@ include CMakeFiles/lba2pba-manager.dir/progress.make
 include CMakeFiles/lba2pba-manager.dir/flags.make
 
 CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o: CMakeFiles/lba2pba-manager.dir/flags.make
-CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o: /root/workspace/kjh/LBA2PBA-Manager/LBA2PBAManager.cc
+CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o: /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/LBA2PBAManager.cc
 CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o: CMakeFiles/lba2pba-manager.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o -MF CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o.d -o CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o -c /root/workspace/kjh/LBA2PBA-Manager/LBA2PBAManager.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o -MF CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o.d -o CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o -c /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/LBA2PBAManager.cc
 
 CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/workspace/kjh/LBA2PBA-Manager/LBA2PBAManager.cc > CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/LBA2PBAManager.cc > CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.i
 
 CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/workspace/kjh/LBA2PBA-Manager/LBA2PBAManager.cc -o CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/LBA2PBAManager.cc -o CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.s
 
 # Object files for target lba2pba-manager
 lba2pba__manager_OBJECTS = \
@@ -93,64 +93,64 @@ lba2pba__manager_EXTERNAL_OBJECTS =
 lba2pba-manager: CMakeFiles/lba2pba-manager.dir/LBA2PBAManager.cc.o
 lba2pba-manager: CMakeFiles/lba2pba-manager.dir/build.make
 lba2pba-manager: libss_grpc_proto.a
-lba2pba-manager: /lib/libgrpc++_reflection.a
-lba2pba-manager: /lib/libgrpc++.a
-lba2pba-manager: /lib/libprotobuf.a
-lba2pba-manager: /lib/libgrpc.a
-lba2pba-manager: /lib/libz.a
-lba2pba-manager: /lib/libcares.a
-lba2pba-manager: /lib/libaddress_sorting.a
-lba2pba-manager: /lib/libre2.a
-lba2pba-manager: /lib/libabsl_raw_hash_set.a
-lba2pba-manager: /lib/libabsl_hashtablez_sampler.a
-lba2pba-manager: /lib/libabsl_hash.a
-lba2pba-manager: /lib/libabsl_city.a
-lba2pba-manager: /lib/libabsl_low_level_hash.a
-lba2pba-manager: /lib/libabsl_statusor.a
-lba2pba-manager: /lib/libabsl_bad_variant_access.a
-lba2pba-manager: /lib/libgpr.a
-lba2pba-manager: /lib/libupb.a
-lba2pba-manager: /lib/libabsl_status.a
-lba2pba-manager: /lib/libabsl_random_distributions.a
-lba2pba-manager: /lib/libabsl_random_seed_sequences.a
-lba2pba-manager: /lib/libabsl_random_internal_pool_urbg.a
-lba2pba-manager: /lib/libabsl_random_internal_randen.a
-lba2pba-manager: /lib/libabsl_random_internal_randen_hwaes.a
-lba2pba-manager: /lib/libabsl_random_internal_randen_hwaes_impl.a
-lba2pba-manager: /lib/libabsl_random_internal_randen_slow.a
-lba2pba-manager: /lib/libabsl_random_internal_platform.a
-lba2pba-manager: /lib/libabsl_random_internal_seed_material.a
-lba2pba-manager: /lib/libabsl_random_seed_gen_exception.a
-lba2pba-manager: /lib/libabsl_cord.a
-lba2pba-manager: /lib/libabsl_bad_optional_access.a
-lba2pba-manager: /lib/libabsl_cordz_info.a
-lba2pba-manager: /lib/libabsl_cord_internal.a
-lba2pba-manager: /lib/libabsl_cordz_functions.a
-lba2pba-manager: /lib/libabsl_exponential_biased.a
-lba2pba-manager: /lib/libabsl_cordz_handle.a
-lba2pba-manager: /lib/libabsl_str_format_internal.a
-lba2pba-manager: /lib/libabsl_synchronization.a
-lba2pba-manager: /lib/libabsl_stacktrace.a
-lba2pba-manager: /lib/libabsl_symbolize.a
-lba2pba-manager: /lib/libabsl_debugging_internal.a
-lba2pba-manager: /lib/libabsl_demangle_internal.a
-lba2pba-manager: /lib/libabsl_graphcycles_internal.a
-lba2pba-manager: /lib/libabsl_malloc_internal.a
-lba2pba-manager: /lib/libabsl_time.a
-lba2pba-manager: /lib/libabsl_strings.a
-lba2pba-manager: /lib/libabsl_throw_delegate.a
-lba2pba-manager: /lib/libabsl_int128.a
-lba2pba-manager: /lib/libabsl_strings_internal.a
-lba2pba-manager: /lib/libabsl_base.a
-lba2pba-manager: /lib/libabsl_spinlock_wait.a
-lba2pba-manager: /lib/libabsl_raw_logging_internal.a
-lba2pba-manager: /lib/libabsl_log_severity.a
-lba2pba-manager: /lib/libabsl_civil_time.a
-lba2pba-manager: /lib/libabsl_time_zone.a
-lba2pba-manager: /lib/libssl.a
-lba2pba-manager: /lib/libcrypto.a
+lba2pba-manager: /root/.local/lib/libgrpc++_reflection.a
+lba2pba-manager: /root/.local/lib/libgrpc++.a
+lba2pba-manager: /root/.local/lib/libprotobuf.a
+lba2pba-manager: /root/.local/lib/libgrpc.a
+lba2pba-manager: /root/.local/lib/libz.a
+lba2pba-manager: /root/.local/lib/libcares.a
+lba2pba-manager: /root/.local/lib/libaddress_sorting.a
+lba2pba-manager: /root/.local/lib/libre2.a
+lba2pba-manager: /root/.local/lib/libabsl_raw_hash_set.a
+lba2pba-manager: /root/.local/lib/libabsl_hashtablez_sampler.a
+lba2pba-manager: /root/.local/lib/libabsl_hash.a
+lba2pba-manager: /root/.local/lib/libabsl_city.a
+lba2pba-manager: /root/.local/lib/libabsl_low_level_hash.a
+lba2pba-manager: /root/.local/lib/libabsl_statusor.a
+lba2pba-manager: /root/.local/lib/libabsl_bad_variant_access.a
+lba2pba-manager: /root/.local/lib/libgpr.a
+lba2pba-manager: /root/.local/lib/libupb.a
+lba2pba-manager: /root/.local/lib/libabsl_status.a
+lba2pba-manager: /root/.local/lib/libabsl_random_distributions.a
+lba2pba-manager: /root/.local/lib/libabsl_random_seed_sequences.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_pool_urbg.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_randen.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_randen_hwaes.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_randen_hwaes_impl.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_randen_slow.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_platform.a
+lba2pba-manager: /root/.local/lib/libabsl_random_internal_seed_material.a
+lba2pba-manager: /root/.local/lib/libabsl_random_seed_gen_exception.a
+lba2pba-manager: /root/.local/lib/libabsl_cord.a
+lba2pba-manager: /root/.local/lib/libabsl_bad_optional_access.a
+lba2pba-manager: /root/.local/lib/libabsl_cordz_info.a
+lba2pba-manager: /root/.local/lib/libabsl_cord_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_cordz_functions.a
+lba2pba-manager: /root/.local/lib/libabsl_exponential_biased.a
+lba2pba-manager: /root/.local/lib/libabsl_cordz_handle.a
+lba2pba-manager: /root/.local/lib/libabsl_str_format_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_synchronization.a
+lba2pba-manager: /root/.local/lib/libabsl_stacktrace.a
+lba2pba-manager: /root/.local/lib/libabsl_symbolize.a
+lba2pba-manager: /root/.local/lib/libabsl_debugging_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_demangle_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_graphcycles_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_malloc_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_time.a
+lba2pba-manager: /root/.local/lib/libabsl_strings.a
+lba2pba-manager: /root/.local/lib/libabsl_throw_delegate.a
+lba2pba-manager: /root/.local/lib/libabsl_int128.a
+lba2pba-manager: /root/.local/lib/libabsl_strings_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_base.a
+lba2pba-manager: /root/.local/lib/libabsl_spinlock_wait.a
+lba2pba-manager: /root/.local/lib/libabsl_raw_logging_internal.a
+lba2pba-manager: /root/.local/lib/libabsl_log_severity.a
+lba2pba-manager: /root/.local/lib/libabsl_civil_time.a
+lba2pba-manager: /root/.local/lib/libabsl_time_zone.a
+lba2pba-manager: /root/.local/lib/libssl.a
+lba2pba-manager: /root/.local/lib/libcrypto.a
 lba2pba-manager: CMakeFiles/lba2pba-manager.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable lba2pba-manager"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable lba2pba-manager"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/lba2pba-manager.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -162,6 +162,6 @@ CMakeFiles/lba2pba-manager.dir/clean:
 .PHONY : CMakeFiles/lba2pba-manager.dir/clean
 
 CMakeFiles/lba2pba-manager.dir/depend:
-	cd /root/workspace/kjh/LBA2PBA-Manager/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/workspace/kjh/LBA2PBA-Manager /root/workspace/kjh/LBA2PBA-Manager /root/workspace/kjh/LBA2PBA-Manager/cmake/build /root/workspace/kjh/LBA2PBA-Manager/cmake/build /root/workspace/kjh/LBA2PBA-Manager/cmake/build/CMakeFiles/lba2pba-manager.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build /root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/lba2pba-manager.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/lba2pba-manager.dir/depend
 

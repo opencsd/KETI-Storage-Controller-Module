@@ -1,5 +1,5 @@
 #/bin/bash
-NS=default
+NS=storage-platform
 
 NAME=$(kubectl get pod -n $NS | grep -E 'csd-metric-interface' | awk '{print $1}')
 
