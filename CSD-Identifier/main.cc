@@ -14,7 +14,7 @@
 
 #include "keti_log.h"
 
-#define CSD_PROXY_PORT 40300
+#define CSD_IDENTIFIER_PORT 40300
 #define CSD_INPUT_INTERFACE_PORT 40303
 #define BUFF_SIZE 4096
 
@@ -23,7 +23,7 @@ using namespace rapidjson;
 
 void SendSnippetToCSD(string Snippet);
 
-//Run Proxy Server
+//Run Identifier Server
 int main(int argc, char** argv){
     if (argc >= 2) {
         KETILOG::SetLogLevel(stoi(argv[1]));
@@ -50,7 +50,7 @@ int main(int argc, char** argv){
 
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(CSD_PROXY_PORT);
+    address.sin_port = htons(CSD_IDENTIFIER_PORT);
 
     // Forcefully attaching socket to the port 8080
     if (bind(server_fd, (struct sockaddr *)&address,sizeof(address))<0){
@@ -63,8 +63,8 @@ int main(int argc, char** argv){
         exit(EXIT_FAILURE);
     }
 
-    std::string msg = "Run CSD Proxy Server (" +std::string(inet_ntoa(address.sin_addr))+":" +std::to_string(CSD_PROXY_PORT) +")";
-    KETILOG::WARNLOG("CSD Proxy", msg);
+    std::string msg = "CSD Identifier Server listening on (" +std::string(inet_ntoa(address.sin_addr))+":" +std::to_string(CSD_IDENTIFIER_PORT) +")";
+    KETILOG::WARNLOG("CSD Identifier", msg);
 
 	while (1){
         if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0){
@@ -72,7 +72,7 @@ int main(int argc, char** argv){
             exit(EXIT_FAILURE);
         }
 
-        KETILOG::TRACELOG("CSD Proxy", "Accepted Pushdown Snippet Request");
+        KETILOG::TRACELOG("CSD Identifier", "Accepted Pushdown Snippet Request");
 
         char socketsize[4];
         char ipaddr[100];
@@ -114,14 +114,14 @@ void SendSnippetToCSD(string pushdownSnippet){
 	document.Parse(pushdownSnippet.c_str());
 	string ipaddr = document["csdIP"].GetString();
 
-    KETILOG::DEBUGLOG("CSD Proxy", "Send Pushdown Snippet To CSD#"+ipaddr);
+    KETILOG::DEBUGLOG("CSD Identifier", "Send Pushdown Snippet To CSD#"+ipaddr);
 
     StringBuffer snippetBuf;
     Writer<StringBuffer> writer(snippetBuf);
     document["Snippet"].Accept(writer);
     string snippet = snippetBuf.GetString();
     
-    KETILOG::TRACELOG("CSD Proxy",snippet);
+    KETILOG::TRACELOG("CSD Identifier",snippet);
 
     struct sockaddr_in serv_addr;
     int sock = socket(PF_INET, SOCK_STREAM, 0);

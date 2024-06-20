@@ -57,7 +57,7 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: query-engine
+        - name: csd-identifier
           image: ketidevit2/csd-identifier:v1.0
           imagePullPolicy: Always
           volumeMounts:

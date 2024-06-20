@@ -24,7 +24,7 @@
 using namespace rapidjson;
 using namespace std;
 
-#define STORAGE_CLUSTER_MASTER_IP "10.0.4.83"
+#define STORAGE_CLUSTER_MASTER_IP "0.0.0.0"
 #define LBA2PBA_Manager_Port 40302
 #define MAXLINE 256
 #define LOGTAG "LBA2PBA Manager"
