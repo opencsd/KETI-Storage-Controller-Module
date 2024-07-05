@@ -100,6 +100,9 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 //Enable/Disable output of compile commands during generation.
 CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 
+//Value Computed by CMake.
+CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager/cmake/build/CMakeFiles/pkgRedirects
+
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
@@ -219,13 +222,13 @@ LBA2PBAManager_IS_TOP_LEVEL:STATIC=ON
 LBA2PBAManager_SOURCE_DIR:STATIC=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager
 
 //The directory containing a CMake configuration file for Protobuf.
-Protobuf_DIR:PATH=/lib/cmake/protobuf
+Protobuf_DIR:PATH=/root/.local/lib/cmake/protobuf
 
 //The directory containing a CMake configuration file for absl.
-absl_DIR:PATH=/lib/cmake/absl
+absl_DIR:PATH=/root/.local/lib/cmake/absl
 
 //The directory containing a CMake configuration file for gRPC.
-gRPC_DIR:PATH=/lib/cmake/grpc
+gRPC_DIR:PATH=/root/.local/lib/cmake/grpc
 
 //CMake built-in FindProtobuf.cmake module compatible
 protobuf_MODULE_COMPATIBLE:BOOL=OFF
@@ -250,9 +253,9 @@ CMAKE_CACHEFILE_DIR:INTERNAL=/root/workspace/keti/KETI-Storage-Platform-Module/L
 //Major version of cmake used to create the current loaded cache
 CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
-CMAKE_CACHE_MINOR_VERSION:INTERNAL=22
+CMAKE_CACHE_MINOR_VERSION:INTERNAL=25
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=1
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=3
 //ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
 CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.
@@ -295,8 +298,6 @@ CMAKE_C_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_C_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_DLLTOOL
 CMAKE_DLLTOOL-ADVANCED:INTERNAL=1
-//Path to cache edit program executable.
-CMAKE_EDIT_COMMAND:INTERNAL=/usr/local/bin/ccmake
 //Executable file format
 CMAKE_EXECUTABLE_FORMAT:INTERNAL=ELF
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS
@@ -327,8 +328,6 @@ CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=
 CMAKE_HAVE_PTHREADS_CREATE:INTERNAL=
 //Have library pthread
 CMAKE_HAVE_PTHREAD_CREATE:INTERNAL=1
-//Have include pthread.h
-CMAKE_HAVE_PTHREAD_H:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/root/workspace/keti/KETI-Storage-Platform-Module/LBA2PBA-Manager
@@ -363,7 +362,7 @@ CMAKE_RANLIB-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_READELF
 CMAKE_READELF-ADVANCED:INTERNAL=1
 //Path to CMake installation.
-CMAKE_ROOT:INTERNAL=/usr/local/share/cmake-3.22
+CMAKE_ROOT:INTERNAL=/usr/local/share/cmake-3.25
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS
 CMAKE_SHARED_LINKER_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_DEBUG
@@ -396,6 +395,8 @@ CMAKE_UNAME:INTERNAL=/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//linker supports push/pop state
+_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 //ADVANCED property for variable: protobuf_MODULE_COMPATIBLE
 protobuf_MODULE_COMPATIBLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: protobuf_VERBOSE

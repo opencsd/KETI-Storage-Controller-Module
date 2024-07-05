@@ -12,7 +12,7 @@ import (
 	
 	//grpc 관련
 	"google.golang.org/grpc"
-	pb "opencsd/src/config"
+	pb "metric-interface/src/config"
 )	
 
 // Metric 구조체 정의

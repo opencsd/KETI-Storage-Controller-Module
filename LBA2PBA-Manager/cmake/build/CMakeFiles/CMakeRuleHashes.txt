@@ -1,2 +1,2 @@
 # Hashes of file build rules.
-c7d8e41a89ec7b2d94d08eab7c95aa66 lba2pba.pb.cc
+2f98d7fd6bacfa932fd3725f8d169d03 lba2pba.pb.cc
