@@ -90,8 +90,8 @@ PBAResponse RunLBA2PBA(LBARequest request){
 				Chunks chunks;	
 
 				for(const auto lba: table_block_chunk.second.chunks()){		
-					// std::cout << "Offset : " << sst.second.chunks(j).offset() << std::endl;
-					// std::cout << "Length : " << sst.second.chunks(j).length() << std::endl;
+					// std::cout << "Offset : " << table_block_chunk.second.chunks(j).offset() << std::endl;
+					// std::cout << "Length : " << table_block_chunk.second.chunks(j).length() << std::endl;
 
 					flag = 0;
 					lba_offset = lba.offset();
@@ -136,27 +136,27 @@ class StorageManagerServiceImpl final : public StorageManager::Service {
   Status RequestPBA(ServerContext* context, const LBARequest* request, PBAResponse* response) override {
     KETILOG("LBA2PBA Manager", "# called pba request");
 	
-	{
+	// {
 	// std::string test_json;
 	// google::protobuf::util::JsonPrintOptions options;
 	// options.always_print_primitive_fields = true;
 	// options.always_print_enums_as_ints = true;
 	// google::protobuf::util::MessageToJsonString(*request,&test_json,options);
 	// std::cout << test_json << std::endl << std::endl;
-	}
+	// }
 
 	PBAResponse res;
 	res = RunLBA2PBA(*request);
 	response->CopyFrom(res);
 
-	{
+	// {
 	// std::string test_json;
 	// google::protobuf::util::JsonPrintOptions options;
 	// options.always_print_primitive_fields = true;
 	// options.always_print_enums_as_ints = true;
 	// google::protobuf::util::MessageToJsonString(*response,&test_json,options);
 	// std::cout << test_json << std::endl << std::endl;
-	}
+	// }
 
     return Status::OK;
   }

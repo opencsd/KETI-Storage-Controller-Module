@@ -22,7 +22,7 @@ message Chunks {
 }
 
 message TableBlock {
-  map<int32, Chunks> table_block_chunks = 2;
+  map<int32, Chunks> table_block_chunks = 1;
 }
 
 message LBARequest {

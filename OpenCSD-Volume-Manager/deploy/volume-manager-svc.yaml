@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: opencsd-volume-manager
+  namespace: storage-controller
+  labels:
+    name: opencsd-volume-manager
+    namespace: storage-controller
+spec:
+  type: NodePort
+  ports:
+    - port: 40306
+      targetPort: 40306
+      nodePort: 30306
+      protocol: TCP
+  selector:
+    name: opencsd-volume-manager
+    namespace: storage-controller

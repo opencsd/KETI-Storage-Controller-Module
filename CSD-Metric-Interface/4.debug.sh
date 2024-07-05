@@ -1,13 +1,12 @@
-#/bin/bash
-NS=storage-platform
+#!/bin/bash 
 
-NAME=$(kubectl get pod -n $NS | grep -E 'csd-metric-interface' | awk '{print $1}')
-
-#echo "Exec Into '"$NAME"'"
-
-#kubectl exec -it $NAME -n $NS /bin/sh
-
-for ((;;))
+while [ -z $PODNAME ]
 do
-kubectl logs -f -n $NS $NAME --tail 10
+    PODNAME=`kubectl get po -o=name -A --field-selector=status.phase=Running | grep csd-metric-interface`
+    PODNAME="${PODNAME:4}"
 done
+
+kubectl logs -f $PODNAME -n storage-platform
+
+
+

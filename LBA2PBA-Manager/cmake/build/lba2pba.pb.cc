@@ -370,7 +370,7 @@ const char descriptor_table_protodef_lba2pba_2eproto[] PROTOBUF_SECTION_VARIABLE
   "\n\005Chunk\022\016\n\006offset\030\001 \001(\003\022\016\n\006length\030\002 \001(\005\""
   "6\n\006Chunks\022,\n\006chunks\030\001 \003(\0132\034.StorageEngin"
   "eInstance.Chunk\"\271\001\n\nTableBlock\022S\n\022table_"
-  "block_chunks\030\002 \003(\01327.StorageEngineInstan"
+  "block_chunks\030\001 \003(\01327.StorageEngineInstan"
   "ce.TableBlock.TableBlockChunksEntry\032V\n\025T"
   "ableBlockChunksEntry\022\013\n\003key\030\001 \001(\005\022,\n\005val"
   "ue\030\002 \001(\0132\035.StorageEngineInstance.Chunks:"
@@ -900,16 +900,16 @@ const char* TableBlock::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
     uint32_t tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+      // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(&table_block_chunks_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -942,7 +942,7 @@ uint8_t* TableBlock::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 2;
+  // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 1;
   if (!this->_internal_table_block_chunks().empty()) {
     typedef ::PROTOBUF_NAMESPACE_ID::Map< int32_t, ::StorageEngineInstance::Chunks >::const_pointer
         ConstPtr;
@@ -962,13 +962,13 @@ uint8_t* TableBlock::_InternalSerialize(
       }
       ::std::sort(&items[0], &items[static_cast<ptrdiff_t>(n)], Less());
       for (size_type i = 0; i < n; i++) {
-        target = TableBlock_TableBlockChunksEntry_DoNotUse::Funcs::InternalSerialize(2, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
+        target = TableBlock_TableBlockChunksEntry_DoNotUse::Funcs::InternalSerialize(1, items[static_cast<ptrdiff_t>(i)].second->first, items[static_cast<ptrdiff_t>(i)].second->second, target, stream);
       }
     } else {
       for (::PROTOBUF_NAMESPACE_ID::Map< int32_t, ::StorageEngineInstance::Chunks >::const_iterator
           it = this->_internal_table_block_chunks().begin();
           it != this->_internal_table_block_chunks().end(); ++it) {
-        target = TableBlock_TableBlockChunksEntry_DoNotUse::Funcs::InternalSerialize(2, it->first, it->second, target, stream);
+        target = TableBlock_TableBlockChunksEntry_DoNotUse::Funcs::InternalSerialize(1, it->first, it->second, target, stream);
       }
     }
   }
@@ -989,7 +989,7 @@ size_t TableBlock::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 2;
+  // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 1;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_table_block_chunks_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< int32_t, ::StorageEngineInstance::Chunks >::const_iterator

@@ -582,9 +582,9 @@ class TableBlock final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kTableBlockChunksFieldNumber = 2,
+    kTableBlockChunksFieldNumber = 1,
   };
-  // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 2;
+  // map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 1;
   int table_block_chunks_size() const;
   private:
   int _internal_table_block_chunks_size() const;
@@ -1977,7 +1977,7 @@ Chunks::chunks() const {
 
 // TableBlock
 
-// map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 2;
+// map<int32, .StorageEngineInstance.Chunks> table_block_chunks = 1;
 inline int TableBlock::_internal_table_block_chunks_size() const {
   return table_block_chunks_.size();
 }
