@@ -16,6 +16,7 @@
 
 #define CSD_IDENTIFIER_PORT 40300
 #define CSD_INPUT_INTERFACE_PORT 40303
+#define T_CSD_INPUT_INTERFACE_PORT 40308
 #define BUFF_SIZE 4096
 
 using namespace std;
@@ -112,29 +113,56 @@ void SendSnippetToCSD(string pushdownSnippet){
     rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
 	
 	document.Parse(pushdownSnippet.c_str());
-	string ipaddr = document["csdIP"].GetString();
 
-    KETILOG::DEBUGLOG("CSD Identifier", "Send Pushdown Snippet To CSD#"+ipaddr);
+    if(document.HasMember("tmax")){
+        string ipaddr = document["tmax"].GetString();
 
-    StringBuffer snippetBuf;
-    Writer<StringBuffer> writer(snippetBuf);
-    document["Snippet"].Accept(writer);
-    string snippet = snippetBuf.GetString();
-    
-    KETILOG::TRACELOG("CSD Identifier",snippet);
+        KETILOG::DEBUGLOG("CSD Identifier", "<T> send tmax snippet to csd#"+ipaddr);
 
-    struct sockaddr_in serv_addr;
-    int sock = socket(PF_INET, SOCK_STREAM, 0);
-    memset(&serv_addr, 0, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = inet_addr(ipaddr.c_str());
-    serv_addr.sin_port = htons(CSD_INPUT_INTERFACE_PORT);
+        struct sockaddr_in serv_addr;
+        int sock = socket(PF_INET, SOCK_STREAM, 0);
+        memset(&serv_addr, 0, sizeof(serv_addr));
+        serv_addr.sin_family = AF_INET;
+        serv_addr.sin_addr.s_addr = inet_addr(ipaddr.c_str());
+        serv_addr.sin_port = htons(T_CSD_INPUT_INTERFACE_PORT);
 
-    connect(sock,(struct sockaddr*)&serv_addr,sizeof(serv_addr));
+        connect(sock,(struct sockaddr*)&serv_addr,sizeof(serv_addr));
 
-    size_t len = strlen(snippet.c_str());
-    send(sock,&len,sizeof(len),0);
-    send(sock,(char*)snippet.c_str(),strlen(snippet.c_str()),0);
-    
-    close(sock);
+        // size_t len = strlen(snippet.c_str());
+        // send(sock,&len,sizeof(len),0);
+
+        cout << pushdownSnippet.c_str() << endl;
+
+        send(sock,(char*)pushdownSnippet.c_str(),strlen(pushdownSnippet.c_str()),0);
+        
+        close(sock);
+    }else{
+        string ipaddr = document["csdIP"].GetString();
+
+        KETILOG::DEBUGLOG("CSD Identifier", "Send Pushdown Snippet To CSD#"+ipaddr);
+
+        StringBuffer snippetBuf;
+        Writer<StringBuffer> writer(snippetBuf);
+        document["Snippet"].Accept(writer);
+        string snippet = snippetBuf.GetString();
+        
+        KETILOG::TRACELOG("CSD Identifier",snippet);
+
+        struct sockaddr_in serv_addr;
+        int sock = socket(PF_INET, SOCK_STREAM, 0);
+        memset(&serv_addr, 0, sizeof(serv_addr));
+        serv_addr.sin_family = AF_INET;
+        serv_addr.sin_addr.s_addr = inet_addr(ipaddr.c_str());
+        serv_addr.sin_port = htons(CSD_INPUT_INTERFACE_PORT);
+
+        connect(sock,(struct sockaddr*)&serv_addr,sizeof(serv_addr));
+
+        size_t len = strlen(snippet.c_str());
+        send(sock,&len,sizeof(len),0);
+        send(sock,(char*)snippet.c_str(),strlen(snippet.c_str()),0);
+        
+        close(sock);
+    }
+
+	
 }

@@ -2,7 +2,7 @@ registry="ketidevit2"
 image_name="csd-identifier"
 version="v1.0"
 
-./build.sh
+./0.binary-build.sh
 
 # make image
 docker build -t $image_name:$version . && \
