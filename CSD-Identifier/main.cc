@@ -28,6 +28,25 @@ void SendSnippetToCSD(string Snippet);
 int main(int argc, char** argv){
     if (argc >= 2) {
         KETILOG::SetLogLevel(stoi(argv[1]));
+    }else if (getenv("LOG_LEVEL") != NULL){
+        string env = getenv("LOG_LEVEL");
+        int log_level;
+        if (env == "TRACE"){
+            log_level = DEBUGG_LEVEL::TRACE;
+        }else if (env == "DEBUG"){
+            log_level = DEBUGG_LEVEL::DEBUG;
+        }else if (env == "INFO"){
+            log_level = DEBUGG_LEVEL::INFO;
+        }else if (env == "WARN"){
+            log_level = DEBUGG_LEVEL::WARN;
+        }else if (env == "ERROR"){
+            log_level = DEBUGG_LEVEL::ERROR;
+        }else if (env == "FATAL"){
+            log_level = DEBUGG_LEVEL::FATAL;
+        }else{
+            log_level = DEBUGG_LEVEL::INFO;
+        }
+        KETILOG::SetLogLevel(log_level);
     }else{
         KETILOG::SetDefaultLogLevel();
     }
