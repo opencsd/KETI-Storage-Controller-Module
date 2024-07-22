@@ -9,7 +9,6 @@ package StorageEngineInstance;
 
 service StorageManager {
   rpc RequestPBA (LBARequest) returns (PBAResponse) {}
-  rpc RequestVolumeAllocation (VolumeRequest) returns (AllocatedVolumeInfo) {}
 }
 
 message Chunk {
@@ -38,18 +37,4 @@ message PBAResponse {
     map<string, TableBlock> table_pba_block = 1;
   }
   map<string,SST> sst_list = 1;
-}
-
-message VolumeRequest{  
-  float capacity  = 1;
-  int32 using_csd = 2;
-}
-
-message AllocatedVolumeInfo {
-  message Allocation {
-    string csd_id = 1;
-    string capacity = 2;
-    string partition_name = 3;
-  }
-  map<string,Allocation> csd_allocation_map = 1;
 }
