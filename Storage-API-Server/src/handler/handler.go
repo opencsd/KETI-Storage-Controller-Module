@@ -5,6 +5,8 @@ import (
 	"log"
 	"encoding/json"
 	"fmt"
+	"bufio"
+	"os/exec"
 
 	"github.com/influxdata/influxdb/client/v2"
 	_ "github.com/go-sql-driver/mysql"
@@ -19,6 +21,20 @@ var Influx_db client.HTTPClient
 var(
 	INFLUX_DB = "opencsd_management_platform"
 )
+
+//0
+func StorageVolumeInfo(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("[OpenCSD Storage API Server] StorageVolumeInfo Completed\n"))
+}
+
+func StorageVolumeAllocate(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("[OpenCSD Storage API Server] StorageVolumeAllocate Completed\n"))
+}
+
+func StorageVolumeDeallocate(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("[OpenCSD Storage API Server] StorageVolumeDeallocate Completed\n"))
+}
+
 
 //1
 func ClusterNodeListHandler(w http.ResponseWriter, r *http.Request) {
@@ -683,4 +699,32 @@ func DiskInfoHandler(w http.ResponseWriter, r *http.Request) {
 	result_to_json, _ = json.Marshal(disk_metric)
 	fmt.Println("[11] : ",string(result_to_json))
 	w.Write([]byte(string(result_to_json)+"\n"))
+}
+
+func CmdExec(cmdStr string) error{
+	cmd := exec.Command("bash", "-c", cmdStr)
+	stdoutReader, _ := cmd.StdoutPipe()
+	stdoutScanner := bufio.NewScanner(stdoutReader)
+	go func() {
+		for stdoutScanner.Scan() {
+			fmt.Println(stdoutScanner.Text())
+		}
+	}()
+	stderrReader, _ := cmd.StderrPipe()
+	stderrScanner := bufio.NewScanner(stderrReader)
+	go func() {
+		for stderrScanner.Scan() {
+			fmt.Println(stderrScanner.Text())
+		}
+	}()
+	err := cmd.Start()
+	if err != nil {
+		fmt.Printf("Error : %v \n", err)
+	}
+	err = cmd.Wait()
+	if err != nil {
+		fmt.Printf("Error: %v \n", err)
+	}
+
+	return nil
 }

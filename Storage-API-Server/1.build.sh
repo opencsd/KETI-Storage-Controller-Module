@@ -1,6 +1,6 @@
 #!/bin/bash
 docker_id="ketidevit2"
-controller_name="storage-data-apiserver"
+controller_name="opencsd-storage-api-server"
 
 export GO111MODULE=on
 go mod vendor

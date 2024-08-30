@@ -59,6 +59,11 @@ func main() {
 
 	//handler
 
+	//0. VolumeAllocation
+	http.HandleFunc("/volume/info", sh.StorageVolumeInfo)
+	http.HandleFunc("/volume/allocate", sh.StorageVolumeAllocate)
+	http.HandleFunc("/volume/deallocate", sh.StorageVolumeDeallocate)
+
 	//1. ClusterNodeList
 	http.HandleFunc("/dashboard/cluster/nodelist", sh.ClusterNodeListHandler)
 	//2. NodeStorageList
@@ -84,5 +89,5 @@ func main() {
 	//11. CSDDiskInfo
 	http.HandleFunc("/storagepage/storage/csddiskinfo", sh.DiskInfoHandler)
 
-	http.ListenAndServe(":8000", nil)
+	http.ListenAndServe(":40306", nil)
 }
