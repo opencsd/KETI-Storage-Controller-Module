@@ -147,8 +147,8 @@ void SendSnippetToCSD(string pushdownSnippet){
 
         connect(sock,(struct sockaddr*)&serv_addr,sizeof(serv_addr));
 
-        // size_t len = strlen(snippet.c_str());
-        // send(sock,&len,sizeof(len),0);
+        size_t len = strlen(pushdownSnippet.c_str());
+        send(sock,&len,sizeof(len),0);
 
         cout << pushdownSnippet.c_str() << endl;
 
