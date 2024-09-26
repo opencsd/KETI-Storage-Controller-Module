@@ -133,8 +133,8 @@ void SendSnippetToCSD(string pushdownSnippet){
 	
 	document.Parse(pushdownSnippet.c_str());
 
-    if(document.HasMember("tmax")){
-        string ipaddr = document["tmax"].GetString();
+    if(document.HasMember("type") && document["type"] == 15){ // <T>
+        string ipaddr = document["csdIP"].GetString();
 
         KETILOG::DEBUGLOG("CSD Identifier", "<T> send tmax snippet to csd#"+ipaddr);
 
@@ -156,13 +156,13 @@ void SendSnippetToCSD(string pushdownSnippet){
         
         close(sock);
     }else{
-        string ipaddr = document["csdIP"].GetString();
+        string ipaddr = document["csd_ip"].GetString();
 
         KETILOG::DEBUGLOG("CSD Identifier", "Send Pushdown Snippet To CSD#"+ipaddr);
 
         StringBuffer snippetBuf;
         Writer<StringBuffer> writer(snippetBuf);
-        document["Snippet"].Accept(writer);
+        document.Accept(writer);
         string snippet = snippetBuf.GetString();
         
         KETILOG::TRACELOG("CSD Identifier",snippet);
