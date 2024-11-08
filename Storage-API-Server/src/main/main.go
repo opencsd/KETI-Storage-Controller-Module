@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"fmt"
 	"os"
-	"log"
+	// "log"
 
-	"github.com/influxdata/influxdb/client/v2"
+	// "github.com/influxdata/influxdb/client/v2"
 	_ "github.com/go-sql-driver/mysql"
-	"database/sql"
+	// "database/sql"
 
 	sh "api-server/src/handler"
 )
@@ -30,32 +30,32 @@ var(
 
 func main() {
 	fmt.Println("[Storage API Server] Running..")
-	var err error;
+	// var err error;
 
-	//mysql Connection
-	sh.Mysql_db, err = sql.Open("mysql", MYSQL_USERNAME+":"+MYSQL_PASSWORD+"@tcp("+MYSQL_IP+":"+MYSQL_PORT+")/"+MYSQL_DB)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer sh.Mysql_db.Close()
+	// //mysql Connection
+	// sh.Mysql_db, err = sql.Open("mysql", MYSQL_USERNAME+":"+MYSQL_PASSWORD+"@tcp("+MYSQL_IP+":"+MYSQL_PORT+")/"+MYSQL_DB)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// defer sh.Mysql_db.Close()
 
-	err = sh.Mysql_db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("*** Connected to MySQL Database")
+	// err = sh.Mysql_db.Ping()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Println("*** Connected to MySQL Database")
 
-	//influx Connection
-	sh.Influx_db, err = client.NewHTTPClient(client.HTTPConfig{
-		Addr: "http://" + INFLUX_IP + ":" + INFLUX_PORT, 
-		Username: INFLUX_USERNAME,
-		Password: INFLUX_PASSWORD,
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer sh.Influx_db.Close()
-	fmt.Println("*** Connected to Influx Database")
+	// //influx Connection
+	// sh.Influx_db, err = client.NewHTTPClient(client.HTTPConfig{
+	// 	Addr: "http://" + INFLUX_IP + ":" + INFLUX_PORT, 
+	// 	Username: INFLUX_USERNAME,
+	// 	Password: INFLUX_PASSWORD,
+	// })
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// defer sh.Influx_db.Close()
+	// fmt.Println("*** Connected to Influx Database")
 
 	//handler
 

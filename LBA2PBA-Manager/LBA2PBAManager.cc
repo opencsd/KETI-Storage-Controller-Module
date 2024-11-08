@@ -30,9 +30,10 @@ PBAResponse RunLBA2PBA(LBARequest request){
 			//do hdparm
 			char cmd[256];
 			string csd_id = sst.second.csd_list(i);
-			string fdName = "newport_" + csd_id; 
+			// string fdName = "newport_" + csd_id; 
+			sprintf(cmd, "filefrag -e /mnt/gluster/nvme%s/sst/tpch_100_index/%s 2> /dev/null", csd_id.c_str(), sst_name.c_str());
 
-			sprintf(cmd,"filefrag -e /mnt/%s/sst/%s 2> /dev/null",fdName.c_str(),sst_name.c_str());
+			// sprintf(cmd,"filefrag -e /mnt/%s/sst/%s 2> /dev/null",fdName.c_str(),sst_name.c_str());
 			cout << cmd << endl;//file frag 실행
 			KETILOG("LBA2PBA Manager","CSD ID: "+csd_id);
 			
