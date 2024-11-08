@@ -134,7 +134,7 @@ void SendSnippetToCSD(string pushdownSnippet){
 	document.Parse(pushdownSnippet.c_str());
 
     if(document.HasMember("type") && document["type"] == 15){ // <T>
-        string ipaddr = document["csdIP"].GetString();
+        string ipaddr = document["csd_ip"].GetString();
 
         KETILOG::DEBUGLOG("CSD Identifier", "<T> send tmax snippet to csd#"+ipaddr);
 
