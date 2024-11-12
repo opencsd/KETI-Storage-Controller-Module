@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi7/ubi-minimal:latest
+FROM ubuntu:18.04
 
 ENV OPERATOR=/usr/local/bin/storage-metric-collector \
     USER_UID=root \

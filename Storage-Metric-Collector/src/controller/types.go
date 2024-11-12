@@ -11,20 +11,36 @@ import (
 	"strings"
 	"sync"
 
+	client "github.com/influxdata/influxdb/client/v2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
 
 var (
-	STORAGE_METRIC_COLLECTOR_PORT string
-	STORAGE_METRIC_DB_PORT        string
+	STORAGE_METRIC_COLLECTOR_PORT_TCP  = os.Getenv("STORAGE_METRIC_COLLECTOR_PORT_TCP")
+	STORAGE_METRIC_COLLECTOR_PORT_HTTP = os.Getenv("STORAGE_METRIC_COLLECTOR_PORT_HTTP")
+)
+
+var (
+	INFLUX_CLIENT   client.HTTPClient
+	INFLUX_PORT     = os.Getenv("INFLUXDB_PORT")
+	INFLUX_USERNAME = os.Getenv("INFLUXDB_USER")
+	INFLUX_PASSWORD = os.Getenv("INFLUXDB_PASSWORD")
+	INFLUX_DB       = os.Getenv("INFLUXDB_DB")
 )
 
 const (
-	SSD     = 0
-	CSD     = 1
-	UNKNOWN = 2
+	SSD     = "SSD"
+	CSD     = "CSD"
+	CROSS   = "CROSS"
+	UNKNOWN = "UNKOWN"
+)
+
+const (
+	READY    = "READY"
+	NOTREADY = "NOTREADY"
+	BROKEN   = "BROKEN"
 )
 
 type MetricCollector struct {
@@ -32,7 +48,7 @@ type MetricCollector struct {
 	NodeMetric *NodeMetric
 	CsdMetrics map[string]*CsdMetric
 	SsdMetrics map[string]*Storage
-	NodeType   int
+	NodeType   string
 }
 
 func NewMetricCollector() *MetricCollector {
@@ -64,11 +80,12 @@ func NewMetricCollector() *MetricCollector {
 				fmt.Println("Get error :", err)
 			} else {
 				labelValue = node.Labels["type"]
+
 			}
 		}
 	}
 
-	var nodeType int
+	var nodeType string
 	switch labelValue {
 	case "ssd":
 		nodeType = SSD
@@ -88,33 +105,91 @@ func NewMetricCollector() *MetricCollector {
 }
 
 func (metricCollector *MetricCollector) InitMetricCollector() {
-	cmd := exec.Command("lsblk", "-o", "NAME,SIZE,MOUNTPOINT")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err := cmd.Run()
-	if err != nil {
-		return
-	}
-
-	lines := strings.Split(out.String(), "\n")
-
-	for _, line := range lines[1:] {
-		fields := strings.Fields(line)
-		if len(fields) < 2 {
-			continue
+	if metricCollector.NodeType == SSD {
+		cmd := exec.Command("lsblk", "-o", "NAME,SIZE,MOUNTPOINT")
+		var out bytes.Buffer
+		cmd.Stdout = &out
+		err := cmd.Run()
+		if err != nil {
+			fmt.Println("lsblk error: ", err)
+			return
 		}
-		name := fields[0]
-		size := fields[1]
 
-		if strings.HasPrefix(name, "sd") {
-			totalSize := convertSizeToMB(size)
-			disk := &Storage{
-				Total:       totalSize,
-				Used:        0,
-				Utilization: 0,
+		lines := strings.Split(out.String(), "\n")
+
+		for _, line := range lines[1:] {
+			fields := strings.Fields(line)
+			if len(fields) < 2 {
+				continue
 			}
-			metricCollector.SsdMetrics[name] = disk
+			name := fields[0]
+			size := fields[1]
+
+			if strings.HasPrefix(name, "sd") {
+				totalSize := convertSizeToMB(size)
+				disk := &Storage{
+					Total:       totalSize,
+					Used:        0,
+					Utilization: 0,
+				}
+				metricCollector.SsdMetrics[name] = disk
+			}
 		}
+	} else if metricCollector.NodeType == CSD {
+		cmd := exec.Command("lsblk", "-o", "NAME,MODEL")
+		output, err := cmd.Output()
+		if err != nil {
+			fmt.Println("Error executing lsblk command:", err)
+			return
+		}
+
+		scanner := bufio.NewScanner(bytes.NewReader(output))
+		ngdDevices := []string{}
+
+		for scanner.Scan() {
+			line := scanner.Text()
+
+			if strings.HasPrefix(line, "NAME") {
+				continue
+			}
+
+			fields := strings.Fields(line)
+			if len(fields) > 1 && strings.HasPrefix(fields[1], "NGD") {
+				deviceName := fields[0]
+				deviceName = deviceName[:len(deviceName)-2]
+				ngdDevices = append(ngdDevices, deviceName)
+			}
+		}
+
+		for _, device := range ngdDevices {
+			metricCollector.CsdMetrics[device] = NewCsdMetric("NOTREADY")
+		}
+
+		if len(metricCollector.CsdMetrics) == 0 {
+			cmd := exec.Command("sh", "-c", "lspci | grep NGD")
+			var out bytes.Buffer
+			cmd.Stdout = &out
+			err := cmd.Run()
+			if err != nil {
+				fmt.Println("Error executing command:", err)
+				return
+			}
+
+			lines := strings.Split(out.String(), "\n")
+			count := 0
+			for _, line := range lines {
+				if strings.TrimSpace(line) != "" {
+					count++
+				}
+			}
+
+			for i := 0; i < count; i++ {
+				device := "nvme" + string(i)
+				metricCollector.CsdMetrics[device] = NewCsdMetric("BROKEN")
+			}
+		}
+	} else {
+		fmt.Println("[error] not supported node type: ", metricCollector.NodeType)
 	}
 }
 
@@ -377,10 +452,11 @@ type CsdMetric struct {
 	NetworkBandwidth     int64   `json:"networkBandwidth"`
 	CsdMetricScore       float64 `json:"csdMetricScore"`
 	CsdWorkingBlockCount int64   `json:"csdWorkingBlockCount"`
+	Status               string  `json:"status"`
 	// Power		  int     `json:"powerUsage"`
 }
 
-func NewCsdMetric() *CsdMetric {
+func NewCsdMetric(status string) *CsdMetric {
 	return &CsdMetric{
 		IP:                   "",
 		CpuTotal:             0,
@@ -397,6 +473,7 @@ func NewCsdMetric() *CsdMetric {
 		NetworkBandwidth:     0,
 		CsdMetricScore:       0,
 		CsdWorkingBlockCount: 0,
+		Status:               status,
 	}
 }
 

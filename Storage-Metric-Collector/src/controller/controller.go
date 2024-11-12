@@ -6,18 +6,20 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
+
+	// influxdb v1 client
+	client "github.com/influxdata/influxdb/client/v2"
 )
 
 func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
-	defer conn.Close()
-
-	buffer := make([]byte, 4096) // 4096바이트 버퍼 생성
-	n, err := conn.Read(buffer)  // 데이터 읽기
+	buffer := make([]byte, 4096)
+	n, err := conn.Read(buffer)
 	if err != nil {
 		fmt.Println("Error reading data:", err)
 		return
@@ -26,7 +28,6 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 	var csdMetric *CsdMetric
 
 	message := string(buffer[:n])
-	fmt.Printf("Received JSON Data: %s\n", message)
 	err = json.Unmarshal([]byte(message), &csdMetric)
 	if err != nil {
 		fmt.Println("Error decoding JSON:", err)
@@ -36,11 +37,9 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 	csdID := extractCSDId(csdMetric.IP)
 	csdName := "nvme" + csdID
 
-	if csdMetric, exists := storageMetricCollector.CsdMetrics[csdName]; exists {
-		csdMetric.mutex.Lock()
-		defer csdMetric.mutex.Unlock()
-	}
-
+	csdMetric.mutex.Lock()
+	defer csdMetric.mutex.Unlock()
+	csdMetric.Status = "READY"
 	storageMetricCollector.CsdMetrics[csdName] = csdMetric
 }
 
@@ -71,7 +70,7 @@ func (storageMetricCollector *MetricCollector) RunMetricCollector() {
 }
 
 func (storageMetricCollector *MetricCollector) updateCpu() {
-	file, err := os.Open("/proc/stat" /*"/metric/proc/stat"*/)
+	file, err := os.Open("/proc/stat")
 	if err != nil {
 		fmt.Println("cannot open file: ", err)
 	} else {
@@ -102,7 +101,7 @@ func (storageMetricCollector *MetricCollector) updateCpu() {
 }
 
 func (storageMetricCollector *MetricCollector) updateMemory() {
-	file, err := os.Open("/proc/meminfo" /*"/metric/proc/meminfo"*/)
+	file, err := os.Open("/proc/meminfo")
 	if err != nil {
 		fmt.Println("cannot open file: ", err)
 	} else {
@@ -143,7 +142,7 @@ func (storageMetricCollector *MetricCollector) updateMemory() {
 }
 
 func (storageMetricCollector *MetricCollector) updateNetwork() {
-	statisticsFilePath := "/sys/class/net/eno1/statistics/" //"/metric/sys/class/net/eno1/statistics/"
+	statisticsFilePath := "/sys/class/net/eno1/statistics/"
 
 	rxBytesFieldName := statisticsFilePath + "rx_bytes"
 	txBytesFieldName := statisticsFilePath + "tx_bytes"
@@ -202,10 +201,8 @@ func (storageMetricCollector *MetricCollector) updateStorage() {
 }
 
 func (storageMetricCollector *MetricCollector) updatePower() {
-	powerFilePath1 := "intel-rapl:0"
-	powerFilePath2 := "intel-rapl:1"
-	energyFieldName1 := "/sys/class/powercap/" + powerFilePath1 + "/energy_uj"
-	energyFieldName2 := "/sys/class/powercap/" + powerFilePath2 + "/energy_uj"
+	energyFieldName1 := "/sys/class/powercap/intel-rapl:0/energy_uj"
+	energyFieldName2 := "/sys/class/powercap/intel-rapl:1/energy_uj"
 
 	currentEnergyStr1, err := readStatisticsField(energyFieldName1)
 	if err != nil {
@@ -222,8 +219,10 @@ func (storageMetricCollector *MetricCollector) updatePower() {
 	currentEnergy1, _ := strconv.ParseInt(currentEnergyStr1, 10, 64)
 	currentEnergy2, _ := strconv.ParseInt(currentEnergyStr2, 10, 64)
 
-	storageMetricCollector.NodeMetric.Power.Used = (currentEnergy1 - storageMetricCollector.NodeMetric.Power.Energy1) + (currentEnergy2 - storageMetricCollector.NodeMetric.Power.Energy2)
+	energyDiffJ1 := float64(currentEnergy1-storageMetricCollector.NodeMetric.Power.Energy1) / 1e6
+	energyDiffJ2 := float64(currentEnergy2-storageMetricCollector.NodeMetric.Power.Energy2) / 1e6
 
+	storageMetricCollector.NodeMetric.Power.Used = int64((energyDiffJ1 + energyDiffJ2) / 1.0)
 	storageMetricCollector.NodeMetric.Power.Energy1 = currentEnergy1
 	storageMetricCollector.NodeMetric.Power.Energy2 = currentEnergy2
 }
@@ -247,36 +246,183 @@ func (storageMetricCollector *MetricCollector) updateSsdMetric() {
 }
 
 func (storageMetricCollector *MetricCollector) saveNodeMetric() {
-	//influxdb에 저장
-	fmt.Println("save node metric")
+	// fmt.Printf("%+v\n", storageMetricCollector.NodeMetric)
 
-	fmt.Printf("%+v\n", storageMetricCollector.NodeMetric)
+	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  INFLUX_DB,
+		Precision: "s",
+	})
+	if err != nil {
+		fmt.Println("DB NewBatchPoints Error:", err)
+		return
+	}
+
+	var INFLUXDB_NODE_MEASUREMENT = "node_metric"
+
+	fields := map[string]interface{}{
+		"node_name": storageMetricCollector.NodeName,
+
+		"cpu_total":       storageMetricCollector.NodeMetric.Cpu.Total,
+		"cpu_usage":       storageMetricCollector.NodeMetric.Cpu.Used,
+		"cpu_utilization": storageMetricCollector.NodeMetric.Cpu.Utilization,
+
+		"memory_total":       storageMetricCollector.NodeMetric.Memory.Total,
+		"memory_usage":       storageMetricCollector.NodeMetric.Memory.Used,
+		"memory_utilization": storageMetricCollector.NodeMetric.Memory.Utilization,
+
+		"disk_total":       storageMetricCollector.NodeMetric.Storage.Total,
+		"disk_usage":       storageMetricCollector.NodeMetric.Storage.Used,
+		"disk_utilization": storageMetricCollector.NodeMetric.Storage.Utilization,
+
+		"network_bandwidth": storageMetricCollector.NodeMetric.Network.Bandwidth,
+		"network_rx_data":   storageMetricCollector.NodeMetric.Network.RxData,
+		"network_tx_data":   storageMetricCollector.NodeMetric.Network.TxData,
+
+		"power_usage": storageMetricCollector.NodeMetric.Power.Used,
+	}
+
+	pt, err := client.NewPoint(INFLUXDB_NODE_MEASUREMENT, nil, fields, time.Now())
+	if err != nil {
+		fmt.Println("DB NewPoint Error:", err)
+		return
+	}
+	bp.AddPoint(pt)
+
+	err = INFLUX_CLIENT.Write(bp)
+	if err != nil {
+		fmt.Println("DB Write Error:", err)
+		return
+	}
 
 	for key, metric := range storageMetricCollector.SsdMetrics {
-		fmt.Println("ssd : ", key, "metric")
-		fmt.Printf("%+v\n", metric)
+		// fmt.Println("ssd : ", key, "metric")
+		// fmt.Printf("%+v\n", metric)
+
+		var INFLUXDB_SSD_MEASUREMENT = "ssd_metric_" + key
+
+		fields := map[string]interface{}{
+			"id": key,
+
+			"disk_total":       metric.Total,
+			"disk_usage":       metric.Used,
+			"disk_utilization": metric.Utilization,
+		}
+
+		pt, err := client.NewPoint(INFLUXDB_SSD_MEASUREMENT, nil, fields, time.Now())
+		if err != nil {
+			fmt.Println("DB NewPoint Error:", err)
+			return
+		}
+		bp.AddPoint(pt)
+
+		err = INFLUX_CLIENT.Write(bp)
+		if err != nil {
+			fmt.Println("DB Write Error:", err)
+			return
+		}
 	}
 }
 
 func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
-	//influxdb에 저장
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 
 	for {
 		select {
 		case <-ticker.C:
-			fmt.Println("save csd metric")
-
 			for key, metric := range storageMetricCollector.CsdMetrics {
 				metric.mutex.Lock()
 
-				fmt.Println("csd : ", key, "metric")
-				fmt.Printf("%+v\n", metric)
+				// fmt.Println("csd : ", key)
+				// fmt.Printf("%+v\n", metric)
+
+				bp, err := client.NewBatchPoints(client.BatchPointsConfig{
+					Database:  INFLUX_DB,
+					Precision: "s",
+				})
+				if err != nil {
+					fmt.Println("DB NewBatchPoints Error:", err)
+					metric.mutex.Unlock()
+					break
+				}
+
+				var INFLUXDB_CSD_MEASUREMENT = "csd_metric_" + key
+
+				fields := map[string]interface{}{
+					"id": key,
+
+					"cpu_total":       metric.CpuTotal,
+					"cpu_usage":       metric.CpuUsed,
+					"cpu_utilization": metric.CpuUtilization,
+
+					"memory_total":       metric.MemoryTotal,
+					"memory_usage":       metric.MemoryUsed,
+					"memory_utilization": metric.MemoryUtilization,
+
+					"disk_total":       metric.StorageTotal,
+					"disk_usage":       metric.StorageUsed,
+					"disk_utilization": metric.StorageUtilization,
+
+					"network_bandwidth": metric.NetworkBandwidth,
+					"network_rx_data":   metric.NetworkRxData,
+					"network_tx_data":   metric.NetworkTxData,
+
+					"metric_score":        metric.CsdMetricScore,
+					"working_block_count": metric.CsdWorkingBlockCount,
+					"status":              metric.Status,
+				}
+
+				pt, err := client.NewPoint(INFLUXDB_CSD_MEASUREMENT, nil, fields, time.Now())
+				if err != nil {
+					fmt.Println("DB NewPoint Error:", err)
+					metric.mutex.Unlock()
+					break
+				}
+				bp.AddPoint(pt)
+
+				err = INFLUX_CLIENT.Write(bp)
+				if err != nil {
+					fmt.Println("DB Write Error:", err)
+					metric.mutex.Unlock()
+					break
+				}
 
 				metric.mutex.Unlock()
 			}
 		}
 	}
+}
 
+func (storageMetricCollector *MetricCollector) HandleNodeInfoStorage(w http.ResponseWriter, r *http.Request) {
+	type CsdEntry struct {
+		CsdName string `json:"csd_name"`
+		Status  string `json:"status"`
+	}
+
+	response := struct {
+		NodeName string     `json:"node_name"`
+		CsdList  []CsdEntry `json:"csd_list"`
+		SsdList  []string   `json:"ssd_list"`
+		NodeType string     `json:"node_type"`
+	}{
+		NodeName: storageMetricCollector.NodeName,
+		NodeType: storageMetricCollector.NodeType,
+	}
+
+	for key, metric := range storageMetricCollector.CsdMetrics {
+		response.CsdList = append(response.CsdList, CsdEntry{CsdName: key, Status: metric.Status})
+	}
+
+	for key := range storageMetricCollector.SsdMetrics {
+		response.SsdList = append(response.SsdList, key)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(response)
+	if err != nil {
+		http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
+		fmt.Println("Error encoding JSON:", err)
+	}
+
+	fmt.Printf("HandleNodeInfoStorage called %+v\n", response)
 }

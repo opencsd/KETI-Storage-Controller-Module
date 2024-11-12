@@ -2,15 +2,36 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
-	"os"
+	"net/http"
+	"time"
 
 	"storage-metric-collector/src/controller"
+
+	"github.com/influxdata/influxdb/client/v2"
 )
 
 func main() {
-	controller.STORAGE_METRIC_COLLECTOR_PORT = os.Getenv("STORAGE_METRIC_COLLECTOR_PORT")
-	controller.STORAGE_METRIC_DB_PORT = os.Getenv("STORAGE_METRIC_DB_PORT")
+	for {
+		var err error
+		controller.INFLUX_CLIENT, err = client.NewHTTPClient(client.HTTPConfig{
+			Addr:     "http://localhost:" + controller.INFLUX_PORT,
+			Username: controller.INFLUX_USERNAME,
+			Password: controller.INFLUX_PASSWORD,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+		_, _, pingErr := controller.INFLUX_CLIENT.Ping(5 * time.Second)
+		if pingErr == nil {
+			fmt.Println("[Storage Metric Collector] Connected to InfluxDB!")
+			break
+		} else {
+			time.Sleep(5 * time.Second)
+		}
+	}
+	defer controller.INFLUX_CLIENT.Close()
 
 	StorageMetricCollector := controller.NewMetricCollector()
 	StorageMetricCollector.InitMetricCollector()
@@ -21,14 +42,23 @@ func main() {
 		go StorageMetricCollector.SaveCsdMetric()
 	}
 
-	listener, err := net.Listen("tcp", "0.0.0.0:"+controller.STORAGE_METRIC_COLLECTOR_PORT)
+	http.HandleFunc("/node/info/storage", StorageMetricCollector.HandleNodeInfoStorage)
+	go func() {
+		err := http.ListenAndServe(":"+controller.STORAGE_METRIC_COLLECTOR_PORT_HTTP, nil)
+		if err != nil {
+			fmt.Println("Error starting HTTP server:", err)
+		}
+	}()
+
+	listener, err := net.Listen("tcp", "0.0.0.0:"+controller.STORAGE_METRIC_COLLECTOR_PORT_TCP)
 	if err != nil {
 		fmt.Println("Error starting the server:", err)
 		return
 	}
 	defer listener.Close()
 
-	fmt.Println("[Storage Metric Collector] run on 0.0.0.0:", controller.STORAGE_METRIC_COLLECTOR_PORT)
+	fmt.Println("[Storage Metric Collector] tcp server run on 0.0.0.0:", controller.STORAGE_METRIC_COLLECTOR_PORT_TCP)
+	fmt.Println("[Storage Metric Collector] http server run on 0.0.0.0:", controller.STORAGE_METRIC_COLLECTOR_PORT_HTTP)
 
 	for {
 		conn, err := listener.Accept()
@@ -37,7 +67,10 @@ func main() {
 			continue
 		}
 
-		go StorageMetricCollector.HandleConnection(conn)
+		go func(conn net.Conn) {
+			defer conn.Close()
+			StorageMetricCollector.HandleConnection(conn)
+		}(conn)
 	}
 }
 
