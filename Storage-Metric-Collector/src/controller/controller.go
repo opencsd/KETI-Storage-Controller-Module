@@ -35,12 +35,15 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 	}
 
 	csdID := extractCSDId(csdMetric.IP)
-	csdName := "nvme" + csdID
+	key := "csd" + csdID
+
+	csdMetric.Name = storageMetricCollector.CsdMetrics[key].Name
+	csdMetric.Status = "READY"
 
 	csdMetric.mutex.Lock()
 	defer csdMetric.mutex.Unlock()
-	csdMetric.Status = "READY"
-	storageMetricCollector.CsdMetrics[csdName] = csdMetric
+
+	storageMetricCollector.CsdMetrics[key] = csdMetric
 }
 
 func (storageMetricCollector *MetricCollector) RunMetricCollector() {
@@ -228,8 +231,8 @@ func (storageMetricCollector *MetricCollector) updatePower() {
 }
 
 func (storageMetricCollector *MetricCollector) updateSsdMetric() {
-	for key, ssd := range storageMetricCollector.SsdMetrics {
-		mountpoint := fmt.Sprintf("/dev/%s", key)
+	for _, ssd := range storageMetricCollector.SsdMetrics {
+		mountpoint := fmt.Sprintf("/dev/%s", ssd.Name)
 		dfCmd := exec.Command("df", "-BM", "--output=used", mountpoint)
 		var dfOut bytes.Buffer
 		dfCmd.Stdout = &dfOut
@@ -301,7 +304,8 @@ func (storageMetricCollector *MetricCollector) saveNodeMetric() {
 		var INFLUXDB_SSD_MEASUREMENT = "ssd_metric_" + key
 
 		fields := map[string]interface{}{
-			"id": key,
+			"id":   key,
+			"name": metric.Name,
 
 			"disk_total":       metric.Total,
 			"disk_usage":       metric.Used,
@@ -331,63 +335,67 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
 		select {
 		case <-ticker.C:
 			for key, metric := range storageMetricCollector.CsdMetrics {
-				metric.mutex.Lock()
+				if metric.Status == "READY" {
+					metric.mutex.Lock()
 
-				// fmt.Println("csd : ", key)
-				// fmt.Printf("%+v\n", metric)
+					// fmt.Println("csd : ", key)
+					// fmt.Printf("%+v\n", metric)
 
-				bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-					Database:  INFLUX_DB,
-					Precision: "s",
-				})
-				if err != nil {
-					fmt.Println("DB NewBatchPoints Error:", err)
+					bp, err := client.NewBatchPoints(client.BatchPointsConfig{
+						Database:  INFLUX_DB,
+						Precision: "s",
+					})
+					if err != nil {
+						fmt.Println("DB NewBatchPoints Error:", err)
+						metric.mutex.Unlock()
+						break
+					}
+
+					var INFLUXDB_CSD_MEASUREMENT = "csd_metric_" + key
+
+					fields := map[string]interface{}{
+						"id":   key,
+						"name": metric.Name,
+						"ip":   metric.IP,
+
+						"cpu_total":       metric.CpuTotal,
+						"cpu_usage":       metric.CpuUsed,
+						"cpu_utilization": metric.CpuUtilization,
+
+						"memory_total":       metric.MemoryTotal,
+						"memory_usage":       metric.MemoryUsed,
+						"memory_utilization": metric.MemoryUtilization,
+
+						"disk_total":       metric.StorageTotal,
+						"disk_usage":       metric.StorageUsed,
+						"disk_utilization": metric.StorageUtilization,
+
+						"network_bandwidth": metric.NetworkBandwidth,
+						"network_rx_data":   metric.NetworkRxData,
+						"network_tx_data":   metric.NetworkTxData,
+
+						"metric_score":        metric.CsdMetricScore,
+						"working_block_count": metric.CsdWorkingBlockCount,
+						"status":              metric.Status,
+					}
+
+					pt, err := client.NewPoint(INFLUXDB_CSD_MEASUREMENT, nil, fields, time.Now())
+					if err != nil {
+						fmt.Println("DB NewPoint Error:", err)
+						metric.mutex.Unlock()
+						break
+					}
+					bp.AddPoint(pt)
+
+					err = INFLUX_CLIENT.Write(bp)
+					if err != nil {
+						fmt.Println("DB Write Error:", err)
+						metric.mutex.Unlock()
+						break
+					}
+
 					metric.mutex.Unlock()
-					break
 				}
-
-				var INFLUXDB_CSD_MEASUREMENT = "csd_metric_" + key
-
-				fields := map[string]interface{}{
-					"id": key,
-
-					"cpu_total":       metric.CpuTotal,
-					"cpu_usage":       metric.CpuUsed,
-					"cpu_utilization": metric.CpuUtilization,
-
-					"memory_total":       metric.MemoryTotal,
-					"memory_usage":       metric.MemoryUsed,
-					"memory_utilization": metric.MemoryUtilization,
-
-					"disk_total":       metric.StorageTotal,
-					"disk_usage":       metric.StorageUsed,
-					"disk_utilization": metric.StorageUtilization,
-
-					"network_bandwidth": metric.NetworkBandwidth,
-					"network_rx_data":   metric.NetworkRxData,
-					"network_tx_data":   metric.NetworkTxData,
-
-					"metric_score":        metric.CsdMetricScore,
-					"working_block_count": metric.CsdWorkingBlockCount,
-					"status":              metric.Status,
-				}
-
-				pt, err := client.NewPoint(INFLUXDB_CSD_MEASUREMENT, nil, fields, time.Now())
-				if err != nil {
-					fmt.Println("DB NewPoint Error:", err)
-					metric.mutex.Unlock()
-					break
-				}
-				bp.AddPoint(pt)
-
-				err = INFLUX_CLIENT.Write(bp)
-				if err != nil {
-					fmt.Println("DB Write Error:", err)
-					metric.mutex.Unlock()
-					break
-				}
-
-				metric.mutex.Unlock()
 			}
 		}
 	}
@@ -395,8 +403,8 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
 
 func (storageMetricCollector *MetricCollector) HandleNodeInfoStorage(w http.ResponseWriter, r *http.Request) {
 	type CsdEntry struct {
-		CsdName string `json:"csd_name"`
-		Status  string `json:"status"`
+		CsdId  string `json:"csd_id"`
+		Status string `json:"status"`
 	}
 
 	response := struct {
@@ -410,7 +418,7 @@ func (storageMetricCollector *MetricCollector) HandleNodeInfoStorage(w http.Resp
 	}
 
 	for key, metric := range storageMetricCollector.CsdMetrics {
-		response.CsdList = append(response.CsdList, CsdEntry{CsdName: key, Status: metric.Status})
+		response.CsdList = append(response.CsdList, CsdEntry{CsdId: key, Status: metric.Status})
 	}
 
 	for key := range storageMetricCollector.SsdMetrics {

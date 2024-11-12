@@ -105,6 +105,31 @@ func NewMetricCollector() *MetricCollector {
 }
 
 func (metricCollector *MetricCollector) InitMetricCollector() {
+	csdCount := 0
+	{
+		file, err := os.Open("/etc/lspci-result.txt")
+		if err != nil {
+			fmt.Println("lspci-result read error, ", err)
+		}
+		defer file.Close()
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			line := scanner.Text()
+
+			parts := strings.Fields(line)
+			if len(parts) != 2 {
+				continue
+			}
+
+			node, value := parts[0], parts[1]
+
+			if node == metricCollector.NodeName {
+				csdCount, _ = strconv.Atoi(value)
+			}
+		}
+	}
+
 	if metricCollector.NodeType == SSD {
 		cmd := exec.Command("lsblk", "-o", "NAME,SIZE,MOUNTPOINT")
 		var out bytes.Buffer
@@ -117,6 +142,7 @@ func (metricCollector *MetricCollector) InitMetricCollector() {
 
 		lines := strings.Split(out.String(), "\n")
 
+		id := 1
 		for _, line := range lines[1:] {
 			fields := strings.Fields(line)
 			if len(fields) < 2 {
@@ -127,12 +153,15 @@ func (metricCollector *MetricCollector) InitMetricCollector() {
 
 			if strings.HasPrefix(name, "sd") {
 				totalSize := convertSizeToMB(size)
+				key := "ssd" + strconv.Itoa(id)
 				disk := &Storage{
+					Name:        name,
 					Total:       totalSize,
 					Used:        0,
 					Utilization: 0,
 				}
-				metricCollector.SsdMetrics[name] = disk
+				metricCollector.SsdMetrics[key] = disk
+				id++
 			}
 		}
 	} else if metricCollector.NodeType == CSD {
@@ -161,33 +190,26 @@ func (metricCollector *MetricCollector) InitMetricCollector() {
 			}
 		}
 
-		for _, device := range ngdDevices {
-			metricCollector.CsdMetrics[device] = NewCsdMetric("NOTREADY")
+		for _, deviceName := range ngdDevices {
+			csdMetric := NewCsdMetric()
+			csdMetric.Name = deviceName
+			id := strings.TrimPrefix(deviceName, "nvme")
+			key := "csd" + id
+			metricCollector.CsdMetrics[key] = csdMetric
 		}
 
-		if len(metricCollector.CsdMetrics) == 0 {
-			cmd := exec.Command("sh", "-c", "lspci | grep NGD")
-			var out bytes.Buffer
-			cmd.Stdout = &out
-			err := cmd.Run()
-			if err != nil {
-				fmt.Println("Error executing command:", err)
-				return
-			}
+		for i := 1; i <= csdCount; i++ {
+			id := strconv.Itoa(i)
+			key := "csd" + id
 
-			lines := strings.Split(out.String(), "\n")
-			count := 0
-			for _, line := range lines {
-				if strings.TrimSpace(line) != "" {
-					count++
-				}
-			}
-
-			for i := 0; i < count; i++ {
-				device := "nvme" + string(i)
-				metricCollector.CsdMetrics[device] = NewCsdMetric("BROKEN")
+			if _, exists := metricCollector.CsdMetrics[key]; !exists {
+				csdMetric := NewCsdMetric()
+				csdMetric.Name = "nvme" + id
+				csdMetric.Status = "BROKEN"
+				metricCollector.CsdMetrics[key] = csdMetric
 			}
 		}
+
 	} else {
 		fmt.Println("[error] not supported node type: ", metricCollector.NodeType)
 	}
@@ -282,6 +304,7 @@ func NewMemory() Memory {
 }
 
 type Storage struct {
+	Name        string
 	Total       int64
 	Used        int64
 	Utilization float64
@@ -289,6 +312,7 @@ type Storage struct {
 
 func NewStorage() Storage {
 	return Storage{
+		Name:        "",
 		Total:       0,
 		Used:        0,
 		Utilization: 0,
@@ -438,6 +462,7 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 type CsdMetric struct {
 	mutex                sync.Mutex
 	IP                   string  `json:"ip"`
+	Name                 string  `json:"name"`
 	CpuTotal             int     `json:"cpuTotal"`
 	CpuUsed              float64 `json:"cpuUsed"`
 	CpuUtilization       float64 `json:"cpuUtilization"`
@@ -456,9 +481,10 @@ type CsdMetric struct {
 	// Power		  int     `json:"powerUsage"`
 }
 
-func NewCsdMetric(status string) *CsdMetric {
+func NewCsdMetric() *CsdMetric {
 	return &CsdMetric{
 		IP:                   "",
+		Name:                 "",
 		CpuTotal:             0,
 		CpuUsed:              0,
 		CpuUtilization:       0,
@@ -473,7 +499,7 @@ func NewCsdMetric(status string) *CsdMetric {
 		NetworkBandwidth:     0,
 		CsdMetricScore:       0,
 		CsdWorkingBlockCount: 0,
-		Status:               status,
+		Status:               "NOTREADY",
 	}
 }
 
