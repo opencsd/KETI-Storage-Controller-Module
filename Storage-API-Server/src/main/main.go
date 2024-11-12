@@ -1,93 +1,55 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
-	"os"
-	// "log"
+	"log"
+	"net/http"
 
-	// "github.com/influxdata/influxdb/client/v2"
-	_ "github.com/go-sql-driver/mysql"
-	// "database/sql"
+	handler "opencsd-storage-api-server/src/handler"
+	storagestruct "opencsd-storage-api-server/src/struct"
 
-	sh "api-server/src/handler"
-)
-
-var(
-	INFLUX_IP = os.Getenv("INFLUX_IP")
-    INFLUX_PORT = os.Getenv("INFLUX_PORT")
-    INFLUX_USERNAME = os.Getenv("INFLUX_USERNAME")
-    INFLUX_PASSWORD = os.Getenv("INFLUX_PASSWORD")
-
-	MYSQL_IP = os.Getenv("MYSQL_IP")
-    MYSQL_PORT = os.Getenv("MYSQL_PORT")
-    MYSQL_USERNAME = os.Getenv("MYSQL_USERNAME")
-    MYSQL_PASSWORD = os.Getenv("MYSQL_PASSWORD")
-
-	MYSQL_DB = "metric"
-	INFLUX_DB = "opencsd_management_platform"
+	"github.com/influxdata/influxdb/client/v2"
 )
 
 func main() {
-	fmt.Println("[Storage API Server] Running..")
-	// var err error;
+	//influx Connection
+	var err error
+	storagestruct.INFLUX_CLIENT, err = client.NewHTTPClient(client.HTTPConfig{
+		Addr:     "http://localhost:" + storagestruct.INFLUX_PORT,
+		Username: storagestruct.INFLUX_USERNAME,
+		Password: storagestruct.INFLUX_PASSWORD,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer storagestruct.INFLUX_CLIENT.Close()
 
-	// //mysql Connection
-	// sh.Mysql_db, err = sql.Open("mysql", MYSQL_USERNAME+":"+MYSQL_PASSWORD+"@tcp("+MYSQL_IP+":"+MYSQL_PORT+")/"+MYSQL_DB)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer sh.Mysql_db.Close()
+	fmt.Println("[OpenCSD Storage API Server] Connected to Influx Database")
+	fmt.Println("[OpenCSD Storage API Server] Running..")
+	fmt.Println("[OpenCSD Storage API Server] run on 0.0.0.0:", storagestruct.STORAGE_API_SERVER_PORT)
 
-	// err = sh.Mysql_db.Ping()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println("*** Connected to MySQL Database")
+	storagestruct.NodeStorageInfo_.InitNodeStorageInfo()
 
-	// //influx Connection
-	// sh.Influx_db, err = client.NewHTTPClient(client.HTTPConfig{
-	// 	Addr: "http://" + INFLUX_IP + ":" + INFLUX_PORT, 
-	// 	Username: INFLUX_USERNAME,
-	// 	Password: INFLUX_PASSWORD,
-	// })
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer sh.Influx_db.Close()
-	// fmt.Println("*** Connected to Influx Database")
+	//0. VolumeAllocation with Gluesys
+	http.HandleFunc("/volume/allocate", handler.StorageVolumeAllocate)
+	http.HandleFunc("/volume/deallocate", handler.StorageVolumeDeallocate)
 
-	//handler
+	http.HandleFunc("/node/info/storage", handler.NodeInfoStorage)
+	http.HandleFunc("/node/info/volume", handler.StorageVolumeInfo)
 
-	//0. VolumeAllocation
-	http.HandleFunc("/volume/info", sh.StorageVolumeInfo)
-	http.HandleFunc("/volume/allocate", sh.StorageVolumeAllocate)
-	http.HandleFunc("/volume/deallocate", sh.StorageVolumeDeallocate)
+	http.HandleFunc("/node/metric/all", handler.NodeMetricAll)
+	http.HandleFunc("/node/metric/cpu", handler.NodeMetricCpu)
+	http.HandleFunc("/node/metric/power", handler.NodeMetricPower)
+	http.HandleFunc("/node/metric/memory", handler.NodeMetricMemory)
+	http.HandleFunc("/node/metric/network", handler.NodeMetricNetwork)
+	http.HandleFunc("/node/metric/storage", handler.NodeMetricStorage)
 
-	//1. ClusterNodeList
-	http.HandleFunc("/dashboard/cluster/nodelist", sh.ClusterNodeListHandler)
-	//2. NodeStorageList
-	http.HandleFunc("/dashboard/node/storagelist", sh.NodeStorageListHandler)
-	http.HandleFunc("/storagepage/storage/storagelist", sh.NodeStorageListHandler)
-	http.HandleFunc("/diskpage/disk/storagelist", sh.NodeStorageListHandler)
-	//3. NodeDiskInfo
-	http.HandleFunc("/dashboard/node/diskinfo", sh.NodeDiskInfoHandler)
-	//4. NodeStorageInfo
-	http.HandleFunc("/dashboard/storage/storageinfo", sh.NodeStorageInfoHandler)
-	//5. NodeMetricInfo
-	http.HandleFunc("/dashboard/node/metricinfo", sh.NodeMetricInfoHandler)
-	//6. StorageInfo
-	http.HandleFunc("/storagepage/storage/storageinfo", sh.StorageInfoHandler)
-	//7. CSDMetricInfo
-	http.HandleFunc("/storagepage/storage/csdmetricinfo", sh.CSDMetricInfoHandler)
-	//8. CSDCpuInfo
-	http.HandleFunc("/storagepage/storage/csdcpuinfo", sh.CPUInfoHandler)
-	//9. CSDMemInfo
-	http.HandleFunc("/storagepage/storage/csdmeminfo", sh.MemInfoHandler)
-	//10. CSDNetInfo
-	http.HandleFunc("/storagepage/storage/csdnetinfo", sh.NetInfoHandler)
-	//11. CSDDiskInfo
-	http.HandleFunc("/storagepage/storage/csddiskinfo", sh.DiskInfoHandler)
+	http.HandleFunc("/storage/metric/all", handler.StorageMetricAll)
+	http.HandleFunc("/storage/metric/cpu", handler.StorageMetricCpu)
+	http.HandleFunc("/storage/metric/power", handler.StorageMetricPower)
+	http.HandleFunc("/storage/metric/memory", handler.StorageMetricMemory)
+	http.HandleFunc("/storage/metric/network", handler.StorageMetricNetwork)
+	http.HandleFunc("/storage/metric/disk", handler.StorageMetricDisk)
 
-	http.ListenAndServe(":40306", nil)
+	http.ListenAndServe(":"+storagestruct.STORAGE_API_SERVER_PORT, nil)
 }

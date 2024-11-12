@@ -1,98 +1,160 @@
 package storagestruct
 
-type ClusterNodeInfo struct {
-	ClusterName  string   `json:"clustername"`
-	NodeList     []NodeInfo
-}
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"time"
 
-type NodeInfo struct {
-	NodeName     string `json:"nodename"`
-	Status 		 string `json:"status"`
+	"github.com/influxdata/influxdb/client/v2"
+)
+
+const (
+	SSD     = 0
+	CSD     = 1
+	CROSS   = 2
+	UNKNOWN = 3
+)
+
+var (
+	STORAGE_API_SERVER_PORT            = os.Getenv("STORAGE_API_SERVER_PORT")
+	STORAGE_METRIC_COLLECTOR_PORT_HTTP = os.Getenv("STORAGE_METRIC_COLLECTOR_PORT_HTTP")
+)
+
+var (
+	INFLUX_CLIENT   client.HTTPClient
+	INFLUX_PORT     = os.Getenv("INFLUXDB_PORT")
+	INFLUX_USERNAME = os.Getenv("INFLUXDB_USER")
+	INFLUX_PASSWORD = os.Getenv("INFLUXDB_PASSWORD")
+	INFLUX_DB       = os.Getenv("INFLUXDB_DB")
+)
+
+var NodeStorageInfo_ NodeStorageInfo
+
+type CsdEntry struct {
+	CsdName string `json:"csd_name"`
+	Status  string `json:"status"`
 }
 
 type NodeStorageInfo struct {
-	NodeName     string `json:"nodename"`
-	StorageList  []StorageInfo
+	NodeName string     `json:"node_name"`
+	CsdList  []CsdEntry `json:"csd_list"`
+	SsdList  []string   `json:"ssd_list"`
+	NodeType string     `json:"node_type"`
 }
 
-type StorageInfo struct {
-	StorageName     string `json:"storagename"`
-	Status   		string `json:"status"`
+func (nodeStorageInfo *NodeStorageInfo) InitNodeStorageInfo() {
+	serverAddress := "http://localhost:" + STORAGE_METRIC_COLLECTOR_PORT_HTTP + "/node/info/storage"
+
+	for {
+		resp, err := http.Get(serverAddress)
+		if err != nil {
+			fmt.Println("Error sending request:", err)
+			time.Sleep(5 * time.Second)
+			continue
+		}
+		defer resp.Body.Close()
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var response NodeStorageInfo
+
+		err = json.Unmarshal(body, &response)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		*nodeStorageInfo = response
+
+		fmt.Printf("Decoded response: %+v\n", response)
+		break
+	}
+
 }
 
-type StorageInfoDetailV1 struct {
-	StorageName     string 	`json:"storagename"`
-	StorageType		string 	`json:"storagetype"`
-	Capacity		string 	`json:"capacity"`
-	Status   		string 	`json:"status"`
-	StorageScore	float64	`json:"storagescore"`
-	StorageGrade	string	`json:"storagegrade"`
-	ClusterBelongTo	string	`json:"clusterbelongto"`
-	NodeBelongTo	string	`json:"nodebelongto"`
+type NodeMetric struct {
+	Time               string  `json:"timestamp"`
+	NodeName           string  `json:"name"`
+	CpuTotal           float64 `json:"cpuTotal"`
+	CpuUsed            float64 `json:"cpuUsed"`
+	CpuUtilization     float64 `json:"cpuUtilization"`
+	MemoryTotal        float64 `json:"memoryTotal"`
+	MemoryUsed         float64 `json:"memoryUsed"`
+	MemoryUtilization  float64 `json:"memoryUtilization"`
+	StorageTotal       float64 `json:"storageTotal"`
+	StorageUsed        float64 `json:"storageUsed"`
+	StorageUtilization float64 `json:"storageUtilization"`
+	NetworkRxData      float64 `json:"networkRxData"`
+	NetworkTxData      float64 `json:"networkTxData"`
+	NetworkBandwidth   float64 `json:"networkBandwidth"`
+	PowerUsed          float64 `json:"powerUsed"`
 }
 
-type StorageInfoDetailV2 struct {
-	StorageName     string 	`json:"storagename"`
-	StorageType		string 	`json:"storagetype"`
-	Capacity		string 	`json:"capacity"`
-	Status   		string 	`json:"status"`
-	CSDType			string 	`json:"csdtype"`
-	IP				string 	`json:"ip"`
-	Port			string	`json:"port"`
-	ClusterBelongTo	string	`json:"clusterbelongto"`
-	NodeBelongTo	string	`json:"nodebelongto"`
-	StorageScore	float64	`json:"storagescore"`
-	StorageGrade	string	`json:"storagegrade"`
-	WorkingBlocks	float64	`json:"workingblocks"`
+type CpuMetric struct {
+	Time           string  `json:"timestamp"`
+	Name           string  `json:"name"`
+	CpuTotal       float64 `json:"cpuTotal"`
+	CpuUsed        float64 `json:"cpuUsed"`
+	CpuUtilization float64 `json:"cpuUtilization"`
 }
 
-type NodeDiskInfo struct {
-	Capacity     		float64 		`json:"capacity"`
-	AvailableCapacity   float64 		`json:"availablecapacity"`
-	Utilization			float64   		`json:"utilization"`
+type PowerMetric struct {
+	Time      string  `json:"timestamp"`
+	Name      string  `json:"name"`
+	PowerUsed float64 `json:"powerUsed"`
 }
 
-type MetricInfo struct {
-	MetricName     		string 			`json:"metricname"`
-	MetricValueList   	[]MetricValue 	`json:"metricvaluelist"`
+type MemoryMetric struct {
+	Time              string  `json:"timestamp"`
+	Name              string  `json:"name"`
+	MemoryTotal       float64 `json:"memoryTotal"`
+	MemoryUsed        float64 `json:"memoryUsed"`
+	MemoryUtilization float64 `json:"memoryUtilization"`
 }
 
-type MetricValue struct {
-	Time		string		`json:"time"`
-	Capacity	float64		`json:"capacity"`
-	Usage		float64		`json:"usage"`
-	Utilization	float64		`json:"utilization"`
+type NetworkMetric struct {
+	Time             string  `json:"timestamp"`
+	Name             string  `json:"name"`
+	NetworkRxData    float64 `json:"networkRxData"`
+	NetworkTxData    float64 `json:"networkTxData"`
+	NetworkBandwidth float64 `json:"networkBandwidth"`
 }
 
-type NetMetricValue struct {
-	Time		string		`json:"time"`
-	Bandwidth	float64		`json:"bandwidth"`
-	RXByte		float64		`json:"rxbyte"`
-	TXByte		float64		`json:"txbyte"`
+type DiskMetric struct {
+	Time               string  `json:"timestamp"`
+	Name               string  `json:"name"`
+	StorageTotal       float64 `json:"storageTotal"`
+	StorageUsed        float64 `json:"storageUsed"`
+	StorageUtilization float64 `json:"storageUtilization"`
 }
 
-type NodeMetricInfo struct {
-	Time			string		`json:"time"`
-	CPUCapacity		float64		`json:"cpucapacity"`
-	CPUUsage		float64		`json:"cpuusage"`
-	CPUUtilization	float64		`json:"cputotal"`
-	MEMCapacity		float64		`json:"memcapacity"`
-	MEMUsage		float64		`json:"memusage"`
-	MEMUtilization	float64		`json:"memtotal"`
-	DiskCapacity	float64		`json:"diskcapacity"`
-	DiskUsage		float64		`json:"diskusage"`
-	DiskUtilization	float64		`json:"disktotal"`
+type CsdMetric struct {
+	Time                 string  `json:"timestamp"`
+	Name                 string  `json:"name"`
+	CpuTotal             float64 `json:"cpuTotal"`
+	CpuUsed              float64 `json:"cpuUsed"`
+	CpuUtilization       float64 `json:"cpuUtilization"`
+	MemoryTotal          float64 `json:"memoryTotal"`
+	MemoryUsed           float64 `json:"memoryUsed"`
+	MemoryUtilization    float64 `json:"memoryUtilization"`
+	StorageTotal         float64 `json:"storageTotal"`
+	StorageUsed          float64 `json:"storageUsed"`
+	StorageUtilization   float64 `json:"storageUtilization"`
+	NetworkRxData        float64 `json:"networkRxData"`
+	NetworkTxData        float64 `json:"networkTxData"`
+	NetworkBandwidth     float64 `json:"networkBandwidth"`
+	CsdMetricScore       float64 `json:"csdMetricScore"`
+	CsdWorkingBlockCount float64 `json:"csdWorkingBlockCount"`
+	Status               string  `json:"status"`
 }
 
-type CSDMetricInfo struct {
-	Time			string		`json:"time"`
-	CPUCapacity		float64		`json:"cpucapacity"`
-	CPUUsage		float64		`json:"cpuusage"`
-	CPUUtilization	float64		`json:"cputotal"`
-	MEMCapacity		float64		`json:"memcapacity"`
-	MEMUsage		float64		`json:"memusage"`
-	MEMUtilization	float64		`json:"memtotal"`
-	DiskCapacity	float64		`json:"diskcapacity"`
-	DiskUsage		float64		`json:"diskusage"`
-	DiskUtilization	float64		`json:"disktotal"`
+type StorageMetric struct {
+	SsdList []DiskMetric `json:"ssd_list"`
+	CsdList []CsdMetric  `json:"csd_list"`
 }
