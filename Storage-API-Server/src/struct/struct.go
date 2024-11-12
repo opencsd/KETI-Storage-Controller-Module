@@ -35,8 +35,8 @@ var (
 var NodeStorageInfo_ NodeStorageInfo
 
 type CsdEntry struct {
-	CsdName string `json:"csd_name"`
-	Status  string `json:"status"`
+	CsdId  string `json:"csd_id"`
+	Status string `json:"status"`
 }
 
 type NodeStorageInfo struct {
@@ -134,9 +134,20 @@ type DiskMetric struct {
 	StorageUtilization float64 `json:"storageUtilization"`
 }
 
+type SsdMetric struct {
+	Time               string  `json:"timestamp"`
+	Id                 string  `json:"id"`
+	Name               string  `json:"name"`
+	StorageTotal       float64 `json:"storageTotal"`
+	StorageUsed        float64 `json:"storageUsed"`
+	StorageUtilization float64 `json:"storageUtilization"`
+}
+
 type CsdMetric struct {
 	Time                 string  `json:"timestamp"`
+	Id                   string  `json:"id"`
 	Name                 string  `json:"name"`
+	Ip                   string  `json:"ip"`
 	CpuTotal             float64 `json:"cpuTotal"`
 	CpuUsed              float64 `json:"cpuUsed"`
 	CpuUtilization       float64 `json:"cpuUtilization"`
@@ -155,6 +166,6 @@ type CsdMetric struct {
 }
 
 type StorageMetric struct {
-	SsdList []DiskMetric `json:"ssd_list"`
-	CsdList []CsdMetric  `json:"csd_list"`
+	SsdList []SsdMetric `json:"ssd_list"`
+	CsdList []CsdMetric `json:"csd_list"`
 }

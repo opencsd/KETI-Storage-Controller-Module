@@ -296,7 +296,7 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
 		if csd.Status == "READY" {
-			measurementName := "csd_metric_" + csd.CsdName
+			measurementName := "csd_metric_" + csd.CsdId
 			q := client.Query{
 				Command:  "select * from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
 				Database: storagestruct.INFLUX_DB,
@@ -311,23 +311,26 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 						csdMetric.CpuTotal = parseFloat(value[1])
 						csdMetric.CpuUsed = parseFloat(value[2])
 						csdMetric.CpuUtilization = parseFloat(value[3])
-						csdMetric.MemoryTotal = parseFloat(value[4])
-						csdMetric.MemoryUsed = parseFloat(value[5])
-						csdMetric.MemoryUtilization = parseFloat(value[6])
-						csdMetric.StorageTotal = parseFloat(value[7])
-						csdMetric.StorageUsed = parseFloat(value[8])
-						csdMetric.StorageUtilization = parseFloat(value[9])
-						csdMetric.NetworkRxData = parseFloat(value[10])
-						csdMetric.NetworkTxData = parseFloat(value[11])
-						csdMetric.NetworkBandwidth = parseFloat(value[12])
-						csdMetric.CsdMetricScore = parseFloat(value[13])
-						csdMetric.CsdWorkingBlockCount = parseFloat(value[14])
-						csdMetric.Status = fmt.Sprintf("%v", value[15])
-						csdMetric.Name = csd.CsdName
+						csdMetric.StorageTotal = parseFloat(value[4])
+						csdMetric.StorageUsed = parseFloat(value[5])
+						csdMetric.StorageUtilization = parseFloat(value[6])
+						csdMetric.Id = fmt.Sprintf("%v", value[7])
+						csdMetric.Ip = fmt.Sprintf("%v", value[8])
+						csdMetric.MemoryTotal = parseFloat(value[9])
+						csdMetric.MemoryUsed = parseFloat(value[10])
+						csdMetric.MemoryUtilization = parseFloat(value[11])
+						csdMetric.CsdMetricScore = parseFloat(value[12])
+						csdMetric.Name = fmt.Sprintf("%v", value[13])
+						csdMetric.NetworkRxData = parseFloat(value[14])
+						csdMetric.NetworkTxData = parseFloat(value[15])
+						csdMetric.NetworkBandwidth = parseFloat(value[16])
+						csdMetric.Status = fmt.Sprintf("%v", value[17])
+						csdMetric.CsdWorkingBlockCount = parseFloat(value[18])
+
+						fmt.Printf("%+v", csdMetric)
 
 						response.CsdList = append(response.CsdList, csdMetric)
 					}
-
 				}
 			} else {
 				fmt.Println("Error executing query:", err)
@@ -345,13 +348,14 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
 			for _, row := range result.Results[0].Series {
 				for _, value := range row.Values {
-					ssdMetric := storagestruct.DiskMetric{}
+					ssdMetric := storagestruct.SsdMetric{}
 
 					ssdMetric.Time = fmt.Sprintf("%v", value[0])
 					ssdMetric.StorageTotal = parseFloat(value[1])
 					ssdMetric.StorageUsed = parseFloat(value[2])
 					ssdMetric.StorageUtilization = parseFloat(value[3])
-					ssdMetric.Name = ssdName
+					ssdMetric.Id = fmt.Sprintf("%v", value[4])
+					ssdMetric.Name = fmt.Sprintf("%v", value[5])
 
 					response.SsdList = append(response.SsdList, ssdMetric)
 				}
@@ -379,9 +383,9 @@ func StorageMetricCpu(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdName
+		measurementName := "csd_metric_" + csd.CsdId
 		q := client.Query{
-			Command:  "select cpu_total, cpu_usage, cpu_utilization  from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
+			Command:  "select cpu_total, cpu_usage, cpu_utilization, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
 			Database: storagestruct.INFLUX_DB,
 		}
 
@@ -394,7 +398,7 @@ func StorageMetricCpu(w http.ResponseWriter, r *http.Request) {
 					cpuMetric.CpuTotal = parseFloat(value[1])
 					cpuMetric.CpuUsed = parseFloat(value[2])
 					cpuMetric.CpuUtilization = parseFloat(value[3])
-					cpuMetric.Name = csd.CsdName
+					cpuMetric.Name = fmt.Sprintf("%v", value[4])
 
 					response = append(response, cpuMetric)
 				}
@@ -422,9 +426,9 @@ func StorageMetricPower(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdName
+		measurementName := "csd_metric_" + csd.CsdId
 		q := client.Query{
-			Command:  "select power_used from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
+			Command:  "select power_used, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
 			Database: storagestruct.INFLUX_DB,
 		}
 
@@ -434,7 +438,7 @@ func StorageMetricPower(w http.ResponseWriter, r *http.Request) {
 					powerMetric := storagestruct.PowerMetric{}
 
 					powerMetric.Time = fmt.Sprintf("%v", value[0])
-					powerMetric.Name = csd.CsdName
+					powerMetric.Name = fmt.Sprintf("%v", value[1])
 
 					response = append(response, powerMetric)
 				}
@@ -462,9 +466,9 @@ func StorageMetricMemory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdName
+		measurementName := "csd_metric_" + csd.CsdId
 		q := client.Query{
-			Command:  "select memory_total, memory_usage, memory_utilization from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
+			Command:  "select memory_total, memory_usage, memory_utilization, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
 			Database: storagestruct.INFLUX_DB,
 		}
 
@@ -477,7 +481,7 @@ func StorageMetricMemory(w http.ResponseWriter, r *http.Request) {
 					memoryMetric.MemoryTotal = parseFloat(value[1])
 					memoryMetric.MemoryUsed = parseFloat(value[2])
 					memoryMetric.MemoryUtilization = parseFloat(value[3])
-					memoryMetric.Name = csd.CsdName
+					memoryMetric.Name = fmt.Sprintf("%v", value[4])
 
 					response = append(response, memoryMetric)
 				}
@@ -505,9 +509,9 @@ func StorageMetricNetwork(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdName
+		measurementName := "csd_metric_" + csd.CsdId
 		q := client.Query{
-			Command:  "select network_bandwidth,network_rx_data,network_tx_data  from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
+			Command:  "select network_bandwidth,network_rx_data,network_tx_data, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
 			Database: storagestruct.INFLUX_DB,
 		}
 
@@ -520,7 +524,7 @@ func StorageMetricNetwork(w http.ResponseWriter, r *http.Request) {
 					networkMetric.NetworkRxData = parseFloat(value[1])
 					networkMetric.NetworkTxData = parseFloat(value[2])
 					networkMetric.NetworkBandwidth = parseFloat(value[3])
-					networkMetric.Name = csd.CsdName
+					networkMetric.Name = fmt.Sprintf("%v", value[4])
 
 					response = append(response, networkMetric)
 				}
@@ -548,9 +552,9 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdName
+		measurementName := "csd_metric_" + csd.CsdId
 		q := client.Query{
-			Command:  "select disk_total, disk_usage, disk_utilization from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
+			Command:  "select disk_total, disk_usage, disk_utilization, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
 			Database: storagestruct.INFLUX_DB,
 		}
 
@@ -563,7 +567,7 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 					diskMetric.StorageTotal = parseFloat(value[1])
 					diskMetric.StorageUsed = parseFloat(value[2])
 					diskMetric.StorageUtilization = parseFloat(value[3])
-					diskMetric.Name = csd.CsdName
+					diskMetric.Name = fmt.Sprintf("%v", value[4])
 
 					response = append(response, diskMetric)
 				}
@@ -590,7 +594,7 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 					diskMetric.StorageTotal = parseFloat(value[1])
 					diskMetric.StorageUsed = parseFloat(value[2])
 					diskMetric.StorageUtilization = parseFloat(value[3])
-					diskMetric.Name = ssdName
+					diskMetric.Name = fmt.Sprintf("%v", value[4])
 
 					response = append(response, diskMetric)
 				}
