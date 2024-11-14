@@ -38,7 +38,7 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 	key := "csd" + csdID
 
 	csdMetric.Name = storageMetricCollector.CsdMetrics[key].Name
-	csdMetric.Status = "READY"
+	csdMetric.Status = READY
 
 	csdMetric.mutex.Lock()
 	defer csdMetric.mutex.Unlock()
@@ -191,15 +191,15 @@ func (storageMetricCollector *MetricCollector) updateStorage() {
 		if strings.Contains(line, "total") {
 			fields := strings.Fields(line)
 			if len(fields) >= 3 {
-				storageMetricCollector.NodeMetric.Storage.Used, _ = strconv.ParseInt(fields[2], 10, 64)
+				storageMetricCollector.NodeMetric.Disk.Used, _ = strconv.ParseInt(fields[2], 10, 64)
 				break
 			}
 		}
 	}
 
-	if storageMetricCollector.NodeMetric.Storage.Total > 0 {
-		utilization := (float64(storageMetricCollector.NodeMetric.Storage.Used) / float64(storageMetricCollector.NodeMetric.Storage.Total)) * 100
-		storageMetricCollector.NodeMetric.Storage.Utilization, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", utilization), 64)
+	if storageMetricCollector.NodeMetric.Disk.Total > 0 {
+		utilization := (float64(storageMetricCollector.NodeMetric.Disk.Used) / float64(storageMetricCollector.NodeMetric.Disk.Total)) * 100
+		storageMetricCollector.NodeMetric.Disk.Utilization, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", utilization), 64)
 	}
 }
 
@@ -249,8 +249,6 @@ func (storageMetricCollector *MetricCollector) updateSsdMetric() {
 }
 
 func (storageMetricCollector *MetricCollector) saveNodeMetric() {
-	// fmt.Printf("%+v\n", storageMetricCollector.NodeMetric)
-
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
 		Database:  INFLUX_DB,
 		Precision: "s",
@@ -273,9 +271,9 @@ func (storageMetricCollector *MetricCollector) saveNodeMetric() {
 		"memory_usage":       storageMetricCollector.NodeMetric.Memory.Used,
 		"memory_utilization": storageMetricCollector.NodeMetric.Memory.Utilization,
 
-		"disk_total":       storageMetricCollector.NodeMetric.Storage.Total,
-		"disk_usage":       storageMetricCollector.NodeMetric.Storage.Used,
-		"disk_utilization": storageMetricCollector.NodeMetric.Storage.Utilization,
+		"disk_total":       storageMetricCollector.NodeMetric.Disk.Total,
+		"disk_usage":       storageMetricCollector.NodeMetric.Disk.Used,
+		"disk_utilization": storageMetricCollector.NodeMetric.Disk.Utilization,
 
 		"network_bandwidth": storageMetricCollector.NodeMetric.Network.Bandwidth,
 		"network_rx_data":   storageMetricCollector.NodeMetric.Network.RxData,
@@ -304,12 +302,13 @@ func (storageMetricCollector *MetricCollector) saveNodeMetric() {
 		var INFLUXDB_SSD_MEASUREMENT = "ssd_metric_" + key
 
 		fields := map[string]interface{}{
-			"id":   key,
-			"name": metric.Name,
+			"id":           key,
+			"storage_name": metric.Name,
 
 			"disk_total":       metric.Total,
 			"disk_usage":       metric.Used,
 			"disk_utilization": metric.Utilization,
+			"status":           metric.Status,
 		}
 
 		pt, err := client.NewPoint(INFLUXDB_SSD_MEASUREMENT, nil, fields, time.Now())
@@ -335,7 +334,7 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
 		select {
 		case <-ticker.C:
 			for key, metric := range storageMetricCollector.CsdMetrics {
-				if metric.Status == "READY" {
+				if metric.Status == READY {
 					metric.mutex.Lock()
 
 					// fmt.Println("csd : ", key)
@@ -354,9 +353,9 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
 					var INFLUXDB_CSD_MEASUREMENT = "csd_metric_" + key
 
 					fields := map[string]interface{}{
-						"id":   key,
-						"name": metric.Name,
-						"ip":   metric.IP,
+						"id":           key,
+						"storage_name": metric.Name,
+						"ip":           metric.IP,
 
 						"cpu_total":       metric.CpuTotal,
 						"cpu_usage":       metric.CpuUsed,
@@ -366,9 +365,9 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
 						"memory_usage":       metric.MemoryUsed,
 						"memory_utilization": metric.MemoryUtilization,
 
-						"disk_total":       metric.StorageTotal,
-						"disk_usage":       metric.StorageUsed,
-						"disk_utilization": metric.StorageUtilization,
+						"disk_total":       metric.DiskTotal,
+						"disk_usage":       metric.DiskUsed,
+						"disk_utilization": metric.DiskUtilization,
 
 						"network_bandwidth": metric.NetworkBandwidth,
 						"network_rx_data":   metric.NetworkRxData,

@@ -41,13 +41,14 @@ const (
 	READY    = "READY"
 	NOTREADY = "NOTREADY"
 	BROKEN   = "BROKEN"
+	NORMAL   = "NORMAL"
 )
 
 type MetricCollector struct {
 	NodeName   string
 	NodeMetric *NodeMetric
 	CsdMetrics map[string]*CsdMetric
-	SsdMetrics map[string]*Storage
+	SsdMetrics map[string]*SsdMetric
 	NodeType   string
 }
 
@@ -99,7 +100,7 @@ func NewMetricCollector() *MetricCollector {
 		NodeName:   hostname,
 		NodeMetric: NodeMetric,
 		CsdMetrics: make(map[string]*CsdMetric),
-		SsdMetrics: make(map[string]*Storage),
+		SsdMetrics: make(map[string]*SsdMetric),
 		NodeType:   nodeType,
 	}
 }
@@ -154,13 +155,14 @@ func (metricCollector *MetricCollector) InitMetricCollector() {
 			if strings.HasPrefix(name, "sd") {
 				totalSize := convertSizeToMB(size)
 				key := "ssd" + strconv.Itoa(id)
-				disk := &Storage{
+				ssdMetric := &SsdMetric{
 					Name:        name,
 					Total:       totalSize,
 					Used:        0,
 					Utilization: 0,
+					Status:      NORMAL,
 				}
-				metricCollector.SsdMetrics[key] = disk
+				metricCollector.SsdMetrics[key] = ssdMetric
 				id++
 			}
 		}
@@ -236,7 +238,7 @@ type NodeMetric struct {
 	mutex   sync.Mutex
 	Cpu     Cpu
 	Memory  Memory
-	Storage Storage
+	Disk    Disk
 	Network Network
 	Power   Power
 }
@@ -245,7 +247,7 @@ func NewNodeMetric() *NodeMetric {
 	return &NodeMetric{
 		Cpu:     NewCpu(),
 		Memory:  NewMemory(),
-		Storage: NewStorage(),
+		Disk:    NewDisk(),
 		Network: NewNetwork(),
 		Power:   NewPower(),
 	}
@@ -303,15 +305,15 @@ func NewMemory() Memory {
 	}
 }
 
-type Storage struct {
+type Disk struct {
 	Name        string
 	Total       int64
 	Used        int64
 	Utilization float64
 }
 
-func NewStorage() Storage {
-	return Storage{
+func NewDisk() Disk {
+	return Disk{
 		Name:        "",
 		Total:       0,
 		Used:        0,
@@ -451,11 +453,28 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 			if strings.Contains(line, "total") {
 				fields := strings.Fields(line)
 				if len(fields) >= 3 {
-					nodeMetric.Storage.Total, _ = strconv.ParseInt(fields[1], 10, 64)
+					nodeMetric.Disk.Total, _ = strconv.ParseInt(fields[1], 10, 64)
 					break
 				}
 			}
 		}
+	}
+}
+
+type SsdMetric struct {
+	Name        string
+	Total       int64
+	Used        int64
+	Utilization float64
+	Status      string
+}
+
+func NewSsdMetric() SsdMetric {
+	return SsdMetric{
+		Name:        "",
+		Total:       0,
+		Used:        0,
+		Utilization: 0,
 	}
 }
 
@@ -469,9 +488,9 @@ type CsdMetric struct {
 	MemoryTotal          int64   `json:"memoryTotal"`
 	MemoryUsed           int64   `json:"memoryUsed"`
 	MemoryUtilization    float64 `json:"memoryUtilization"`
-	StorageTotal         int64   `json:"storageTotal"`
-	StorageUsed          int64   `json:"storageUsed"`
-	StorageUtilization   float64 `json:"storageUtilization"`
+	DiskTotal            float64 `json:"diskTotal"`
+	DiskUsed             float64 `json:"diskUsed"`
+	DiskUtilization      float64 `json:"diskUtilization"`
 	NetworkRxData        int64   `json:"networkRxData"`
 	NetworkTxData        int64   `json:"networkTxData"`
 	NetworkBandwidth     int64   `json:"networkBandwidth"`
@@ -491,15 +510,15 @@ func NewCsdMetric() *CsdMetric {
 		MemoryTotal:          0,
 		MemoryUsed:           0,
 		MemoryUtilization:    0,
-		StorageTotal:         0,
-		StorageUsed:          0,
-		StorageUtilization:   0,
+		DiskTotal:            0,
+		DiskUsed:             0,
+		DiskUtilization:      0,
 		NetworkRxData:        0,
 		NetworkTxData:        0,
 		NetworkBandwidth:     0,
 		CsdMetricScore:       0,
 		CsdWorkingBlockCount: 0,
-		Status:               "NOTREADY",
+		Status:               NOTREADY,
 	}
 }
 
