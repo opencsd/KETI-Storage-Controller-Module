@@ -307,9 +307,9 @@ func StorageInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select disk_total, disk_usage, disk_utilization, storage_name, id, ip, score, status from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -336,7 +336,7 @@ func StorageInfo(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 
-					response.CsdList[csd.CsdId] = csdMetrics
+					response.CsdList[csd.Id] = csdMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -344,9 +344,9 @@ func StorageInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	for _, ssdId := range storagestruct.NodeStorageInfo_.SsdList {
-		if targetStorage == "" || targetStorage == ssdId {
-			measurementName := "ssd_metric_" + ssdId
+	for _, ssd := range storagestruct.NodeStorageInfo_.SsdList {
+		if targetStorage == "" || targetStorage == ssd.Id {
+			measurementName := "ssd_metric_" + ssd.Id
 			q := client.Query{
 				Command:  "select * from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 				Database: storagestruct.INFLUX_DB,
@@ -369,7 +369,7 @@ func StorageInfo(w http.ResponseWriter, r *http.Request) {
 						ssdMetrics = append(ssdMetrics, ssdMetric)
 					}
 				}
-				response.SsdList[ssdId] = ssdMetrics
+				response.SsdList[ssd.Id] = ssdMetrics
 			} else {
 				fmt.Println("Error executing query:", err)
 			}
@@ -392,9 +392,9 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select * from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -429,7 +429,7 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 							csdMetrics = append(csdMetrics, csdMetric)
 						}
 					}
-					response.CsdList[csd.CsdId] = csdMetrics
+					response.CsdList[csd.Id] = csdMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -437,9 +437,9 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	for _, ssdId := range storagestruct.NodeStorageInfo_.SsdList {
-		if targetStorage == "" || targetStorage == ssdId {
-			measurementName := "ssd_metric_" + ssdId
+	for _, ssd := range storagestruct.NodeStorageInfo_.SsdList {
+		if targetStorage == "" || targetStorage == ssd.Id {
+			measurementName := "ssd_metric_" + ssd.Id
 			q := client.Query{
 				Command:  "select * from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 				Database: storagestruct.INFLUX_DB,
@@ -463,7 +463,7 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 					}
 
 				}
-				response.SsdList[ssdId] = ssdMetrics
+				response.SsdList[ssd.Id] = ssdMetrics
 			} else {
 				fmt.Println("Error executing query:", err)
 			}
@@ -486,10 +486,10 @@ func StorageMetricCpu(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select cpu_total, cpu_usage, cpu_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -511,7 +511,7 @@ func StorageMetricCpu(w http.ResponseWriter, r *http.Request) {
 							cpuMetrics = append(cpuMetrics, cpuMetric)
 						}
 					}
-					response[csd.CsdId] = cpuMetrics
+					response[csd.Id] = cpuMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -535,10 +535,10 @@ func StorageMetricPower(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select power_used, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -557,7 +557,7 @@ func StorageMetricPower(w http.ResponseWriter, r *http.Request) {
 							powerMetrics = append(powerMetrics, powerMetric)
 						}
 					}
-					response[csd.CsdId] = powerMetrics
+					response[csd.Id] = powerMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -581,10 +581,10 @@ func StorageMetricMemory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select memory_total, memory_usage, memory_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -606,7 +606,7 @@ func StorageMetricMemory(w http.ResponseWriter, r *http.Request) {
 							memoryMetrics = append(memoryMetrics, memoryMetric)
 						}
 					}
-					response[csd.CsdId] = memoryMetrics
+					response[csd.Id] = memoryMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -630,9 +630,9 @@ func StorageMetricNetwork(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select network_bandwidth,network_rx_data,network_tx_data, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -654,7 +654,7 @@ func StorageMetricNetwork(w http.ResponseWriter, r *http.Request) {
 							networkMetrics = append(networkMetrics, networkMetric)
 						}
 					}
-					response[csd.CsdId] = networkMetrics
+					response[csd.Id] = networkMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -678,9 +678,9 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if targetStorage == "" || targetStorage == csd.CsdId {
+		if targetStorage == "" || targetStorage == csd.Id {
 			if csd.Status == storagestruct.READY {
-				measurementName := "csd_metric_" + csd.CsdId
+				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
 					Command:  "select disk_total, disk_usage, disk_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
@@ -702,7 +702,7 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 							diskMetrics = append(diskMetrics, diskMetric)
 						}
 					}
-					response[csd.CsdId] = diskMetrics
+					response[csd.Id] = diskMetrics
 				} else {
 					fmt.Println("Error executing query:", err)
 				}
@@ -710,9 +710,9 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	for _, ssdId := range storagestruct.NodeStorageInfo_.SsdList {
-		if targetStorage == "" || targetStorage == ssdId {
-			measurementName := "ssd_metric_" + ssdId
+	for _, ssd := range storagestruct.NodeStorageInfo_.SsdList {
+		if targetStorage == "" || targetStorage == ssd.Id {
+			measurementName := "ssd_metric_" + ssd.Id
 			q := client.Query{
 				Command:  "select disk_total, disk_usage, disk_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 				Database: storagestruct.INFLUX_DB,
@@ -734,7 +734,7 @@ func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
 						diskMetrics = append(diskMetrics, diskMetric)
 					}
 				}
-				response[ssdId] = diskMetrics
+				response[ssd.Id] = diskMetrics
 			} else {
 				fmt.Println("Error executing query:", err)
 			}

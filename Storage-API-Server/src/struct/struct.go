@@ -42,15 +42,22 @@ var (
 var NodeStorageInfo_ NodeStorageInfo
 
 type CsdEntry struct {
-	CsdId  string `json:"csd_id"`
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	Status string `json:"status"`
+}
+
+type SsdEntry struct {
+	Id     string `json:"id"`
+	Name   string `json:"name"`
 	Status string `json:"status"`
 }
 
 type NodeStorageInfo struct {
-	NodeName string     `json:"node_name"`
-	CsdList  []CsdEntry `json:"csd_list"`
-	SsdList  []string   `json:"ssd_list"`
-	NodeType string     `json:"node_type"`
+	NodeName string     `json:"nodeName"`
+	CsdList  []CsdEntry `json:"csdList"`
+	SsdList  []SsdEntry `json:"ssdList"`
+	NodeType string     `json:"nodeType"`
 }
 
 func (nodeStorageInfo *NodeStorageInfo) InitNodeStorageInfo() {
@@ -174,8 +181,8 @@ type CsdMetric struct {
 }
 
 type StorageMetricMessage struct {
-	SsdList map[string][]SsdMetric `json:"ssd_list"`
-	CsdList map[string][]CsdMetric `json:"csd_list"`
+	SsdList map[string][]SsdMetric `json:"ssdList"`
+	CsdList map[string][]CsdMetric `json:"csdList"`
 }
 
 func NewStorageMetricMessage() StorageMetricMessage {
@@ -198,8 +205,8 @@ type CsdMetricMin struct {
 }
 
 type StorageInfoMessage struct {
-	SsdList map[string][]SsdMetric    `json:"ssd_list"`
-	CsdList map[string][]CsdMetricMin `json:"csd_list"`
+	SsdList map[string][]SsdMetric    `json:"ssdList"`
+	CsdList map[string][]CsdMetricMin `json:"csdList"`
 }
 
 func NewStorageInfoMessage() StorageInfoMessage {

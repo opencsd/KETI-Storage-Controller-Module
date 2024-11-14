@@ -402,26 +402,33 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
 
 func (storageMetricCollector *MetricCollector) HandleNodeInfoStorage(w http.ResponseWriter, r *http.Request) {
 	type CsdEntry struct {
-		CsdId  string `json:"csd_id"`
+		Id     string `json:"id"`
+		Name   string `json:"name"`
+		Status string `json:"status"`
+	}
+
+	type SsdEntry struct {
+		Id     string `json:"id"`
+		Name   string `json:"name"`
 		Status string `json:"status"`
 	}
 
 	response := struct {
-		NodeName string     `json:"node_name"`
-		CsdList  []CsdEntry `json:"csd_list"`
-		SsdList  []string   `json:"ssd_list"`
-		NodeType string     `json:"node_type"`
+		NodeName string     `json:"nodeName"`
+		CsdList  []CsdEntry `json:"csdList"`
+		SsdList  []SsdEntry `json:"ssdList"`
+		NodeType string     `json:"nodeType"`
 	}{
 		NodeName: storageMetricCollector.NodeName,
 		NodeType: storageMetricCollector.NodeType,
 	}
 
 	for key, metric := range storageMetricCollector.CsdMetrics {
-		response.CsdList = append(response.CsdList, CsdEntry{CsdId: key, Status: metric.Status})
+		response.CsdList = append(response.CsdList, CsdEntry{Id: key, Name: metric.Name, Status: metric.Status})
 	}
 
-	for key := range storageMetricCollector.SsdMetrics {
-		response.SsdList = append(response.SsdList, key)
+	for key, metric := range storageMetricCollector.SsdMetrics {
+		response.SsdList = append(response.SsdList, SsdEntry{Id: key, Name: metric.Name, Status: metric.Status})
 	}
 
 	w.Header().Set("Content-Type", "application/json")
