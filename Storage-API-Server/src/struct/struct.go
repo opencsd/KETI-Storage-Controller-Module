@@ -13,10 +13,17 @@ import (
 )
 
 const (
-	SSD     = 0
-	CSD     = 1
-	CROSS   = 2
-	UNKNOWN = 3
+	SSD     = "SSD"
+	CSD     = "CSD"
+	CROSS   = "CROSS"
+	UNKNOWN = "UNKNOWN"
+)
+
+const (
+	READY    = "READY"
+	NOTREADY = "NOTREADY"
+	BROKEN   = "BROKEN"
+	NORMAL   = "NORMAL"
 )
 
 var (
@@ -79,21 +86,21 @@ func (nodeStorageInfo *NodeStorageInfo) InitNodeStorageInfo() {
 }
 
 type NodeMetric struct {
-	Time               string  `json:"timestamp"`
-	NodeName           string  `json:"name"`
-	CpuTotal           float64 `json:"cpuTotal"`
-	CpuUsed            float64 `json:"cpuUsed"`
-	CpuUtilization     float64 `json:"cpuUtilization"`
-	MemoryTotal        float64 `json:"memoryTotal"`
-	MemoryUsed         float64 `json:"memoryUsed"`
-	MemoryUtilization  float64 `json:"memoryUtilization"`
-	StorageTotal       float64 `json:"storageTotal"`
-	StorageUsed        float64 `json:"storageUsed"`
-	StorageUtilization float64 `json:"storageUtilization"`
-	NetworkRxData      float64 `json:"networkRxData"`
-	NetworkTxData      float64 `json:"networkTxData"`
-	NetworkBandwidth   float64 `json:"networkBandwidth"`
-	PowerUsed          float64 `json:"powerUsed"`
+	Time              string  `json:"timestamp"`
+	NodeName          string  `json:"name"`
+	CpuTotal          float64 `json:"cpuTotal"`
+	CpuUsed           float64 `json:"cpuUsed"`
+	CpuUtilization    float64 `json:"cpuUtilization"`
+	MemoryTotal       float64 `json:"memoryTotal"`
+	MemoryUsed        float64 `json:"memoryUsed"`
+	MemoryUtilization float64 `json:"memoryUtilization"`
+	DiskTotal         float64 `json:"diskTotal"`
+	DiskUsed          float64 `json:"diskUsed"`
+	DiskUtilization   float64 `json:"diskUtilization"`
+	NetworkRxData     float64 `json:"networkRxData"`
+	NetworkTxData     float64 `json:"networkTxData"`
+	NetworkBandwidth  float64 `json:"networkBandwidth"`
+	PowerUsed         float64 `json:"powerUsed"`
 }
 
 type CpuMetric struct {
@@ -127,20 +134,21 @@ type NetworkMetric struct {
 }
 
 type DiskMetric struct {
-	Time               string  `json:"timestamp"`
-	Name               string  `json:"name"`
-	StorageTotal       float64 `json:"storageTotal"`
-	StorageUsed        float64 `json:"storageUsed"`
-	StorageUtilization float64 `json:"storageUtilization"`
+	Time            string  `json:"timestamp"`
+	Name            string  `json:"name"`
+	DiskTotal       float64 `json:"diskTotal"`
+	DiskUsed        float64 `json:"diskUsed"`
+	DiskUtilization float64 `json:"diskUtilization"`
 }
 
 type SsdMetric struct {
-	Time               string  `json:"timestamp"`
-	Id                 string  `json:"id"`
-	Name               string  `json:"name"`
-	StorageTotal       float64 `json:"storageTotal"`
-	StorageUsed        float64 `json:"storageUsed"`
-	StorageUtilization float64 `json:"storageUtilization"`
+	Time            string  `json:"timestamp"`
+	Id              string  `json:"id"`
+	Name            string  `json:"name"`
+	DiskTotal       float64 `json:"diskTotal"`
+	DiskUsed        float64 `json:"diskUsed"`
+	DiskUtilization float64 `json:"diskUtilization"`
+	Status          string  `json:"status"`
 }
 
 type CsdMetric struct {
@@ -154,9 +162,9 @@ type CsdMetric struct {
 	MemoryTotal          float64 `json:"memoryTotal"`
 	MemoryUsed           float64 `json:"memoryUsed"`
 	MemoryUtilization    float64 `json:"memoryUtilization"`
-	StorageTotal         float64 `json:"storageTotal"`
-	StorageUsed          float64 `json:"storageUsed"`
-	StorageUtilization   float64 `json:"storageUtilization"`
+	DiskTotal            float64 `json:"diskTotal"`
+	DiskUsed             float64 `json:"diskUsed"`
+	DiskUtilization      float64 `json:"diskUtilization"`
 	NetworkRxData        float64 `json:"networkRxData"`
 	NetworkTxData        float64 `json:"networkTxData"`
 	NetworkBandwidth     float64 `json:"networkBandwidth"`
@@ -165,7 +173,38 @@ type CsdMetric struct {
 	Status               string  `json:"status"`
 }
 
-type StorageMetric struct {
-	SsdList []SsdMetric `json:"ssd_list"`
-	CsdList []CsdMetric `json:"csd_list"`
+type StorageMetricMessage struct {
+	SsdList map[string][]SsdMetric `json:"ssd_list"`
+	CsdList map[string][]CsdMetric `json:"csd_list"`
+}
+
+func NewStorageMetricMessage() StorageMetricMessage {
+	return StorageMetricMessage{
+		SsdList: make(map[string][]SsdMetric),
+		CsdList: make(map[string][]CsdMetric),
+	}
+}
+
+type CsdMetricMin struct {
+	Time            string  `json:"timestamp"`
+	Id              string  `json:"id"`
+	Name            string  `json:"name"`
+	Ip              string  `json:"ip"`
+	DiskTotal       float64 `json:"diskTotal"`
+	DiskUsed        float64 `json:"diskUsed"`
+	DiskUtilization float64 `json:"diskUtilization"`
+	CsdMetricScore  float64 `json:"csdMetricScore"`
+	Status          string  `json:"status"`
+}
+
+type StorageInfoMessage struct {
+	SsdList map[string][]SsdMetric    `json:"ssd_list"`
+	CsdList map[string][]CsdMetricMin `json:"csd_list"`
+}
+
+func NewStorageInfoMessage() StorageInfoMessage {
+	return StorageInfoMessage{
+		SsdList: make(map[string][]SsdMetric),
+		CsdList: make(map[string][]CsdMetricMin),
+	}
 }

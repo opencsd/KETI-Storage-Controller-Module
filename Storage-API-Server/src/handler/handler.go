@@ -13,22 +13,46 @@ import (
 )
 
 func StorageVolumeInfo(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/info/volume Called\n")
 	w.Write([]byte("[OpenCSD Storage API Server] /node/info/volume Called\n"))
 }
 
 func StorageVolumeAllocate(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /volume/allocate Called\n")
 	w.Write([]byte("[OpenCSD Storage API Server] /volume/allocate Called\n"))
 }
 
 func StorageVolumeDeallocate(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /volume/deallocate Called\n")
 	w.Write([]byte("[OpenCSD Storage API Server] /volume/deallocate Called\n"))
 }
 
-func NodeInfoStorage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/info/storage Called\n")
+func NodeInfoStorageList(w http.ResponseWriter, r *http.Request) {
+	// serverAddress := "http://localhost:" + storagestruct.STORAGE_METRIC_COLLECTOR_PORT_HTTP + "/node/info/storage"
+
+	// for {
+	// 	resp, err := http.Get(serverAddress)
+	// 	if err != nil {
+	// 		fmt.Println("Error sending request:", err)
+	// 		time.Sleep(5 * time.Second)
+	// 		continue
+	// 	}
+	// 	defer resp.Body.Close()
+
+	// 	body, err := ioutil.ReadAll(resp.Body)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+
+	// 	var response storagestruct.NodeStorageInfo
+
+	// 	err = json.Unmarshal(body, &response)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+
+	// 	storagestruct.NodeStorageInfo_ = response
+
+	// 	break
+	// }
+
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(storagestruct.NodeStorageInfo_)
 	if err != nil {
@@ -38,18 +62,17 @@ func NodeInfoStorage(w http.ResponseWriter, r *http.Request) {
 }
 
 func NodeMetricAll(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/metric/all Called\n")
 	var jsonResponse []byte
 	response := []storagestruct.NodeMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	q := client.Query{
-		Command:  "SELECT * FROM node_metric ORDER BY DESC LIMIT " + datanum + " TZ('Asia/Seoul')",
+		Command:  "SELECT * FROM node_metric ORDER BY DESC LIMIT " + count + " TZ('Asia/Seoul')",
 		Database: storagestruct.INFLUX_DB,
 	}
 
@@ -62,9 +85,9 @@ func NodeMetricAll(w http.ResponseWriter, r *http.Request) {
 				nodeMetric.CpuTotal = parseFloat(value[1])
 				nodeMetric.CpuUsed = parseFloat(value[2])
 				nodeMetric.CpuUtilization = parseFloat(value[3])
-				nodeMetric.StorageTotal = parseFloat(value[4])
-				nodeMetric.StorageUsed = parseFloat(value[5])
-				nodeMetric.StorageUtilization = parseFloat(value[6])
+				nodeMetric.DiskTotal = parseFloat(value[4])
+				nodeMetric.DiskUsed = parseFloat(value[5])
+				nodeMetric.DiskUtilization = parseFloat(value[6])
 				nodeMetric.MemoryTotal = parseFloat(value[7])
 				nodeMetric.MemoryUsed = parseFloat(value[8])
 				nodeMetric.MemoryUtilization = parseFloat(value[9])
@@ -82,23 +105,21 @@ func NodeMetricAll(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func NodeMetricCpu(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/metric/cpu Called\n")
 	var jsonResponse []byte
 	response := []storagestruct.CpuMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	q := client.Query{
-		Command:  "select cpu_total, cpu_usage, cpu_utilization, node_name from node_metric order by desc limit " + datanum + " TZ('Asia/Seoul')",
+		Command:  "select cpu_total, cpu_usage, cpu_utilization, node_name from node_metric order by desc limit " + count + " TZ('Asia/Seoul')",
 		Database: storagestruct.INFLUX_DB,
 	}
 
@@ -121,23 +142,21 @@ func NodeMetricCpu(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func NodeMetricPower(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/metric/power Called\n")
 	var jsonResponse []byte
 	response := []storagestruct.PowerMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	q := client.Query{
-		Command:  "select power_usage, node_name from node_metric order by desc limit " + datanum + " TZ('Asia/Seoul')",
+		Command:  "select power_usage, node_name from node_metric order by desc limit " + count + " TZ('Asia/Seoul')",
 		Database: storagestruct.INFLUX_DB,
 	}
 
@@ -159,23 +178,21 @@ func NodeMetricPower(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func NodeMetricMemory(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/metric/memory Called\n")
 	var jsonResponse []byte
 	response := []storagestruct.MemoryMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	q := client.Query{
-		Command:  "select memory_total, memory_usage, memory_utilization, node_name from node_metric order by desc limit " + datanum + " TZ('Asia/Seoul')",
+		Command:  "select memory_total, memory_usage, memory_utilization, node_name from node_metric order by desc limit " + count + " TZ('Asia/Seoul')",
 		Database: storagestruct.INFLUX_DB,
 	}
 
@@ -199,23 +216,21 @@ func NodeMetricMemory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func NodeMetricNetwork(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/metric/network Called\n")
 	var jsonResponse []byte
 	response := []storagestruct.NetworkMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	q := client.Query{
-		Command:  "select network_bandwidth, network_rx_data, network_tx_data, node_name from node_metric order by desc limit " + datanum + " TZ('Asia/Seoul')",
+		Command:  "select network_bandwidth, network_rx_data, network_tx_data, node_name from node_metric order by desc limit " + count + " TZ('Asia/Seoul')",
 		Database: storagestruct.INFLUX_DB,
 	}
 
@@ -239,23 +254,21 @@ func NodeMetricNetwork(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
-func NodeMetricStorage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /node/metric/storage Called\n")
+func NodeMetricDisk(w http.ResponseWriter, r *http.Request) {
 	var jsonResponse []byte
 	response := []storagestruct.DiskMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	q := client.Query{
-		Command:  "select disk_total, disk_usage, disk_utilization, node_name from node_metric order by desc limit " + datanum + " TZ('Asia/Seoul')",
+		Command:  "select disk_total, disk_usage, disk_utilization, node_name from node_metric order by desc limit " + count + " TZ('Asia/Seoul')",
 		Database: storagestruct.INFLUX_DB,
 	}
 
@@ -265,9 +278,9 @@ func NodeMetricStorage(w http.ResponseWriter, r *http.Request) {
 				diskMetric := storagestruct.DiskMetric{}
 
 				diskMetric.Time = fmt.Sprintf("%v", value[0])
-				diskMetric.StorageTotal = parseFloat(value[1])
-				diskMetric.StorageUsed = parseFloat(value[2])
-				diskMetric.StorageUtilization = parseFloat(value[3])
+				diskMetric.DiskTotal = parseFloat(value[1])
+				diskMetric.DiskUsed = parseFloat(value[2])
+				diskMetric.DiskUtilization = parseFloat(value[3])
 				diskMetric.Name = fmt.Sprintf("%v", value[4])
 
 				response = append(response, diskMetric)
@@ -279,334 +292,456 @@ func NodeMetricStorage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
-func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /storage/metric/all Called\n")
+func StorageInfo(w http.ResponseWriter, r *http.Request) {
 	var jsonResponse []byte
-	response := storagestruct.StorageMetric{}
+	response := storagestruct.NewStorageInfoMessage()
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		if csd.Status == "READY" {
-			measurementName := "csd_metric_" + csd.CsdId
+		if targetStorage == "" || targetStorage == csd.CsdId {
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select disk_total, disk_usage, disk_utilization, storage_name, id, ip, score, status from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
+				}
+
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					csdMetrics := []storagestruct.CsdMetricMin{}
+
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							csdMetric := storagestruct.CsdMetricMin{}
+
+							csdMetric.Time = fmt.Sprintf("%v", value[0])
+							csdMetric.DiskTotal = parseFloat(value[1])
+							csdMetric.DiskUsed = parseFloat(value[2])
+							csdMetric.DiskUtilization = parseFloat(value[3])
+							csdMetric.Name = fmt.Sprintf("%v", value[4])
+							csdMetric.Id = fmt.Sprintf("%v", value[5])
+							csdMetric.Ip = fmt.Sprintf("%v", value[6])
+							csdMetric.CsdMetricScore = parseFloat(value[7])
+							csdMetric.Status = fmt.Sprintf("%v", value[8])
+
+							csdMetrics = append(csdMetrics, csdMetric)
+						}
+					}
+
+					response.CsdList[csd.CsdId] = csdMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
+			}
+		}
+	}
+
+	for _, ssdId := range storagestruct.NodeStorageInfo_.SsdList {
+		if targetStorage == "" || targetStorage == ssdId {
+			measurementName := "ssd_metric_" + ssdId
 			q := client.Query{
-				Command:  "select * from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
+				Command:  "select * from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 				Database: storagestruct.INFLUX_DB,
 			}
 
 			if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+				ssdMetrics := []storagestruct.SsdMetric{}
 				for _, row := range result.Results[0].Series {
 					for _, value := range row.Values {
-						csdMetric := storagestruct.CsdMetric{}
+						ssdMetric := storagestruct.SsdMetric{}
 
-						csdMetric.Time = fmt.Sprintf("%v", value[0])
-						csdMetric.CpuTotal = parseFloat(value[1])
-						csdMetric.CpuUsed = parseFloat(value[2])
-						csdMetric.CpuUtilization = parseFloat(value[3])
-						csdMetric.StorageTotal = parseFloat(value[4])
-						csdMetric.StorageUsed = parseFloat(value[5])
-						csdMetric.StorageUtilization = parseFloat(value[6])
-						csdMetric.Id = fmt.Sprintf("%v", value[7])
-						csdMetric.Ip = fmt.Sprintf("%v", value[8])
-						csdMetric.MemoryTotal = parseFloat(value[9])
-						csdMetric.MemoryUsed = parseFloat(value[10])
-						csdMetric.MemoryUtilization = parseFloat(value[11])
-						csdMetric.CsdMetricScore = parseFloat(value[12])
-						csdMetric.Name = fmt.Sprintf("%v", value[13])
-						csdMetric.NetworkRxData = parseFloat(value[14])
-						csdMetric.NetworkTxData = parseFloat(value[15])
-						csdMetric.NetworkBandwidth = parseFloat(value[16])
-						csdMetric.Status = fmt.Sprintf("%v", value[17])
-						csdMetric.CsdWorkingBlockCount = parseFloat(value[18])
+						ssdMetric.Time = fmt.Sprintf("%v", value[0])
+						ssdMetric.DiskTotal = parseFloat(value[1])
+						ssdMetric.DiskUsed = parseFloat(value[2])
+						ssdMetric.DiskUtilization = parseFloat(value[3])
+						ssdMetric.Id = fmt.Sprintf("%v", value[4])
+						ssdMetric.Name = fmt.Sprintf("%v", value[5])
+						ssdMetric.Status = fmt.Sprintf("%v", value[6])
 
-						fmt.Printf("%+v", csdMetric)
-
-						response.CsdList = append(response.CsdList, csdMetric)
+						ssdMetrics = append(ssdMetrics, ssdMetric)
 					}
 				}
+				response.SsdList[ssdId] = ssdMetrics
 			} else {
 				fmt.Println("Error executing query:", err)
 			}
 		}
 	}
 
-	for _, ssdName := range storagestruct.NodeStorageInfo_.SsdList {
-		measurementName := "ssd_metric_" + ssdName
-		q := client.Query{
-			Command:  "select * from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
+	jsonResponse, _ = json.Marshal(response)
+	w.Write([]byte(string(jsonResponse) + "\n"))
+}
 
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					ssdMetric := storagestruct.SsdMetric{}
+func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
+	var jsonResponse []byte
+	response := storagestruct.NewStorageMetricMessage()
 
-					ssdMetric.Time = fmt.Sprintf("%v", value[0])
-					ssdMetric.StorageTotal = parseFloat(value[1])
-					ssdMetric.StorageUsed = parseFloat(value[2])
-					ssdMetric.StorageUtilization = parseFloat(value[3])
-					ssdMetric.Id = fmt.Sprintf("%v", value[4])
-					ssdMetric.Name = fmt.Sprintf("%v", value[5])
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-					response.SsdList = append(response.SsdList, ssdMetric)
+	if count == "" {
+		count = "1"
+	}
+
+	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
+		if targetStorage == "" || targetStorage == csd.CsdId {
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select * from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
 				}
 
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					csdMetrics := []storagestruct.CsdMetric{}
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							csdMetric := storagestruct.CsdMetric{}
+
+							csdMetric.Time = fmt.Sprintf("%v", value[0])
+							csdMetric.CpuTotal = parseFloat(value[1])
+							csdMetric.CpuUsed = parseFloat(value[2])
+							csdMetric.CpuUtilization = parseFloat(value[3])
+							csdMetric.DiskTotal = parseFloat(value[4])
+							csdMetric.DiskUsed = parseFloat(value[5])
+							csdMetric.DiskUtilization = parseFloat(value[6])
+							csdMetric.Id = fmt.Sprintf("%v", value[7])
+							csdMetric.Ip = fmt.Sprintf("%v", value[8])
+							csdMetric.MemoryTotal = parseFloat(value[9])
+							csdMetric.MemoryUsed = parseFloat(value[10])
+							csdMetric.MemoryUtilization = parseFloat(value[11])
+							csdMetric.CsdMetricScore = parseFloat(value[12])
+							csdMetric.NetworkBandwidth = parseFloat(value[13])
+							csdMetric.NetworkRxData = parseFloat(value[14])
+							csdMetric.NetworkTxData = parseFloat(value[15])
+							csdMetric.Status = fmt.Sprintf("%v", value[16])
+							csdMetric.Name = fmt.Sprintf("%v", value[17])
+							csdMetric.CsdWorkingBlockCount = parseFloat(value[18])
+
+							csdMetrics = append(csdMetrics, csdMetric)
+						}
+					}
+					response.CsdList[csd.CsdId] = csdMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
+		}
+	}
+
+	for _, ssdId := range storagestruct.NodeStorageInfo_.SsdList {
+		if targetStorage == "" || targetStorage == ssdId {
+			measurementName := "ssd_metric_" + ssdId
+			q := client.Query{
+				Command:  "select * from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+				Database: storagestruct.INFLUX_DB,
+			}
+
+			if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+				ssdMetrics := []storagestruct.SsdMetric{}
+				for _, row := range result.Results[0].Series {
+					for _, value := range row.Values {
+						ssdMetric := storagestruct.SsdMetric{}
+
+						ssdMetric.Time = fmt.Sprintf("%v", value[0])
+						ssdMetric.DiskTotal = parseFloat(value[1])
+						ssdMetric.DiskUsed = parseFloat(value[2])
+						ssdMetric.DiskUtilization = parseFloat(value[3])
+						ssdMetric.Id = fmt.Sprintf("%v", value[4])
+						ssdMetric.Status = fmt.Sprintf("%v", value[5])
+						ssdMetric.Name = fmt.Sprintf("%v", value[6])
+
+						ssdMetrics = append(ssdMetrics, ssdMetric)
+					}
+
+				}
+				response.SsdList[ssdId] = ssdMetrics
+			} else {
+				fmt.Println("Error executing query:", err)
+			}
 		}
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func StorageMetricCpu(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /storage/metric/cpu Called\n")
 	var jsonResponse []byte
-	response := []storagestruct.CpuMetric{}
+	response := map[string][]storagestruct.CpuMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdId
-		q := client.Query{
-			Command:  "select cpu_total, cpu_usage, cpu_utilization, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
+		if targetStorage == "" || targetStorage == csd.CsdId {
 
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					cpuMetric := storagestruct.CpuMetric{}
-
-					cpuMetric.Time = fmt.Sprintf("%v", value[0])
-					cpuMetric.CpuTotal = parseFloat(value[1])
-					cpuMetric.CpuUsed = parseFloat(value[2])
-					cpuMetric.CpuUtilization = parseFloat(value[3])
-					cpuMetric.Name = fmt.Sprintf("%v", value[4])
-
-					response = append(response, cpuMetric)
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select cpu_total, cpu_usage, cpu_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
 				}
 
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					cpuMetrics := []storagestruct.CpuMetric{}
+
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							cpuMetric := storagestruct.CpuMetric{}
+
+							cpuMetric.Time = fmt.Sprintf("%v", value[0])
+							cpuMetric.CpuTotal = parseFloat(value[1])
+							cpuMetric.CpuUsed = parseFloat(value[2])
+							cpuMetric.CpuUtilization = parseFloat(value[3])
+							cpuMetric.Name = fmt.Sprintf("%v", value[4])
+
+							cpuMetrics = append(cpuMetrics, cpuMetric)
+						}
+					}
+					response[csd.CsdId] = cpuMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
 		}
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func StorageMetricPower(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /storage/metric/power Called\n")
 	var jsonResponse []byte
-	response := []storagestruct.PowerMetric{}
+	response := map[string][]storagestruct.PowerMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdId
-		q := client.Query{
-			Command:  "select power_used, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
+		if targetStorage == "" || targetStorage == csd.CsdId {
 
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					powerMetric := storagestruct.PowerMetric{}
-
-					powerMetric.Time = fmt.Sprintf("%v", value[0])
-					powerMetric.Name = fmt.Sprintf("%v", value[1])
-
-					response = append(response, powerMetric)
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select power_used, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
 				}
 
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					powerMetrics := []storagestruct.PowerMetric{}
+
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							powerMetric := storagestruct.PowerMetric{}
+
+							powerMetric.Time = fmt.Sprintf("%v", value[0])
+							powerMetric.Name = fmt.Sprintf("%v", value[1])
+
+							powerMetrics = append(powerMetrics, powerMetric)
+						}
+					}
+					response[csd.CsdId] = powerMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
 		}
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func StorageMetricMemory(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /storage/metric/memory Called\n")
 	var jsonResponse []byte
-	response := []storagestruct.MemoryMetric{}
+	response := map[string][]storagestruct.MemoryMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdId
-		q := client.Query{
-			Command:  "select memory_total, memory_usage, memory_utilization, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
+		if targetStorage == "" || targetStorage == csd.CsdId {
 
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					memoryMetric := storagestruct.MemoryMetric{}
-
-					memoryMetric.Time = fmt.Sprintf("%v", value[0])
-					memoryMetric.MemoryTotal = parseFloat(value[1])
-					memoryMetric.MemoryUsed = parseFloat(value[2])
-					memoryMetric.MemoryUtilization = parseFloat(value[3])
-					memoryMetric.Name = fmt.Sprintf("%v", value[4])
-
-					response = append(response, memoryMetric)
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select memory_total, memory_usage, memory_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
 				}
 
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					memoryMetrics := []storagestruct.MemoryMetric{}
+
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							memoryMetric := storagestruct.MemoryMetric{}
+
+							memoryMetric.Time = fmt.Sprintf("%v", value[0])
+							memoryMetric.MemoryTotal = parseFloat(value[1])
+							memoryMetric.MemoryUsed = parseFloat(value[2])
+							memoryMetric.MemoryUtilization = parseFloat(value[3])
+							memoryMetric.Name = fmt.Sprintf("%v", value[4])
+
+							memoryMetrics = append(memoryMetrics, memoryMetric)
+						}
+					}
+					response[csd.CsdId] = memoryMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
 		}
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func StorageMetricNetwork(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /storage/metric/network Called\n")
 	var jsonResponse []byte
-	response := []storagestruct.NetworkMetric{}
+	response := map[string][]storagestruct.NetworkMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdId
-		q := client.Query{
-			Command:  "select network_bandwidth,network_rx_data,network_tx_data, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
-
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					networkMetric := storagestruct.NetworkMetric{}
-
-					networkMetric.Time = fmt.Sprintf("%v", value[0])
-					networkMetric.NetworkRxData = parseFloat(value[1])
-					networkMetric.NetworkTxData = parseFloat(value[2])
-					networkMetric.NetworkBandwidth = parseFloat(value[3])
-					networkMetric.Name = fmt.Sprintf("%v", value[4])
-
-					response = append(response, networkMetric)
+		if targetStorage == "" || targetStorage == csd.CsdId {
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select network_bandwidth,network_rx_data,network_tx_data, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
 				}
 
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					networkMetrics := []storagestruct.NetworkMetric{}
+
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							networkMetric := storagestruct.NetworkMetric{}
+
+							networkMetric.Time = fmt.Sprintf("%v", value[0])
+							networkMetric.NetworkRxData = parseFloat(value[1])
+							networkMetric.NetworkTxData = parseFloat(value[2])
+							networkMetric.NetworkBandwidth = parseFloat(value[3])
+							networkMetric.Name = fmt.Sprintf("%v", value[4])
+
+							networkMetrics = append(networkMetrics, networkMetric)
+						}
+					}
+					response[csd.CsdId] = networkMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
 		}
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 
 func StorageMetricDisk(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("[OpenCSD Storage API Server] /storage/metric/disk Called\n")
 	var jsonResponse []byte
-	response := []storagestruct.DiskMetric{}
+	response := map[string][]storagestruct.DiskMetric{}
 
-	datanum := r.URL.Query().Get("datanum")
+	count := r.URL.Query().Get("count")
+	targetStorage := r.URL.Query().Get("storage")
 
-	if datanum == "" {
-		datanum = "1"
+	if count == "" {
+		count = "1"
 	}
 
 	for _, csd := range storagestruct.NodeStorageInfo_.CsdList {
-		measurementName := "csd_metric_" + csd.CsdId
-		q := client.Query{
-			Command:  "select disk_total, disk_usage, disk_utilization, name from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
-
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					diskMetric := storagestruct.DiskMetric{}
-
-					diskMetric.Time = fmt.Sprintf("%v", value[0])
-					diskMetric.StorageTotal = parseFloat(value[1])
-					diskMetric.StorageUsed = parseFloat(value[2])
-					diskMetric.StorageUtilization = parseFloat(value[3])
-					diskMetric.Name = fmt.Sprintf("%v", value[4])
-
-					response = append(response, diskMetric)
+		if targetStorage == "" || targetStorage == csd.CsdId {
+			if csd.Status == storagestruct.READY {
+				measurementName := "csd_metric_" + csd.CsdId
+				q := client.Query{
+					Command:  "select disk_total, disk_usage, disk_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Database: storagestruct.INFLUX_DB,
 				}
 
+				if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+					diskMetrics := []storagestruct.DiskMetric{}
+
+					for _, row := range result.Results[0].Series {
+						for _, value := range row.Values {
+							diskMetric := storagestruct.DiskMetric{}
+
+							diskMetric.Time = fmt.Sprintf("%v", value[0])
+							diskMetric.DiskTotal = parseFloat(value[1])
+							diskMetric.DiskUsed = parseFloat(value[2])
+							diskMetric.DiskUtilization = parseFloat(value[3])
+							diskMetric.Name = fmt.Sprintf("%v", value[4])
+
+							diskMetrics = append(diskMetrics, diskMetric)
+						}
+					}
+					response[csd.CsdId] = diskMetrics
+				} else {
+					fmt.Println("Error executing query:", err)
+				}
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
 		}
 	}
 
-	for _, ssdName := range storagestruct.NodeStorageInfo_.SsdList {
-		measurementName := "ssd_metric_" + ssdName
-		q := client.Query{
-			Command:  "select disk_total, disk_usage, disk_utilization from " + measurementName + " order by desc limit " + datanum + " TZ('Asia/Seoul')",
-			Database: storagestruct.INFLUX_DB,
-		}
-
-		if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
-			for _, row := range result.Results[0].Series {
-				for _, value := range row.Values {
-					diskMetric := storagestruct.DiskMetric{}
-
-					diskMetric.Time = fmt.Sprintf("%v", value[0])
-					diskMetric.StorageTotal = parseFloat(value[1])
-					diskMetric.StorageUsed = parseFloat(value[2])
-					diskMetric.StorageUtilization = parseFloat(value[3])
-					diskMetric.Name = fmt.Sprintf("%v", value[4])
-
-					response = append(response, diskMetric)
-				}
-
+	for _, ssdId := range storagestruct.NodeStorageInfo_.SsdList {
+		if targetStorage == "" || targetStorage == ssdId {
+			measurementName := "ssd_metric_" + ssdId
+			q := client.Query{
+				Command:  "select disk_total, disk_usage, disk_utilization, storage_name from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+				Database: storagestruct.INFLUX_DB,
 			}
-		} else {
-			fmt.Println("Error executing query:", err)
+
+			if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
+				diskMetrics := []storagestruct.DiskMetric{}
+
+				for _, row := range result.Results[0].Series {
+					for _, value := range row.Values {
+						diskMetric := storagestruct.DiskMetric{}
+
+						diskMetric.Time = fmt.Sprintf("%v", value[0])
+						diskMetric.DiskTotal = parseFloat(value[1])
+						diskMetric.DiskUsed = parseFloat(value[2])
+						diskMetric.DiskUtilization = parseFloat(value[3])
+						diskMetric.Name = fmt.Sprintf("%v", value[4])
+
+						diskMetrics = append(diskMetrics, diskMetric)
+					}
+				}
+				response[ssdId] = diskMetrics
+			} else {
+				fmt.Println("Error executing query:", err)
+			}
 		}
 	}
 
 	jsonResponse, _ = json.Marshal(response)
-	fmt.Println(string(jsonResponse))
 	w.Write([]byte(string(jsonResponse) + "\n"))
 }
 

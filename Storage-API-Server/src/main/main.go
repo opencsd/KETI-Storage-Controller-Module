@@ -34,7 +34,8 @@ func main() {
 	http.HandleFunc("/volume/allocate", handler.StorageVolumeAllocate)
 	http.HandleFunc("/volume/deallocate", handler.StorageVolumeDeallocate)
 
-	http.HandleFunc("/node/info/storage", handler.NodeInfoStorage)
+	http.HandleFunc("/node/info/storage-list", handler.NodeInfoStorageList)
+	http.HandleFunc("/node/info/storage", handler.StorageInfo)
 	http.HandleFunc("/node/info/volume", handler.StorageVolumeInfo)
 
 	http.HandleFunc("/node/metric/all", handler.NodeMetricAll)
@@ -42,8 +43,9 @@ func main() {
 	http.HandleFunc("/node/metric/power", handler.NodeMetricPower)
 	http.HandleFunc("/node/metric/memory", handler.NodeMetricMemory)
 	http.HandleFunc("/node/metric/network", handler.NodeMetricNetwork)
-	http.HandleFunc("/node/metric/storage", handler.NodeMetricStorage)
+	http.HandleFunc("/node/metric/disk", handler.NodeMetricDisk)
 
+	http.HandleFunc("/storage/info", handler.StorageInfo)
 	http.HandleFunc("/storage/metric/all", handler.StorageMetricAll)
 	http.HandleFunc("/storage/metric/cpu", handler.StorageMetricCpu)
 	http.HandleFunc("/storage/metric/power", handler.StorageMetricPower)
