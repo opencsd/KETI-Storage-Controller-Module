@@ -311,7 +311,7 @@ func StorageInfo(w http.ResponseWriter, r *http.Request) {
 			if csd.Status == storagestruct.READY {
 				measurementName := "csd_metric_" + csd.Id
 				q := client.Query{
-					Command:  "select disk_total, disk_usage, disk_utilization, storage_name, id, ip, score, status from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
+					Command:  "select disk_total, disk_usage, disk_utilization, storage_name, id, ip, metric_score, status from " + measurementName + " order by desc limit " + count + " TZ('Asia/Seoul')",
 					Database: storagestruct.INFLUX_DB,
 				}
 
@@ -363,8 +363,8 @@ func StorageInfo(w http.ResponseWriter, r *http.Request) {
 						ssdMetric.DiskUsed = parseFloat(value[2])
 						ssdMetric.DiskUtilization = parseFloat(value[3])
 						ssdMetric.Id = fmt.Sprintf("%v", value[4])
-						ssdMetric.Name = fmt.Sprintf("%v", value[5])
-						ssdMetric.Status = fmt.Sprintf("%v", value[6])
+						ssdMetric.Status = fmt.Sprintf("%v", value[5])
+						ssdMetric.Name = fmt.Sprintf("%v", value[6])
 
 						ssdMetrics = append(ssdMetrics, ssdMetric)
 					}
@@ -447,6 +447,7 @@ func StorageMetricAll(w http.ResponseWriter, r *http.Request) {
 
 			if result, err := storagestruct.INFLUX_CLIENT.Query(q); err == nil && result.Error() == nil {
 				ssdMetrics := []storagestruct.SsdMetric{}
+				fmt.Println(result)
 				for _, row := range result.Results[0].Series {
 					for _, value := range row.Values {
 						ssdMetric := storagestruct.SsdMetric{}
