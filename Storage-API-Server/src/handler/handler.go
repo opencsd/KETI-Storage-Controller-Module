@@ -3,8 +3,10 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math"
 	"net/http"
+	"os"
 	"strconv"
 
 	storagestruct "opencsd-storage-api-server/src/struct"
@@ -22,6 +24,30 @@ func StorageVolumeAllocate(w http.ResponseWriter, r *http.Request) {
 
 func StorageVolumeDeallocate(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("[OpenCSD Storage API Server] /volume/deallocate Called\n"))
+}
+
+func StorageDirectoryCreate(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Query().Get("path")
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		err := os.MkdirAll(path, 0777)
+		if err != nil {
+			http.Error(w, "Error Create Directory : "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		log.Printf("Directory '%s' created successfully\n", path)
+	} else {
+		log.Printf("Directory '%s' already exists\n", path)
+	}
+	if err := os.Chmod(path, 0777); err != nil {
+		http.Error(w, "failed to set permissions on directory"+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Write([]byte("[OpenCSD Storage API Server] Create Directory Successfully\n"))
+}
+
+func StorageDirectoryDelete(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("[OpenCSD Storage API Server] /directory/delete Called\n"))
 }
 
 func NodeInfoStorageList(w http.ResponseWriter, r *http.Request) {

@@ -33,6 +33,8 @@ func main() {
 	//0. VolumeAllocation with Gluesys
 	http.HandleFunc("/volume/allocate", handler.StorageVolumeAllocate)
 	http.HandleFunc("/volume/deallocate", handler.StorageVolumeDeallocate)
+	http.HandleFunc("/directory/create", handler.StorageDirectoryCreate)
+	http.HandleFunc("/directory/delete", handler.StorageDirectoryDelete)
 
 	http.HandleFunc("/node/info/storage-list", handler.NodeInfoStorageList)
 	http.HandleFunc("/node/info/storage", handler.StorageInfo)
