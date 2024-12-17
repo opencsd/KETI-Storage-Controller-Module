@@ -46,7 +46,7 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 	storageMetricCollector.CsdMetrics[key] = csdMetric
 }
 
-func (storageMetricCollector *MetricCollector) RunMetricCollector() {
+func (storageMetricCollector *MetricCollector) RunMetricCollector(mode string) {
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 
@@ -65,7 +65,7 @@ func (storageMetricCollector *MetricCollector) RunMetricCollector() {
 				storageMetricCollector.updateSsdMetric()
 			}
 
-			storageMetricCollector.saveNodeMetric()
+			storageMetricCollector.saveNodeMetric(mode)
 
 			storageMetricCollector.NodeMetric.mutex.Unlock()
 		}
@@ -248,7 +248,11 @@ func (storageMetricCollector *MetricCollector) updateSsdMetric() {
 	}
 }
 
-func (storageMetricCollector *MetricCollector) saveNodeMetric() {
+func (storageMetricCollector *MetricCollector) saveNodeMetric(mode string) {
+	if mode == "off" {
+		return
+	}
+
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
 		Database:  INFLUX_DB,
 		Precision: "s",
@@ -326,7 +330,11 @@ func (storageMetricCollector *MetricCollector) saveNodeMetric() {
 	}
 }
 
-func (storageMetricCollector *MetricCollector) SaveCsdMetric() {
+func (storageMetricCollector *MetricCollector) SaveCsdMetric(mode string) {
+	if mode == "off" {
+		return
+	}
+
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 
@@ -439,4 +447,50 @@ func (storageMetricCollector *MetricCollector) HandleNodeInfoStorage(w http.Resp
 	}
 
 	fmt.Printf("HandleNodeInfoStorage called %+v\n", response)
+}
+
+func (storageMetricCollector *MetricCollector) HandleNodeMetric(w http.ResponseWriter, r *http.Request) {
+	response := NodeMetric{}
+
+	response.Cpu = storageMetricCollector.NodeMetric.Cpu
+	response.Memory = storageMetricCollector.NodeMetric.Memory
+	response.Disk = storageMetricCollector.NodeMetric.Disk
+	response.Network = storageMetricCollector.NodeMetric.Network
+	response.Power = storageMetricCollector.NodeMetric.Power
+
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(response)
+	if err != nil {
+		http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
+		fmt.Println("Error encoding JSON:", err)
+	}
+
+	fmt.Printf("HandleNodeMetric called %+v\n", response)
+}
+
+func (storageMetricCollector *MetricCollector) HandleStorageMetric(w http.ResponseWriter, r *http.Request) {
+	response := struct {
+		CsdMetrics map[string]CsdMetric `json:"csdMetrics"`
+		SsdMetrics map[string]SsdMetric `json:"ssdMetrics"`
+	}{
+		CsdMetrics: make(map[string]CsdMetric),
+		SsdMetrics: make(map[string]SsdMetric),
+	}
+
+	for key, metric := range storageMetricCollector.CsdMetrics {
+		response.CsdMetrics[key] = *metric
+	}
+
+	for key, metric := range storageMetricCollector.SsdMetrics {
+		response.SsdMetrics[key] = *metric
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(response)
+	if err != nil {
+		http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
+		fmt.Println("Error encoding JSON:", err)
+	}
+
+	fmt.Printf("HandleStorageMetric called %+v\n", response)
 }

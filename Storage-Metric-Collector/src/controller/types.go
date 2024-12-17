@@ -46,13 +46,13 @@ const (
 
 type MetricCollector struct {
 	NodeName   string
-	NodeMetric *NodeMetric
-	CsdMetrics map[string]*CsdMetric
-	SsdMetrics map[string]*SsdMetric
-	NodeType   string
+	NodeMetric *NodeMetric           `json:"nodeMetric"`
+	CsdMetrics map[string]*CsdMetric `json:"csdMetrics"`
+	SsdMetrics map[string]*SsdMetric `json:"ssdMetrics"`
+	NodeType   string                `json:"nodeType"`
 }
 
-func NewMetricCollector() *MetricCollector {
+func NewMetricCollector(mode string) *MetricCollector {
 	hostname, err := os.Hostname()
 	if err != nil {
 		fmt.Println("cannot get hostname:", err)
@@ -67,33 +67,37 @@ func NewMetricCollector() *MetricCollector {
 		fmt.Println("NODE_NAME environment variable is not set")
 	}
 
-	var labelValue string
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		fmt.Println("InClusterConfig error :", err)
-	} else {
-		clientset, err := kubernetes.NewForConfig(config)
-		if err != nil {
-			fmt.Println("NewForConfig error :", err)
-		} else {
-			node, err := clientset.CoreV1().Nodes().Get(context.TODO(), nodeName, metav1.GetOptions{})
-			if err != nil {
-				fmt.Println("Get error :", err)
-			} else {
-				labelValue = node.Labels["type"]
+	var nodeType string
 
+	if mode == "off" {
+		nodeType = CSD
+	} else {
+		var labelValue string
+		config, err := rest.InClusterConfig()
+		if err != nil {
+			fmt.Println("InClusterConfig error :", err)
+		} else {
+			clientset, err := kubernetes.NewForConfig(config)
+			if err != nil {
+				fmt.Println("NewForConfig error :", err)
+			} else {
+				node, err := clientset.CoreV1().Nodes().Get(context.TODO(), nodeName, metav1.GetOptions{})
+				if err != nil {
+					fmt.Println("Get error :", err)
+				} else {
+					labelValue = node.Labels["type"]
+
+				}
 			}
 		}
-	}
-
-	var nodeType string
-	switch labelValue {
-	case "ssd":
-		nodeType = SSD
-	case "csd":
-		nodeType = CSD
-	default:
-		nodeType = UNKNOWN
+		switch labelValue {
+		case "ssd":
+			nodeType = SSD
+		case "csd":
+			nodeType = CSD
+		default:
+			nodeType = UNKNOWN
+		}
 	}
 
 	return &MetricCollector{
@@ -105,28 +109,33 @@ func NewMetricCollector() *MetricCollector {
 	}
 }
 
-func (metricCollector *MetricCollector) InitMetricCollector() {
+func (metricCollector *MetricCollector) InitMetricCollector(mode string) {
 	csdCount := 0
-	{
-		file, err := os.Open("/etc/lspci-result.txt")
-		if err != nil {
-			fmt.Println("lspci-result read error, ", err)
-		}
-		defer file.Close()
-
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			line := scanner.Text()
-
-			parts := strings.Fields(line)
-			if len(parts) != 2 {
-				continue
+	if mode == "off" {
+		csdCountStr := os.Getenv("CSD_COUNT")
+		csdCount, _ = strconv.Atoi(csdCountStr)
+	} else {
+		{
+			file, err := os.Open("/etc/lspci-result.txt")
+			if err != nil {
+				fmt.Println("lspci-result read error, ", err)
 			}
+			defer file.Close()
 
-			node, value := parts[0], parts[1]
+			scanner := bufio.NewScanner(file)
+			for scanner.Scan() {
+				line := scanner.Text()
 
-			if node == metricCollector.NodeName {
-				csdCount, _ = strconv.Atoi(value)
+				parts := strings.Fields(line)
+				if len(parts) != 2 {
+					continue
+				}
+
+				node, value := parts[0], parts[1]
+
+				if node == metricCollector.NodeName {
+					csdCount, _ = strconv.Atoi(value)
+				}
 			}
 		}
 	}
@@ -235,12 +244,12 @@ func NewConfig() *Config {
 }
 
 type NodeMetric struct {
-	mutex   sync.Mutex
-	Cpu     Cpu
-	Memory  Memory
-	Disk    Disk
-	Network Network
-	Power   Power
+	mutex   sync.Mutex `json:"-"`
+	Cpu     Cpu        `json:"cpu"`
+	Memory  Memory     `json:"memory"`
+	Disk    Disk       `json:"disk"`
+	Network Network    `json:"network"`
+	Power   Power      `json:"power"`
 }
 
 func NewNodeMetric() *NodeMetric {
@@ -254,9 +263,9 @@ func NewNodeMetric() *NodeMetric {
 }
 
 type Cpu struct {
-	Total       int
-	Used        float64
-	Utilization float64
+	Total       int     `json:"total"`
+	Used        float64 `json:"used"`
+	Utilization float64 `json:"utilization"`
 	StJiffies   StJiffies
 }
 
@@ -286,9 +295,9 @@ func NewStJiffies() StJiffies {
 }
 
 type Memory struct {
-	Total       int64
-	Used        int64
-	Utilization float64
+	Total       int64   `json:"total"`
+	Used        int64   `json:"used"`
+	Utilization float64 `json:"utilization"`
 	Free        int64
 	Buffers     int64
 	Cached      int64
@@ -306,10 +315,10 @@ func NewMemory() Memory {
 }
 
 type Disk struct {
-	Name        string
-	Total       int64
-	Used        int64
-	Utilization float64
+	Name        string  `json:"name"`
+	Total       int64   `json:"total"`
+	Used        int64   `json:"used"`
+	Utilization float64 `json:"utilization"`
 }
 
 func NewDisk() Disk {
@@ -324,9 +333,9 @@ func NewDisk() Disk {
 type Network struct {
 	RxByte    int64
 	TxByte    int64
-	RxData    int64
-	TxData    int64
-	Bandwidth int64
+	RxData    int64 `json:"rxData"`
+	TxData    int64 `json:"txData"`
+	Bandwidth int64 `json:"bandwidth"`
 }
 
 func NewNetwork() Network {
@@ -342,7 +351,7 @@ func NewNetwork() Network {
 type Power struct {
 	Energy1 int64
 	Energy2 int64
-	Used    int64
+	Used    int64 `json:"used"`
 }
 
 func NewPower() Power {
@@ -462,11 +471,11 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 }
 
 type SsdMetric struct {
-	Name        string
-	Total       int64
-	Used        int64
-	Utilization float64
-	Status      string
+	Name        string  `json:"name"`
+	Total       int64   `json:"total"`
+	Used        int64   `json:"used"`
+	Utilization float64 `json:"utilization"`
+	Status      string  `json:"status"`
 }
 
 func NewSsdMetric() SsdMetric {
@@ -479,24 +488,24 @@ func NewSsdMetric() SsdMetric {
 }
 
 type CsdMetric struct {
-	mutex                sync.Mutex
-	IP                   string  `json:"ip"`
-	Name                 string  `json:"name"`
-	CpuTotal             int     `json:"cpuTotal"`
-	CpuUsed              float64 `json:"cpuUsed"`
-	CpuUtilization       float64 `json:"cpuUtilization"`
-	MemoryTotal          int64   `json:"memoryTotal"`
-	MemoryUsed           int64   `json:"memoryUsed"`
-	MemoryUtilization    float64 `json:"memoryUtilization"`
-	DiskTotal            float64 `json:"diskTotal"`
-	DiskUsed             float64 `json:"diskUsed"`
-	DiskUtilization      float64 `json:"diskUtilization"`
-	NetworkRxData        int64   `json:"networkRxData"`
-	NetworkTxData        int64   `json:"networkTxData"`
-	NetworkBandwidth     int64   `json:"networkBandwidth"`
-	CsdMetricScore       float64 `json:"csdMetricScore"`
-	CsdWorkingBlockCount int64   `json:"csdWorkingBlockCount"`
-	Status               string  `json:"status"`
+	mutex                sync.Mutex `json:"-"`
+	IP                   string     `json:"ip"`
+	Name                 string     `json:"name"`
+	CpuTotal             int        `json:"cpuTotal"`
+	CpuUsed              float64    `json:"cpuUsed"`
+	CpuUtilization       float64    `json:"cpuUtilization"`
+	MemoryTotal          int64      `json:"memoryTotal"`
+	MemoryUsed           int64      `json:"memoryUsed"`
+	MemoryUtilization    float64    `json:"memoryUtilization"`
+	DiskTotal            float64    `json:"diskTotal"`
+	DiskUsed             float64    `json:"diskUsed"`
+	DiskUtilization      float64    `json:"diskUtilization"`
+	NetworkRxData        int64      `json:"networkRxData"`
+	NetworkTxData        int64      `json:"networkTxData"`
+	NetworkBandwidth     int64      `json:"networkBandwidth"`
+	CsdMetricScore       float64    `json:"csdMetricScore"`
+	CsdWorkingBlockCount int64      `json:"csdWorkingBlockCount"`
+	Status               string     `json:"status"`
 	// Power		  int     `json:"powerUsage"`
 }
 

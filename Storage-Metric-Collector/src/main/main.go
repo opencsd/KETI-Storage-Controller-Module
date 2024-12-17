@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"time"
 
 	"storage-metric-collector/src/controller"
@@ -13,36 +14,42 @@ import (
 )
 
 func main() {
-	for {
-		var err error
-		controller.INFLUX_CLIENT, err = client.NewHTTPClient(client.HTTPConfig{
-			Addr:     "http://localhost:" + controller.INFLUX_PORT,
-			Username: controller.INFLUX_USERNAME,
-			Password: controller.INFLUX_PASSWORD,
-		})
-		if err != nil {
-			log.Fatal(err)
+	mode := os.Getenv("MODE") // mode is off except on k8s
+
+	if mode != "off" {
+		for {
+			var err error
+			controller.INFLUX_CLIENT, err = client.NewHTTPClient(client.HTTPConfig{
+				Addr:     "http://localhost:" + controller.INFLUX_PORT,
+				Username: controller.INFLUX_USERNAME,
+				Password: controller.INFLUX_PASSWORD,
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
+			_, _, pingErr := controller.INFLUX_CLIENT.Ping(5 * time.Second)
+			if pingErr == nil {
+				fmt.Println("[Storage Metric Collector] Connected to InfluxDB!")
+				break
+			} else {
+				time.Sleep(5 * time.Second)
+			}
 		}
-		_, _, pingErr := controller.INFLUX_CLIENT.Ping(5 * time.Second)
-		if pingErr == nil {
-			fmt.Println("[Storage Metric Collector] Connected to InfluxDB!")
-			break
-		} else {
-			time.Sleep(5 * time.Second)
-		}
+		defer controller.INFLUX_CLIENT.Close()
 	}
-	defer controller.INFLUX_CLIENT.Close()
 
-	StorageMetricCollector := controller.NewMetricCollector()
-	StorageMetricCollector.InitMetricCollector()
+	StorageMetricCollector := controller.NewMetricCollector(mode)
+	StorageMetricCollector.InitMetricCollector(mode)
 
-	go StorageMetricCollector.RunMetricCollector()
+	go StorageMetricCollector.RunMetricCollector(mode)
 
 	if StorageMetricCollector.NodeType == controller.CSD {
-		go StorageMetricCollector.SaveCsdMetric()
+		go StorageMetricCollector.SaveCsdMetric(mode)
 	}
 
 	http.HandleFunc("/node/info/storage", StorageMetricCollector.HandleNodeInfoStorage)
+	http.HandleFunc("/node/metric", StorageMetricCollector.HandleNodeMetric)
+	http.HandleFunc("/node/metric/storage", StorageMetricCollector.HandleStorageMetric)
 	go func() {
 		err := http.ListenAndServe(":"+controller.STORAGE_METRIC_COLLECTOR_PORT_HTTP, nil)
 		if err != nil {
