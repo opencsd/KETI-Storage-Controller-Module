@@ -33,27 +33,27 @@ func main() {
 	//0. VolumeAllocation with Gluesys
 	http.HandleFunc("/volume/allocate", handler.StorageVolumeAllocate)
 	http.HandleFunc("/volume/deallocate", handler.StorageVolumeDeallocate)
-	http.HandleFunc("/directory/create", handler.StorageDirectoryCreate)
+	http.HandleFunc("/directory/create", handler.StorageDirectoryCreate) // ?path=
 	http.HandleFunc("/directory/delete", handler.StorageDirectoryDelete)
 
 	http.HandleFunc("/node/info/storage-list", handler.NodeInfoStorageList)
-	http.HandleFunc("/node/info/storage", handler.StorageInfo)
+	http.HandleFunc("/node/info/storage", handler.StorageInfo) // ?storage=&count=
 	http.HandleFunc("/node/info/volume", handler.StorageVolumeInfo)
 
-	http.HandleFunc("/node/metric/all", handler.NodeMetricAll)
-	http.HandleFunc("/node/metric/cpu", handler.NodeMetricCpu)
-	http.HandleFunc("/node/metric/power", handler.NodeMetricPower)
-	http.HandleFunc("/node/metric/memory", handler.NodeMetricMemory)
-	http.HandleFunc("/node/metric/network", handler.NodeMetricNetwork)
-	http.HandleFunc("/node/metric/disk", handler.NodeMetricDisk)
+	http.HandleFunc("/node/metric/all", handler.NodeMetricAll)         // ?count=
+	http.HandleFunc("/node/metric/cpu", handler.NodeMetricCpu)         // ?count=
+	http.HandleFunc("/node/metric/power", handler.NodeMetricPower)     // ?count=
+	http.HandleFunc("/node/metric/memory", handler.NodeMetricMemory)   // ?count=
+	http.HandleFunc("/node/metric/network", handler.NodeMetricNetwork) // ?count=
+	http.HandleFunc("/node/metric/disk", handler.NodeMetricDisk)       // ?count=
 
-	http.HandleFunc("/storage/info", handler.StorageInfo)
-	http.HandleFunc("/storage/metric/all", handler.StorageMetricAll)
-	http.HandleFunc("/storage/metric/cpu", handler.StorageMetricCpu)
-	http.HandleFunc("/storage/metric/power", handler.StorageMetricPower)
-	http.HandleFunc("/storage/metric/memory", handler.StorageMetricMemory)
-	http.HandleFunc("/storage/metric/network", handler.StorageMetricNetwork)
-	http.HandleFunc("/storage/metric/disk", handler.StorageMetricDisk)
+	http.HandleFunc("/storage/info", handler.StorageInfo)                    // ?storage=&count=
+	http.HandleFunc("/storage/metric/all", handler.StorageMetricAll)         // ?storage=&count=
+	http.HandleFunc("/storage/metric/cpu", handler.StorageMetricCpu)         // ?storage=&count=
+	http.HandleFunc("/storage/metric/power", handler.StorageMetricPower)     // ?storage=&count=
+	http.HandleFunc("/storage/metric/memory", handler.StorageMetricMemory)   // ?storage=&count=
+	http.HandleFunc("/storage/metric/network", handler.StorageMetricNetwork) // ?storage=&count=
+	http.HandleFunc("/storage/metric/disk", handler.StorageMetricDisk)       // ?storage=&count=
 
 	http.ListenAndServe(":"+storagestruct.STORAGE_API_SERVER_PORT, nil)
 }
