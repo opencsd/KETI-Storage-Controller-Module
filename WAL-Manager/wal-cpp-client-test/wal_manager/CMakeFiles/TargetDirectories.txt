@@ -1,0 +1,2 @@
+/root/workspace/WAL-Manager/wal-cpp-client-test/wal_manager/CMakeFiles/rebuild_cache.dir
+/root/workspace/WAL-Manager/wal-cpp-client-test/wal_manager/CMakeFiles/edit_cache.dir

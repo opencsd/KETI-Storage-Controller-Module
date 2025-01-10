@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/walserver.dir/WalServer.cc.o CMakeFiles/walserver.dir/WalServerMain.cc.o -o walserver  -lboost_system -lcrypto -lssl -lcpprest -lpthread 
