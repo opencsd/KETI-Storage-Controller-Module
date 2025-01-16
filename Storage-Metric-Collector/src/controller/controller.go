@@ -34,6 +34,8 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 		return
 	}
 
+	fmt.Printf("+%v", csdMetric)
+
 	csdID := extractCSDId(csdMetric.IP)
 	key := "csd" + csdID
 
@@ -58,7 +60,7 @@ func (storageMetricCollector *MetricCollector) RunMetricCollector(mode string) {
 			storageMetricCollector.updateCpu()
 			storageMetricCollector.updateMemory()
 			storageMetricCollector.updateNetwork()
-			storageMetricCollector.updateStorage()
+			// storageMetricCollector.updateStorage()
 			storageMetricCollector.updatePower()
 
 			if storageMetricCollector.NodeType == SSD {
@@ -73,7 +75,7 @@ func (storageMetricCollector *MetricCollector) RunMetricCollector(mode string) {
 }
 
 func (storageMetricCollector *MetricCollector) updateCpu() {
-	file, err := os.Open("/proc/stat")
+	file, err := os.Open("/host/proc/stat")
 	if err != nil {
 		fmt.Println("cannot open file: ", err)
 	} else {
@@ -104,7 +106,7 @@ func (storageMetricCollector *MetricCollector) updateCpu() {
 }
 
 func (storageMetricCollector *MetricCollector) updateMemory() {
-	file, err := os.Open("/proc/meminfo")
+	file, err := os.Open("/host/proc/meminfo")
 	if err != nil {
 		fmt.Println("cannot open file: ", err)
 	} else {
@@ -118,7 +120,7 @@ func (storageMetricCollector *MetricCollector) updateMemory() {
 			}
 
 			key := fields[0]
-			value, err := strconv.ParseInt(fields[1], 10, 64)
+			value, err := strconv.ParseFloat(fields[1], 64)
 			if err != nil {
 				fmt.Println("Error parsing value:", err)
 				continue
@@ -137,7 +139,8 @@ func (storageMetricCollector *MetricCollector) updateMemory() {
 			fmt.Println("Error reading file:", err)
 		}
 
-		storageMetricCollector.NodeMetric.Memory.Used = storageMetricCollector.NodeMetric.Memory.Total - storageMetricCollector.NodeMetric.Memory.Free - storageMetricCollector.NodeMetric.Memory.Buffers - storageMetricCollector.NodeMetric.Memory.Cached
+		freeGB := (storageMetricCollector.NodeMetric.Memory.Free + storageMetricCollector.NodeMetric.Memory.Buffers + storageMetricCollector.NodeMetric.Memory.Cached) / 1024.0 / 1024.0
+		storageMetricCollector.NodeMetric.Memory.Used = storageMetricCollector.NodeMetric.Memory.Total - freeGB
 		utilization := float64(storageMetricCollector.NodeMetric.Memory.Used) / float64(storageMetricCollector.NodeMetric.Memory.Total) * 100.0
 		storageMetricCollector.NodeMetric.Memory.Utilization, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", utilization), 64)
 	}
@@ -145,7 +148,7 @@ func (storageMetricCollector *MetricCollector) updateMemory() {
 }
 
 func (storageMetricCollector *MetricCollector) updateNetwork() {
-	statisticsFilePath := "/sys/class/net/eno1/statistics/"
+	statisticsFilePath := "/host/sys/class/net/eno1/statistics/"
 
 	rxBytesFieldName := statisticsFilePath + "rx_bytes"
 	txBytesFieldName := statisticsFilePath + "tx_bytes"
@@ -174,38 +177,38 @@ func (storageMetricCollector *MetricCollector) updateNetwork() {
 	storageMetricCollector.NodeMetric.Network.TxByte = currentTxBytes
 }
 
-func (storageMetricCollector *MetricCollector) updateStorage() {
-	cmd := exec.Command("df", "-k", "--total")
-	output, err := cmd.Output()
-	if err != nil {
-		fmt.Println("Error executing command:", err)
-		return
-	}
+// func (storageMetricCollector *MetricCollector) updateStorage() {
+// 	cmd := exec.Command("df", "-h")
+// 	output, err := cmd.Output()
+// 	if err != nil {
+// 		fmt.Println("Error executing command:", err)
+// 		return
+// 	}
 
-	scanner := bufio.NewScanner(bytes.NewReader(output))
-	scanner.Scan()
+// 	scanner := bufio.NewScanner(bytes.NewReader(output))
+// 	scanner.Scan()
 
-	for scanner.Scan() {
-		line := scanner.Text()
+// 	for scanner.Scan() {
+// 		line := scanner.Text()
 
-		if strings.Contains(line, "total") {
-			fields := strings.Fields(line)
-			if len(fields) >= 3 {
-				storageMetricCollector.NodeMetric.Disk.Used, _ = strconv.ParseInt(fields[2], 10, 64)
-				break
-			}
-		}
-	}
+// 		if strings.Contains(line, "total") {
+// 			fields := strings.Fields(line)
+// 			if len(fields) >= 3 {
+// 				storageMetricCollector.NodeMetric.Disk.Used, _ = strconv.ParseFloat(fields[2], 64)
+// 				break
+// 			}
+// 		}
+// 	}
 
-	if storageMetricCollector.NodeMetric.Disk.Total > 0 {
-		utilization := (float64(storageMetricCollector.NodeMetric.Disk.Used) / float64(storageMetricCollector.NodeMetric.Disk.Total)) * 100
-		storageMetricCollector.NodeMetric.Disk.Utilization, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", utilization), 64)
-	}
-}
+// 	if storageMetricCollector.NodeMetric.Disk.Total > 0 {
+// 		utilization := (float64(storageMetricCollector.NodeMetric.Disk.Used) / float64(storageMetricCollector.NodeMetric.Disk.Total)) * 100
+// 		storageMetricCollector.NodeMetric.Disk.Utilization, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", utilization), 64)
+// 	}
+// }
 
 func (storageMetricCollector *MetricCollector) updatePower() {
-	energyFieldName1 := "/sys/class/powercap/intel-rapl:0/energy_uj"
-	energyFieldName2 := "/sys/class/powercap/intel-rapl:1/energy_uj"
+	energyFieldName1 := "/host/sys/class/powercap/intel-rapl:0/energy_uj"
+	energyFieldName2 := "/host/sys/class/powercap/intel-rapl:1/energy_uj"
 
 	currentEnergyStr1, err := readStatisticsField(energyFieldName1)
 	if err != nil {
@@ -225,12 +228,12 @@ func (storageMetricCollector *MetricCollector) updatePower() {
 	energyDiffJ1 := float64(currentEnergy1-storageMetricCollector.NodeMetric.Power.Energy1) / 1e6
 	energyDiffJ2 := float64(currentEnergy2-storageMetricCollector.NodeMetric.Power.Energy2) / 1e6
 
-	storageMetricCollector.NodeMetric.Power.Used = int64((energyDiffJ1 + energyDiffJ2) / 1.0)
+	storageMetricCollector.NodeMetric.Power.Used = int64((energyDiffJ1 + energyDiffJ2) / 5.0)
 	storageMetricCollector.NodeMetric.Power.Energy1 = currentEnergy1
 	storageMetricCollector.NodeMetric.Power.Energy2 = currentEnergy2
 }
 
-func (storageMetricCollector *MetricCollector) updateSsdMetric() {
+func (storageMetricCollector *MetricCollector) updateSsdMetric() { // SSD는 LVM으로 묶여있어 하나하나의 사이즈 파악이 불가
 	for _, ssd := range storageMetricCollector.SsdMetrics {
 		mountpoint := fmt.Sprintf("/dev/%s", ssd.Name)
 		dfCmd := exec.Command("df", "-BM", "--output=used", mountpoint)
@@ -240,7 +243,7 @@ func (storageMetricCollector *MetricCollector) updateSsdMetric() {
 		dfLines := strings.Split(dfOut.String(), "\n")
 		if len(dfLines) > 1 {
 			usedStr := strings.TrimSuffix(dfLines[1], "M")
-			usedSize, _ := strconv.ParseInt(usedStr, 10, 64)
+			usedSize, _ := strconv.ParseFloat(usedStr, 64)
 			utilization := (float64(usedSize) / float64(ssd.Total)) * 100
 			ssd.Used = usedSize
 			ssd.Utilization, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", utilization), 64)
@@ -275,9 +278,9 @@ func (storageMetricCollector *MetricCollector) saveNodeMetric(mode string) {
 		"memory_usage":       storageMetricCollector.NodeMetric.Memory.Used,
 		"memory_utilization": storageMetricCollector.NodeMetric.Memory.Utilization,
 
-		"disk_total":       storageMetricCollector.NodeMetric.Disk.Total,
-		"disk_usage":       storageMetricCollector.NodeMetric.Disk.Used,
-		"disk_utilization": storageMetricCollector.NodeMetric.Disk.Utilization,
+		// "disk_total":       storageMetricCollector.NodeMetric.Disk.Total,
+		// "disk_usage":       storageMetricCollector.NodeMetric.Disk.Used,
+		// "disk_utilization": storageMetricCollector.NodeMetric.Disk.Utilization,
 
 		"network_bandwidth": storageMetricCollector.NodeMetric.Network.Bandwidth,
 		"network_rx_data":   storageMetricCollector.NodeMetric.Network.RxData,
@@ -454,7 +457,7 @@ func (storageMetricCollector *MetricCollector) HandleNodeMetric(w http.ResponseW
 
 	response.Cpu = storageMetricCollector.NodeMetric.Cpu
 	response.Memory = storageMetricCollector.NodeMetric.Memory
-	response.Disk = storageMetricCollector.NodeMetric.Disk
+	// response.Disk = storageMetricCollector.NodeMetric.Disk
 	response.Network = storageMetricCollector.NodeMetric.Network
 	response.Power = storageMetricCollector.NodeMetric.Power
 

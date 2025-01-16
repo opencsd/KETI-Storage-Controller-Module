@@ -162,7 +162,7 @@ func (metricCollector *MetricCollector) InitMetricCollector(mode string) {
 			size := fields[1]
 
 			if strings.HasPrefix(name, "sd") {
-				totalSize := convertSizeToMB(size)
+				totalSize := convertSizeToGB(size)
 				key := "ssd" + strconv.Itoa(id)
 				ssdMetric := &SsdMetric{
 					Name:        name,
@@ -244,19 +244,19 @@ func NewConfig() *Config {
 }
 
 type NodeMetric struct {
-	mutex   sync.Mutex `json:"-"`
-	Cpu     Cpu        `json:"cpu"`
-	Memory  Memory     `json:"memory"`
-	Disk    Disk       `json:"disk"`
-	Network Network    `json:"network"`
-	Power   Power      `json:"power"`
+	mutex  sync.Mutex `json:"-"`
+	Cpu    Cpu        `json:"cpu"`
+	Memory Memory     `json:"memory"`
+	// Disk    Disk       `json:"disk"`
+	Network Network `json:"network"`
+	Power   Power   `json:"power"`
 }
 
 func NewNodeMetric() *NodeMetric {
 	return &NodeMetric{
-		Cpu:     NewCpu(),
-		Memory:  NewMemory(),
-		Disk:    NewDisk(),
+		Cpu:    NewCpu(),
+		Memory: NewMemory(),
+		// Disk:    NewDisk(),
 		Network: NewNetwork(),
 		Power:   NewPower(),
 	}
@@ -295,12 +295,12 @@ func NewStJiffies() StJiffies {
 }
 
 type Memory struct {
-	Total       int64   `json:"total"`
-	Used        int64   `json:"used"`
+	Total       float64 `json:"total"`
+	Used        float64 `json:"used"`
 	Utilization float64 `json:"utilization"`
-	Free        int64
-	Buffers     int64
-	Cached      int64
+	Free        float64
+	Buffers     float64
+	Cached      float64
 }
 
 func NewMemory() Memory {
@@ -316,8 +316,8 @@ func NewMemory() Memory {
 
 type Disk struct {
 	Name        string  `json:"name"`
-	Total       int64   `json:"total"`
-	Used        int64   `json:"used"`
+	Total       float64 `json:"total"`
+	Used        float64 `json:"used"`
 	Utilization float64 `json:"utilization"`
 }
 
@@ -367,7 +367,7 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 	defer nodeMetric.mutex.Unlock()
 
 	{
-		cmd := exec.Command("grep", "-c", "processor", "/proc/cpuinfo")
+		cmd := exec.Command("grep", "-c", "processor", "/host/proc/cpuinfo")
 		output, err := cmd.Output()
 		if err != nil {
 			fmt.Println("Error: Command execution failed:", err)
@@ -383,7 +383,7 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 	}
 
 	{
-		file, err := os.Open("/proc/stat")
+		file, err := os.Open("/host/proc/stat")
 		if err != nil {
 			fmt.Println("cannot open file: ", err)
 		} else {
@@ -397,7 +397,7 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 	}
 
 	{
-		file, err := os.Open("/proc/meminfo")
+		file, err := os.Open("/host/proc/meminfo")
 		if err != nil {
 			fmt.Println("cannot open file: ", err)
 		} else {
@@ -408,10 +408,11 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 				if strings.HasPrefix(line, "MemTotal:") {
 					fields := strings.Fields(line)
 					if len(fields) >= 2 {
-						nodeMetric.Memory.Total, err = strconv.ParseInt(fields[1], 10, 64)
+						memTotalKB, err := strconv.ParseFloat(fields[1], 64)
 						if err != nil {
 							fmt.Println("Error parsing memory value:", err)
 						}
+						nodeMetric.Memory.Total = memTotalKB / (1024 * 1024)
 					}
 					break
 				}
@@ -424,7 +425,7 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 	}
 
 	{
-		statisticsFilePath := "/sys/class/net/eno1/statistics/"
+		statisticsFilePath := "/host/sys/class/net/eno1/statistics/"
 
 		rxBytesFieldName := statisticsFilePath + "rx_bytes"
 		txBytesFieldName := statisticsFilePath + "tx_bytes"
@@ -445,35 +446,35 @@ func (nodeMetric *NodeMetric) InitNodeMetric() {
 		nodeMetric.Network.TxByte, _ = strconv.ParseInt(txBytes, 10, 64)
 	}
 
-	{
-		cmd := exec.Command("df", "-k", "--total")
-		output, err := cmd.Output()
-		if err != nil {
-			fmt.Println("Error executing command:", err)
-			return
-		}
+	// {
+	// 	cmd := exec.Command("df", "-k", "--total")
+	// 	output, err := cmd.Output()
+	// 	if err != nil {
+	// 		fmt.Println("Error executing command:", err)
+	// 		return
+	// 	}
 
-		scanner := bufio.NewScanner(bytes.NewReader(output))
-		scanner.Scan()
+	// 	scanner := bufio.NewScanner(bytes.NewReader(output))
+	// 	scanner.Scan()
 
-		for scanner.Scan() {
-			line := scanner.Text()
+	// 	for scanner.Scan() {
+	// 		line := scanner.Text()
 
-			if strings.Contains(line, "total") {
-				fields := strings.Fields(line)
-				if len(fields) >= 3 {
-					nodeMetric.Disk.Total, _ = strconv.ParseInt(fields[1], 10, 64)
-					break
-				}
-			}
-		}
-	}
+	// 		if strings.Contains(line, "total") {
+	// 			fields := strings.Fields(line)
+	// 			if len(fields) >= 3 {
+	// 				nodeMetric.Disk.Total, _ = strconv.ParseFloat(fields[1], 64)
+	// 				break
+	// 			}
+	// 		}
+	// 	}
+	// }
 }
 
 type SsdMetric struct {
 	Name        string  `json:"name"`
-	Total       int64   `json:"total"`
-	Used        int64   `json:"used"`
+	Total       float64 `json:"total"`
+	Used        float64 `json:"used"`
 	Utilization float64 `json:"utilization"`
 	Status      string  `json:"status"`
 }
@@ -494,8 +495,8 @@ type CsdMetric struct {
 	CpuTotal             int        `json:"cpuTotal"`
 	CpuUsed              float64    `json:"cpuUsed"`
 	CpuUtilization       float64    `json:"cpuUtilization"`
-	MemoryTotal          int64      `json:"memoryTotal"`
-	MemoryUsed           int64      `json:"memoryUsed"`
+	MemoryTotal          float64    `json:"memoryTotal"`
+	MemoryUsed           float64    `json:"memoryUsed"`
 	MemoryUtilization    float64    `json:"memoryUtilization"`
 	DiskTotal            float64    `json:"diskTotal"`
 	DiskUsed             float64    `json:"diskUsed"`
@@ -506,7 +507,6 @@ type CsdMetric struct {
 	CsdMetricScore       float64    `json:"csdMetricScore"`
 	CsdWorkingBlockCount int64      `json:"csdWorkingBlockCount"`
 	Status               string     `json:"status"`
-	// Power		  int     `json:"powerUsage"`
 }
 
 func NewCsdMetric() *CsdMetric {
@@ -550,16 +550,16 @@ func extractCSDId(addr string) string {
 	return ""
 }
 
-func convertSizeToMB(sizeStr string) int64 {
+func convertSizeToGB(sizeStr string) float64 {
 	unit := sizeStr[len(sizeStr)-1:]
 	sizeValue, _ := strconv.ParseFloat(sizeStr[:len(sizeStr)-1], 64)
 	switch unit {
 	case "T":
-		return int64(sizeValue * 1024 * 1024)
+		return float64(sizeValue * 1024)
 	case "G":
-		return int64(sizeValue * 1024)
+		return float64(sizeValue)
 	case "M":
-		return int64(sizeValue)
+		return float64(sizeValue / 1024)
 	default:
 		return 0
 	}
