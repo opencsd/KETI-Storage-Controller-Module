@@ -45,7 +45,7 @@ func main() {
 	http.HandleFunc("/node/metric/power", handler.NodeMetricPower)     // ?count=
 	http.HandleFunc("/node/metric/memory", handler.NodeMetricMemory)   // ?count=
 	http.HandleFunc("/node/metric/network", handler.NodeMetricNetwork) // ?count=
-	http.HandleFunc("/node/metric/disk", handler.NodeMetricDisk)       // ?count=
+	http.HandleFunc("/node/metric/disk", handler.NodeMetricDisk)       // ?count= // 지원 X
 
 	http.HandleFunc("/storage/info", handler.StorageInfo)                    // ?storage=&count=
 	http.HandleFunc("/storage/metric/all", handler.StorageMetricAll)         // ?storage=&count=
