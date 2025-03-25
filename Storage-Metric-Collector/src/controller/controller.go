@@ -34,18 +34,10 @@ func (storageMetricCollector *MetricCollector) HandleConnection(conn net.Conn) {
 		return
 	}
 
-	fmt.Printf("+%v", csdMetric)
-
 	csdID := extractCSDId(csdMetric.IP)
 	key := "csd" + csdID
 
-	csdMetric.Name = storageMetricCollector.CsdMetrics[key].Name
-	csdMetric.Status = READY
-
-	csdMetric.mutex.Lock()
-	defer csdMetric.mutex.Unlock()
-
-	storageMetricCollector.CsdMetrics[key] = csdMetric
+	storageMetricCollector.updateCsdMetric(key, csdMetric)
 }
 
 func (storageMetricCollector *MetricCollector) RunMetricCollector(mode string) {
@@ -234,6 +226,9 @@ func (storageMetricCollector *MetricCollector) updatePower() {
 }
 
 func (storageMetricCollector *MetricCollector) updateSsdMetric() { // SSD는 LVM으로 묶여있어 하나하나의 사이즈 파악이 불가
+	storageMetricCollector.ssdMutex.Lock()
+	defer storageMetricCollector.ssdMutex.Unlock()
+
 	for _, ssd := range storageMetricCollector.SsdMetrics {
 		mountpoint := fmt.Sprintf("/dev/%s", ssd.Name)
 		dfCmd := exec.Command("df", "-BM", "--output=used", mountpoint)
@@ -344,7 +339,8 @@ func (storageMetricCollector *MetricCollector) SaveCsdMetric(mode string) {
 	for {
 		select {
 		case <-ticker.C:
-			for key, metric := range storageMetricCollector.CsdMetrics {
+			csdMetrics := storageMetricCollector.getCsdMetric()
+			for key, metric := range csdMetrics {
 				if metric.Status == READY {
 					metric.mutex.Lock()
 
@@ -434,7 +430,8 @@ func (storageMetricCollector *MetricCollector) HandleNodeInfoStorage(w http.Resp
 		NodeType: storageMetricCollector.NodeType,
 	}
 
-	for key, metric := range storageMetricCollector.CsdMetrics {
+	csdMetrics := storageMetricCollector.getCsdMetric()
+	for key, metric := range csdMetrics {
 		response.CsdList = append(response.CsdList, CsdEntry{Id: key, Name: metric.Name, Status: metric.Status})
 	}
 
@@ -480,7 +477,8 @@ func (storageMetricCollector *MetricCollector) HandleStorageMetric(w http.Respon
 		SsdMetrics: make(map[string]SsdMetric),
 	}
 
-	for key, metric := range storageMetricCollector.CsdMetrics {
+	csdMetrics := storageMetricCollector.getCsdMetric()
+	for key, metric := range csdMetrics {
 		response.CsdMetrics[key] = *metric
 	}
 

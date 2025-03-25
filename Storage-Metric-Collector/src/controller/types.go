@@ -50,6 +50,8 @@ type MetricCollector struct {
 	CsdMetrics map[string]*CsdMetric `json:"csdMetrics"`
 	SsdMetrics map[string]*SsdMetric `json:"ssdMetrics"`
 	NodeType   string                `json:"nodeType"`
+	csdMutex   sync.Mutex            `json:"-"`
+	ssdMutex   sync.Mutex            `json:"-"`
 }
 
 func NewMetricCollector(mode string) *MetricCollector {
@@ -201,29 +203,51 @@ func (metricCollector *MetricCollector) InitMetricCollector(mode string) {
 			}
 		}
 
+		// 인식 가능 csd
 		for _, deviceName := range ngdDevices {
-			csdMetric := NewCsdMetric()
-			csdMetric.Name = deviceName
 			id := strings.TrimPrefix(deviceName, "nvme")
-			key := "csd" + id
-			metricCollector.CsdMetrics[key] = csdMetric
+			metricCollector.insertCsdMetric(id, NOTREADY)
 		}
 
+		// 인식 불가 csd
 		for i := 1; i <= csdCount; i++ {
 			id := strconv.Itoa(i)
-			key := "csd" + id
-
-			if _, exists := metricCollector.CsdMetrics[key]; !exists {
-				csdMetric := NewCsdMetric()
-				csdMetric.Name = "nvme" + id
-				csdMetric.Status = "BROKEN"
-				metricCollector.CsdMetrics[key] = csdMetric
-			}
+			metricCollector.insertCsdMetric(id, BROKEN)
 		}
 
 	} else {
 		fmt.Println("[error] not supported node type: ", metricCollector.NodeType)
 	}
+}
+
+func (storageMetricCollector *MetricCollector) insertCsdMetric(id string, status string) {
+	storageMetricCollector.csdMutex.Lock()
+	defer storageMetricCollector.csdMutex.Unlock()
+
+	key := "csd" + id
+	if _, exists := storageMetricCollector.CsdMetrics[key]; !exists {
+		csdMetric := NewCsdMetric()
+		csdMetric.Name = "nvme" + id
+		csdMetric.Status = status
+		storageMetricCollector.CsdMetrics[key] = csdMetric
+	}
+}
+
+func (storageMetricCollector *MetricCollector) updateCsdMetric(key string, csdMetric *CsdMetric) {
+	storageMetricCollector.csdMutex.Lock()
+	defer storageMetricCollector.csdMutex.Unlock()
+
+	csdMetric.Name = storageMetricCollector.CsdMetrics[key].Name
+	csdMetric.Status = READY
+
+	storageMetricCollector.CsdMetrics[key] = csdMetric
+}
+
+func (storageMetricCollector *MetricCollector) getCsdMetric() map[string]*CsdMetric {
+	storageMetricCollector.csdMutex.Lock()
+	defer storageMetricCollector.csdMutex.Unlock()
+
+	return storageMetricCollector.CsdMetrics
 }
 
 type Config struct {
